@@ -1,8 +1,11 @@
 package br.com.blogsanapi.model.comment;
 
+import jakarta.validation.constraints.NotNull;
+
 public record CommentRequestDTO(
-		String text,
-		Long publicationId
+		@NotNull
+		Long publicationId,
+		String text
 		) {
 
 }

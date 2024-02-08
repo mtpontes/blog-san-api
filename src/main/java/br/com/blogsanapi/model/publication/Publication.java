@@ -1,5 +1,6 @@
-package br.com.blogsanapi.model.post;
+package br.com.blogsanapi.model.publication;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 import br.com.blogsanapi.model.comment.Comment;
@@ -31,6 +32,7 @@ public class Publication {
     
     private String description;
     private String imageLink;
+    private LocalDateTime date;
     
     @ManyToOne @JoinColumn(name = "user_id")
     private User user;
@@ -42,6 +44,7 @@ public class Publication {
     	this.description = description;
     	this.imageLink = imageLink;
     	this.user = user;
+    	this.date = LocalDateTime.now();
     }
 
 

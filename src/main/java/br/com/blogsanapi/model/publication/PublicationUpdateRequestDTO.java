@@ -1,4 +1,4 @@
-package br.com.blogsanapi.model.post;
+package br.com.blogsanapi.model.publication;
 
 import jakarta.validation.constraints.NotNull;
 
