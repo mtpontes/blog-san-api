@@ -1,0 +1,17 @@
+# Eclipse
+.classpath
+.factorypath
+.project
+.settings/
+
+# Logs e arquivos temporários
+*.log
+*.tmp
+
+log/
+target/
+.idea/
+build/
+.mvn/
+HELP.md
+/.metadata/
