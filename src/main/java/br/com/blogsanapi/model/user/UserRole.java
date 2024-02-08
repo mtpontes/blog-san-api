@@ -1,4 +1,4 @@
-package br.com.blogsanapi.domain.user;
+package br.com.blogsanapi.model.user;
 
 public enum UserRole {
     ADMIN("admin"),

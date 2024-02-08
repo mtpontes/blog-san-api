@@ -1,4 +1,4 @@
-package br.com.blogsanapi.domain.user;
+package br.com.blogsanapi.model.user;
 
 import java.util.Collection;
 import java.util.List;
@@ -7,34 +7,52 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import br.com.blogsanapi.model.post.Publication;
+import jakarta.persistence.DiscriminatorColumn;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Inheritance;
+import jakarta.persistence.InheritanceType;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import lombok.AllArgsConstructor;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.ToString;
 
+@ToString
 @Entity(name = "User")
 @Table(name = "users")
 @Getter
 @NoArgsConstructor
-@AllArgsConstructor
 @EqualsAndHashCode(of = "id")
 public class User implements UserDetails {
     @Id
-    @GeneratedValue(strategy = GenerationType.UUID)
-    private String id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private Long id;
     private String login;
     private String password;
     private UserRole role;
+    private String name;
+    private String email;
+    
+    @OneToMany(mappedBy = "user")
+    private List<Publication> publications;
+    
 
     public User(String login, String password, UserRole role){
         this.login = login;
         this.password = password;
         this.role = role;
+    }
+    public User(String login, String password, UserRole role, String name, String email){
+    	this.login = login;
+    	this.password = password;
+    	this.role = role;
+    	this.name = name;
+    	this.email = email;
     }
 
     @Override
