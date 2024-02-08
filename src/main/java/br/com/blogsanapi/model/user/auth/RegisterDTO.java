@@ -1,4 +1,15 @@
 package br.com.blogsanapi.model.user.auth;
 
-public record RegisterDTO(String login, String password, String name, String email) {
+import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotBlank;
+
+public record RegisterDTO(
+		@NotBlank
+		String login,
+		@NotBlank
+		String password, 
+		@NotBlank
+		String name,
+		@Email @NotBlank
+		String email) {
 }

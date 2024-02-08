@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -34,7 +35,8 @@ public class PublicationService {
 	
 	
 	public PublicationResponseDTO createPublication(PublicationRequestDTO publication) {
-		var user = this.getUser();
+		User user = this.getUser();
+		this.accesRoleVerify(user);
 		
 		Publication publi = new Publication(
 				publication.description(), publication.imageLink(), user);
@@ -44,8 +46,8 @@ public class PublicationService {
 	}
 	
 	public PublicationResponseWithCommentsDTO getAPublicationWhithComments(Pageable pageable, Long publicationId) {
-		Publication p = publicationRepository.findById(publicationId).orElse(null);
-		if (p == null) throw new NoResultException("Publication not found");
+		Publication publication = publicationRepository.findById(publicationId).orElse(null);
+		if (publication == null) throw new NoResultException("Publication not found");
 		
 		Page<Comment> commentsPage = commentRepository.findAllByPublicationId(pageable, publicationId);
 		List<CommentResponseDTO> commentResponse = commentsPage.getContent().stream()
@@ -53,14 +55,14 @@ public class PublicationService {
 				.collect(Collectors.toList());
 		
 		return new PublicationResponseWithCommentsDTO(
-				p.getId(),
-				p.getUser().getId(), 
-				p.getUser().getName(), 
-				p.getDescription(), 
-				p.getImageLink(), 
-				p.getDate(), 
+				publication.getId(),
+				publication.getUser().getId(), 
+				publication.getUser().getName(), 
+				publication.getDescription(), 
+				publication.getImageLink(), 
+				publication.getDate(), 
 				commentResponse
-				);
+		);
 	}
 
 	public Page<PublicationResponseDTO> getAllPublications(Pageable pageable) {
@@ -81,7 +83,9 @@ public class PublicationService {
 	 */
 	public PublicationResponseDTO updatePublication(PublicationUpdateRequestDTO dto) {
 		Publication publi = publicationRepository.getReferenceById(dto.id());
+		User user = this.getUser();
 		this.accesVerify(publi);
+		this.accesRoleVerify(user);
 		
 		if (dto.description() == null && publi.getImageLink() == null) {
 			throw new IllegalArgumentException("Both description and imgeLink cannot be null");
@@ -95,6 +99,7 @@ public class PublicationService {
 	
 	public void deletePublication(Long id) {
 		User user = this.getUser();
+		this.accesRoleVerify(user);
 		publicationRepository.deleteByUserIdAndId(user.getId(), id);
 	}
 	
@@ -108,6 +113,10 @@ public class PublicationService {
 		User userByToken = this.getUser();
 		User userByPubli = publi.getUser();
 		if (userByToken == null || !userByPubli.getId().equals(userByToken.getId())) 
+			throw new AccessDeniedException("User do not have permission for access this resource");
+	}
+	private void accesRoleVerify(User user) throws AccessDeniedException {
+		if (user == null || user.getAuthorities().contains(new SimpleGrantedAuthority("ADMIN"))) 
 			throw new AccessDeniedException("User do not have permission for access this resource");
 	}
 }

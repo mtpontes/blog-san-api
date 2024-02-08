@@ -21,9 +21,11 @@ import br.com.blogsanapi.model.comment.request.CommentUpdateDTO;
 import br.com.blogsanapi.model.comment.response.CommentResponseDTO;
 import br.com.blogsanapi.model.publication.response.PublicationResponseWithCommentsDTO;
 import br.com.blogsanapi.service.CommentService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 
 @RestController
 @RequestMapping("/blog/comments")
+@SecurityRequirement(name = "bearer-key")
 public class CommentController {
 
 	@Autowired

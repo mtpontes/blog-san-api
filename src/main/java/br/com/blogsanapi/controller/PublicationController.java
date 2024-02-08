@@ -25,11 +25,13 @@ import br.com.blogsanapi.model.publication.response.PublicationResponseDTO;
 import br.com.blogsanapi.model.publication.response.PublicationResponseWithCommentsDTO;
 import br.com.blogsanapi.service.CommentService;
 import br.com.blogsanapi.service.PublicationService;
+import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/blog/publications")
+@SecurityRequirement(name = "bearer-key")
 public class PublicationController {
 	private static Logger logger = LoggerFactory.getLogger(PublicationController.class);
 

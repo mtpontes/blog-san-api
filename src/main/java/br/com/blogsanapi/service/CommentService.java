@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.AccessDeniedException;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +20,7 @@ import br.com.blogsanapi.repository.PublicationRepository;
 
 @Service
 public class CommentService {
-	private static Logger logger = LoggerFactory.getLogger(PublicationService.class);
+//	private static Logger logger = LoggerFactory.getLogger(PublicationService.class);
 	
 	@Autowired
 	private CommentRepository commentRepository;
@@ -68,6 +69,10 @@ public class CommentService {
 		User userByToken = this.getUser();
 		User userByComment = comment.getUser();
 		if (userByToken == null || !userByComment.getId().equals(userByToken.getId())) 
+			throw new AccessDeniedException("User do not have permission for access this resource");
+	}
+	private void accesRoleVerify(User user) throws AccessDeniedException {
+		if (user == null || user.getAuthorities().contains(new SimpleGrantedAuthority("ADMIN"))) 
 			throw new AccessDeniedException("User do not have permission for access this resource");
 	}
 }
