@@ -1,5 +1,8 @@
 package br.com.blogsanapi.service;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -7,53 +10,92 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
+import br.com.blogsanapi.model.comment.Comment;
+import br.com.blogsanapi.model.comment.response.CommentResponseDTO;
 import br.com.blogsanapi.model.publication.Publication;
-import br.com.blogsanapi.model.publication.PublicationDateRequestDTO;
-import br.com.blogsanapi.model.publication.PublicationRequestDTO;
-import br.com.blogsanapi.model.publication.PublicationUpdateRequestDTO;
+import br.com.blogsanapi.model.publication.request.PublicationDateRequestDTO;
+import br.com.blogsanapi.model.publication.request.PublicationRequestDTO;
+import br.com.blogsanapi.model.publication.request.PublicationUpdateRequestDTO;
+import br.com.blogsanapi.model.publication.response.PublicationResponseDTO;
+import br.com.blogsanapi.model.publication.response.PublicationResponseWithCommentsDTO;
 import br.com.blogsanapi.model.user.User;
+import br.com.blogsanapi.repository.CommentRepository;
 import br.com.blogsanapi.repository.PublicationRepository;
+import jakarta.persistence.NoResultException;
 
 @Service
 public class PublicationService {
 //	private static Logger logger = LoggerFactory.getLogger(PublicationService.class);
 
 	@Autowired
-	private PublicationRepository repository;
+	private PublicationRepository publicationRepository;
+	@Autowired
+	private CommentRepository commentRepository;
 	
-	public Publication createPublication(PublicationRequestDTO publication) {
+	
+	public PublicationResponseDTO createPublication(PublicationRequestDTO publication) {
 		var user = this.getUser();
 		
-		Publication publi = new Publication(publication.description(), publication.imageLink(), user);
-		repository.save(publi);
+		Publication publi = new Publication(
+				publication.description(), publication.imageLink(), user);
+		publicationRepository.save(publi);
 		
-		return publi;
+		return new PublicationResponseDTO(publi);
 	}
 	
-	public Publication getPublication(Long id) {
-		return repository.getReferenceById(id);
+	public PublicationResponseWithCommentsDTO getAPublicationWhithComments(Pageable pageable, Long publicationId) {
+		Publication p = publicationRepository.findById(publicationId).orElse(null);
+		if (p == null) throw new NoResultException("Publication not found");
+		
+		Page<Comment> commentsPage = commentRepository.findAllByPublicationId(pageable, publicationId);
+		List<CommentResponseDTO> commentResponse = commentsPage.getContent().stream()
+				.map(CommentResponseDTO::new)
+				.collect(Collectors.toList());
+		
+		return new PublicationResponseWithCommentsDTO(
+				p.getId(),
+				p.getUser().getId(), 
+				p.getUser().getName(), 
+				p.getDescription(), 
+				p.getImageLink(), 
+				p.getDate(), 
+				commentResponse
+				);
 	}
 
-	public Page<Publication> getAllPublications(Pageable pageable) {
-		return repository.findAll(pageable);
+	public Page<PublicationResponseDTO> getAllPublications(Pageable pageable) {
+		return publicationRepository.findAll(pageable).map(PublicationResponseDTO::new);
 	}
-	public Page<Publication> getAllPublicationsByDate(Pageable pageable, PublicationDateRequestDTO dto) {
-		return repository.findAllByDate(pageable, dto.date());
+	public Page<PublicationResponseDTO> getAllPublicationsByDate(Pageable pageable, PublicationDateRequestDTO dto) {
+		return publicationRepository.findAllByDate(pageable, dto.date()).map(PublicationResponseDTO::new);
 	}
-	public Page<Publication> getAllPublicationsByUser(Pageable pageable, Long id) {
-		return repository.findAllByUserId(pageable, id);
+	public Page<PublicationResponseDTO> getAllPublicationsByUser(Pageable pageable, Long id) {
+		return publicationRepository.findAllByUserId(pageable, id).map(PublicationResponseDTO::new);
 	}
 	
-	public Publication updatePublication(PublicationUpdateRequestDTO dto) {
-		Publication publi = repository.getReferenceById(dto.id());
+	/**
+	 * Updates the publication with the data provided
+	 * 
+	 * @param dto DTO with data for update
+	 * @throws IllegalArgumentException If both atributes `description` and `imageLink` are null
+	 */
+	public PublicationResponseDTO updatePublication(PublicationUpdateRequestDTO dto) {
+		Publication publi = publicationRepository.getReferenceById(dto.id());
 		this.accesVerify(publi);
 		
+		if (dto.description() == null && publi.getImageLink() == null) {
+			throw new IllegalArgumentException("Both description and imgeLink cannot be null");
+		}
+		
 		publi.updateDescription(dto.description());
-		return publi;
+		publicationRepository.save(publi);
+		
+		return new PublicationResponseDTO(publi);
 	}
+	
 	public void deletePublication(Long id) {
 		User user = this.getUser();
-		repository.deleteByUserIdAndId(user.getId(), id);
+		publicationRepository.deleteByUserIdAndId(user.getId(), id);
 	}
 	
 	private User getUser() {
@@ -65,6 +107,7 @@ public class PublicationService {
 	private void accesVerify(Publication publi) throws AccessDeniedException {
 		User userByToken = this.getUser();
 		User userByPubli = publi.getUser();
-		if (userByToken == null || !userByPubli.getId().equals(userByToken.getId())) throw new AccessDeniedException("User do not have permission for access this task");
+		if (userByToken == null || !userByPubli.getId().equals(userByToken.getId())) 
+			throw new AccessDeniedException("User do not have permission for access this resource");
 	}
 }

@@ -1,4 +1,4 @@
-package br.com.blogsanapi.model.comment;
+package br.com.blogsanapi.model.comment.request;
 
 import jakarta.validation.constraints.NotNull;
 

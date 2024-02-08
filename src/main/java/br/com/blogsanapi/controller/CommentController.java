@@ -16,9 +16,10 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.blogsanapi.model.comment.Comment;
-import br.com.blogsanapi.model.comment.CommentRequestDTO;
-import br.com.blogsanapi.model.comment.CommentResponseDTO;
-import br.com.blogsanapi.model.comment.CommentUpdateDTO;
+import br.com.blogsanapi.model.comment.request.CommentRequestDTO;
+import br.com.blogsanapi.model.comment.request.CommentUpdateDTO;
+import br.com.blogsanapi.model.comment.response.CommentResponseDTO;
+import br.com.blogsanapi.model.publication.response.PublicationResponseWithCommentsDTO;
 import br.com.blogsanapi.service.CommentService;
 
 @RestController
@@ -41,6 +42,10 @@ public class CommentController {
 	@GetMapping("/by-user/{id}")
 	public ResponseEntity<Page<CommentResponseDTO>> getAllCommentsByUser(@PageableDefault(size = 10) Pageable pageable, @PathVariable Long id) {
 		return ResponseEntity.ok(service.getCommentsByUser(pageable, id).map(CommentResponseDTO::new));
+	}
+	@GetMapping("/by-publication/{id}")
+	public ResponseEntity<Page<CommentResponseDTO>> getCommentsByPublication(@PageableDefault(size = 10) Pageable pageable, @PathVariable Long id) {
+		return ResponseEntity.ok(service.getCommentsByPublicationId(pageable, id).map(CommentResponseDTO::new));
 	}
 	
 	@PutMapping("/update")

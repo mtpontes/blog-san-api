@@ -27,6 +27,7 @@ public class Comment {
     
     private String text;
     private LocalDateTime date;
+    private Boolean edited;
     
     @ManyToOne
     @JoinColumn(name = "user_id")
@@ -41,9 +42,12 @@ public class Comment {
     	this.user = user;
     	this.publication = publication;
     	this.date = LocalDateTime.now();
+    	this.edited = false;
     }
 
 	public void updateText(String text) {
 		this.text = text;
+		this.date = LocalDateTime.now();
+		this.edited = true;
 	}
 }

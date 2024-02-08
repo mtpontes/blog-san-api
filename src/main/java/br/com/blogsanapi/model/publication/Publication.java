@@ -7,6 +7,7 @@ import br.com.blogsanapi.model.comment.Comment;
 import br.com.blogsanapi.model.user.User;
 import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
@@ -33,10 +34,11 @@ public class Publication {
     private String description;
     private String imageLink;
     private LocalDateTime date;
+    private Boolean edited;
     
     @ManyToOne @JoinColumn(name = "user_id")
     private User user;
-    @OneToMany(mappedBy = "publication", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "publication", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Comment> comments;
     
     
@@ -50,5 +52,7 @@ public class Publication {
 
 	public void updateDescription(String description) {
 		this.description = description;
+		this.date = LocalDateTime.now();
+		this.edited = true;
 	}
 }	

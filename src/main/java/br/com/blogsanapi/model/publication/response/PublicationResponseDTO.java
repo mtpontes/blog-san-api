@@ -1,11 +1,10 @@
-package br.com.blogsanapi.model.publication;
+package br.com.blogsanapi.model.publication.response;
 
 import java.time.LocalDateTime;
-import java.util.List;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 
-import br.com.blogsanapi.model.comment.CommentResponseDTO;
+import br.com.blogsanapi.model.publication.Publication;
 
 public record PublicationResponseDTO(
 		Long publicationId,
@@ -14,8 +13,7 @@ public record PublicationResponseDTO(
 		String description,
 		String imageLink,
 		@JsonFormat(pattern = "yyyy-MM-dd HH:mm")
-		LocalDateTime date,
-		List<CommentResponseDTO> comments
+		LocalDateTime date
 		) {
 	
 	public PublicationResponseDTO(Publication p) {
@@ -25,8 +23,7 @@ public record PublicationResponseDTO(
 				p.getUser().getName(), 
 				p.getDescription(), 
 				p.getImageLink(), 
-				p.getDate(), 
-				p.getComments().stream().map(CommentResponseDTO::new).toList()
+				p.getDate() 
 			);
 	}
 }

@@ -18,10 +18,12 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.blogsanapi.model.publication.Publication;
-import br.com.blogsanapi.model.publication.PublicationDateRequestDTO;
-import br.com.blogsanapi.model.publication.PublicationRequestDTO;
-import br.com.blogsanapi.model.publication.PublicationResponseDTO;
-import br.com.blogsanapi.model.publication.PublicationUpdateRequestDTO;
+import br.com.blogsanapi.model.publication.request.PublicationDateRequestDTO;
+import br.com.blogsanapi.model.publication.request.PublicationRequestDTO;
+import br.com.blogsanapi.model.publication.request.PublicationUpdateRequestDTO;
+import br.com.blogsanapi.model.publication.response.PublicationResponseDTO;
+import br.com.blogsanapi.model.publication.response.PublicationResponseWithCommentsDTO;
+import br.com.blogsanapi.service.CommentService;
 import br.com.blogsanapi.service.PublicationService;
 import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
@@ -37,35 +39,34 @@ public class PublicationController {
 	@PostMapping("/create")
 	@Transactional
 	protected ResponseEntity<PublicationResponseDTO> createPublication(@RequestBody @Valid PublicationRequestDTO p, UriComponentsBuilder uriBuilder){
-		Publication publi = publicationService.createPublication(p);
+		PublicationResponseDTO dtoResponse = publicationService.createPublication(p);
 		
 		var uri = uriBuilder.path("/blog/publications/{id}").buildAndExpand(p).toUri();
 		
-		return ResponseEntity.created(uri).body(new PublicationResponseDTO(publi));
+		return ResponseEntity.created(uri).body(dtoResponse);
 	}
 	
 	@GetMapping("/{id}")
-	protected ResponseEntity<PublicationResponseDTO> showPublication(@PathVariable Long id) {
-		return ResponseEntity.ok(new PublicationResponseDTO(publicationService.getPublication(id)));
+	protected ResponseEntity<PublicationResponseWithCommentsDTO> test(@PageableDefault(size = 5) Pageable pageable, @PathVariable Long id) {
+		return ResponseEntity.ok(publicationService.getAPublicationWhithComments(pageable, id));
 	}
-	
 	@GetMapping("/all")
 	protected ResponseEntity<Page<PublicationResponseDTO>> getPublicationsByDate(@PageableDefault(size = 10) Pageable pageable) {
-		return ResponseEntity.ok(publicationService.getAllPublications(pageable).map(PublicationResponseDTO::new));
+		return ResponseEntity.ok(publicationService.getAllPublications(pageable));
 	}
 	@GetMapping("/by-date")
 	protected ResponseEntity<Page<PublicationResponseDTO>> getPublicationsByDate(@PageableDefault(size = 10) Pageable pageable, @RequestBody PublicationDateRequestDTO dto) {
-		return ResponseEntity.ok(publicationService.getAllPublicationsByDate(pageable, dto).map(PublicationResponseDTO::new));
+		return ResponseEntity.ok(publicationService.getAllPublicationsByDate(pageable, dto));
 	}
 	@GetMapping("/by-user/{id}")
 	protected ResponseEntity<Page<PublicationResponseDTO>> getAllPublicationsByUser(@PageableDefault(size = 10) Pageable pageable, @PathVariable Long id) {
-		return ResponseEntity.ok(publicationService.getAllPublicationsByUser(pageable, id).map(PublicationResponseDTO::new));
+		return ResponseEntity.ok(publicationService.getAllPublicationsByUser(pageable, id));
 	}
 	
 	@PutMapping("/update")
 	@Transactional
-	protected ResponseEntity<PublicationResponseDTO> updatePublication(@RequestBody PublicationUpdateRequestDTO id) {
-		return ResponseEntity.ok(new PublicationResponseDTO(publicationService.updatePublication(id)));
+	protected ResponseEntity<PublicationResponseDTO> updatePublication(@RequestBody PublicationUpdateRequestDTO dto) {
+		return ResponseEntity.ok(publicationService.updatePublication(dto));
 	}
 	
 	@DeleteMapping("/delete/{id}")

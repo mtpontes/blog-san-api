@@ -1,4 +1,4 @@
-package br.com.blogsanapi.model.publication;
+package br.com.blogsanapi.model.publication.request;
 
 import java.time.LocalDate;
 
