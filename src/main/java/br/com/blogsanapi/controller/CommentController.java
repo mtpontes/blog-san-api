@@ -19,9 +19,9 @@ import br.com.blogsanapi.model.comment.Comment;
 import br.com.blogsanapi.model.comment.request.CommentRequestDTO;
 import br.com.blogsanapi.model.comment.request.CommentUpdateDTO;
 import br.com.blogsanapi.model.comment.response.CommentResponseDTO;
-import br.com.blogsanapi.model.publication.response.PublicationResponseWithCommentsDTO;
 import br.com.blogsanapi.service.CommentService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
+import jakarta.validation.Valid;
 
 @RestController
 @RequestMapping("/blog/comments")
@@ -33,7 +33,7 @@ public class CommentController {
 	
 
 	@PostMapping("/create")
-	public ResponseEntity<CommentResponseDTO> createComment(@RequestBody CommentRequestDTO dto, UriComponentsBuilder uriBuilder) {
+	public ResponseEntity<CommentResponseDTO> createComment(@RequestBody @Valid CommentRequestDTO dto, UriComponentsBuilder uriBuilder) {
 		Comment comment = service.createComment(dto);
 		
 		var uri = uriBuilder.path("/blog/comments/{id}").buildAndExpand(dto).toUri();
@@ -51,7 +51,7 @@ public class CommentController {
 	}
 	
 	@PutMapping("/update")
-	public ResponseEntity<CommentResponseDTO> updateComment(@RequestBody CommentUpdateDTO dto) {
+	public ResponseEntity<CommentResponseDTO> updateComment(@RequestBody @Valid CommentUpdateDTO dto) {
 		Comment comment = service.updateComment(dto);
 		return ResponseEntity.ok(new CommentResponseDTO(comment));
 	}

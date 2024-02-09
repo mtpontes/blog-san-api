@@ -40,10 +40,10 @@ public class PublicationController {
 	
 	@PostMapping("/create")
 	@Transactional
-	protected ResponseEntity<PublicationResponseDTO> createPublication(@RequestBody @Valid PublicationRequestDTO p, UriComponentsBuilder uriBuilder){
-		PublicationResponseDTO dtoResponse = publicationService.createPublication(p);
+	protected ResponseEntity<PublicationResponseDTO> createPublication(@RequestBody @Valid PublicationRequestDTO dto, UriComponentsBuilder uriBuilder){
+		PublicationResponseDTO dtoResponse = publicationService.createPublication(dto);
 		
-		var uri = uriBuilder.path("/blog/publications/{id}").buildAndExpand(p).toUri();
+		var uri = uriBuilder.path("/blog/publications/{id}").buildAndExpand(dto).toUri();
 		
 		return ResponseEntity.created(uri).body(dtoResponse);
 	}
@@ -57,7 +57,7 @@ public class PublicationController {
 		return ResponseEntity.ok(publicationService.getAllPublications(pageable));
 	}
 	@GetMapping("/by-date")
-	protected ResponseEntity<Page<PublicationResponseDTO>> getPublicationsByDate(@PageableDefault(size = 10) Pageable pageable, @RequestBody PublicationDateRequestDTO dto) {
+	protected ResponseEntity<Page<PublicationResponseDTO>> getPublicationsByDate(@PageableDefault(size = 10) Pageable pageable, @RequestBody @Valid PublicationDateRequestDTO dto) {
 		return ResponseEntity.ok(publicationService.getAllPublicationsByDate(pageable, dto));
 	}
 	@GetMapping("/by-user/{id}")
@@ -67,7 +67,7 @@ public class PublicationController {
 	
 	@PutMapping("/update")
 	@Transactional
-	protected ResponseEntity<PublicationResponseDTO> updatePublication(@RequestBody PublicationUpdateRequestDTO dto) {
+	protected ResponseEntity<PublicationResponseDTO> updatePublication(@RequestBody @Valid PublicationUpdateRequestDTO dto) {
 		return ResponseEntity.ok(publicationService.updatePublication(dto));
 	}
 	
