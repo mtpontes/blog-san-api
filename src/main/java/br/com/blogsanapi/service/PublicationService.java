@@ -36,7 +36,6 @@ public class PublicationService {
 	
 	public PublicationResponseDTO createPublication(PublicationRequestDTO publication) {
 		User user = this.getUser();
-		this.accesRoleVerify(user);
 		
 		Publication publi = new Publication(
 				publication.description(), publication.imageLink(), user);
@@ -85,7 +84,6 @@ public class PublicationService {
 		Publication publi = publicationRepository.getReferenceById(dto.id());
 		User user = this.getUser();
 		this.accesVerify(publi);
-		this.accesRoleVerify(user);
 		
 		if (dto.description() == null && publi.getImageLink() == null) {
 			throw new IllegalArgumentException("Both description and imgeLink cannot be null");
@@ -99,7 +97,6 @@ public class PublicationService {
 	
 	public void deletePublication(Long id) {
 		User user = this.getUser();
-		this.accesRoleVerify(user);
 		publicationRepository.deleteByUserIdAndId(user.getId(), id);
 	}
 	
@@ -113,10 +110,6 @@ public class PublicationService {
 		User userByToken = this.getUser();
 		User userByPubli = publi.getUser();
 		if (userByToken == null || !userByPubli.getId().equals(userByToken.getId())) 
-			throw new AccessDeniedException("User do not have permission for access this resource");
-	}
-	private void accesRoleVerify(User user) throws AccessDeniedException {
-		if (user == null || user.getAuthorities().contains(new SimpleGrantedAuthority("ADMIN"))) 
 			throw new AccessDeniedException("User do not have permission for access this resource");
 	}
 }
