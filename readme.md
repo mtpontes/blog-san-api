@@ -22,3 +22,5 @@ work.
 - [MySQL Connector/J](https://dev.mysql.com/downloads/connector/j/)
 - [Java JWT (Auth0)](https://github.com/auth0/java-jwt)
 - [Springdoc OpenAPI](https://springdoc.org/)
+
+
