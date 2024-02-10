@@ -1,5 +1,6 @@
 package br.com.blogsanapi.service;
 
+import java.time.LocalDate;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -7,14 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.security.access.AccessDeniedException;
-import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import br.com.blogsanapi.model.comment.Comment;
 import br.com.blogsanapi.model.comment.response.CommentResponseDTO;
 import br.com.blogsanapi.model.publication.Publication;
-import br.com.blogsanapi.model.publication.request.PublicationDateRequestDTO;
 import br.com.blogsanapi.model.publication.request.PublicationRequestDTO;
 import br.com.blogsanapi.model.publication.request.PublicationUpdateRequestDTO;
 import br.com.blogsanapi.model.publication.response.PublicationResponseDTO;
@@ -67,8 +66,8 @@ public class PublicationService {
 	public Page<PublicationResponseDTO> getAllPublications(Pageable pageable) {
 		return publicationRepository.findAll(pageable).map(PublicationResponseDTO::new);
 	}
-	public Page<PublicationResponseDTO> getAllPublicationsByDate(Pageable pageable, PublicationDateRequestDTO dto) {
-		return publicationRepository.findAllByDate(pageable, dto.date()).map(PublicationResponseDTO::new);
+	public Page<PublicationResponseDTO> getAllPublicationsByDate(Pageable pageable, LocalDate date) {
+		return publicationRepository.findAllByDate(pageable, date).map(PublicationResponseDTO::new);
 	}
 	public Page<PublicationResponseDTO> getAllPublicationsByUser(Pageable pageable, Long id) {
 		return publicationRepository.findAllByUserId(pageable, id).map(PublicationResponseDTO::new);

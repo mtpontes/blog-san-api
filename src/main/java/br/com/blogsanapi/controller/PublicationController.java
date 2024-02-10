@@ -1,7 +1,7 @@
 package br.com.blogsanapi.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import java.time.LocalDate;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -17,13 +17,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import br.com.blogsanapi.model.publication.Publication;
-import br.com.blogsanapi.model.publication.request.PublicationDateRequestDTO;
 import br.com.blogsanapi.model.publication.request.PublicationRequestDTO;
 import br.com.blogsanapi.model.publication.request.PublicationUpdateRequestDTO;
 import br.com.blogsanapi.model.publication.response.PublicationResponseDTO;
 import br.com.blogsanapi.model.publication.response.PublicationResponseWithCommentsDTO;
-import br.com.blogsanapi.service.CommentService;
 import br.com.blogsanapi.service.PublicationService;
 import io.swagger.v3.oas.annotations.security.SecurityRequirement;
 import jakarta.transaction.Transactional;
@@ -33,8 +30,6 @@ import jakarta.validation.Valid;
 @RequestMapping("/blog/publications")
 @SecurityRequirement(name = "bearer-key")
 public class PublicationController {
-	private static Logger logger = LoggerFactory.getLogger(PublicationController.class);
-
 	@Autowired
 	private PublicationService publicationService;
 	
@@ -56,9 +51,9 @@ public class PublicationController {
 	protected ResponseEntity<Page<PublicationResponseDTO>> getPublicationsByDate(@PageableDefault(size = 10) Pageable pageable) {
 		return ResponseEntity.ok(publicationService.getAllPublications(pageable));
 	}
-	@GetMapping("/by-date")
-	protected ResponseEntity<Page<PublicationResponseDTO>> getPublicationsByDate(@PageableDefault(size = 10) Pageable pageable, @RequestBody @Valid PublicationDateRequestDTO dto) {
-		return ResponseEntity.ok(publicationService.getAllPublicationsByDate(pageable, dto));
+	@GetMapping("/by-date/{date}")
+	protected ResponseEntity<Page<PublicationResponseDTO>> getPublicationsByDate(@PageableDefault(size = 10) Pageable pageable, @PathVariable @Valid LocalDate date) {
+		return ResponseEntity.ok(publicationService.getAllPublicationsByDate(pageable, date));
 	}
 	@GetMapping("/by-user/{id}")
 	protected ResponseEntity<Page<PublicationResponseDTO>> getAllPublicationsByUser(@PageableDefault(size = 10) Pageable pageable, @PathVariable Long id) {
@@ -73,7 +68,7 @@ public class PublicationController {
 	
 	@DeleteMapping("/delete/{id}")
 	@Transactional
-	protected ResponseEntity deletePublication(@PathVariable Long id) {
+	protected ResponseEntity<?> deletePublication(@PathVariable Long id) {
 		publicationService.deletePublication(id);
 		return ResponseEntity.noContent().build();
 	}

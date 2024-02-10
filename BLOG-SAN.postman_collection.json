@@ -1,0 +1,1729 @@
+{
+	"info": {
+		"_postman_id": "9b8146ad-962e-43d0-9850-c91960d9342f",
+		"name": "BLOG-SAN",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "31232249"
+	},
+	"item": [
+		{
+			"name": "USER",
+			"item": [
+				{
+					"name": "USER REGISTER",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "User-Agent",
+								"value": "insomnia/2023.5.8"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"login\": \"newUser1\",\r\n\t\"password\": \"newPassword\",\r\n\t\"name\": \"Example Name\",\r\n\t\"email\": \"example@email.com\"\r\n}"
+						},
+						"url": {
+							"raw": "{{baseURL1}}/auth/register",
+							"host": [
+								"{{baseURL1}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "successfully / 200",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "User-Agent",
+										"value": "insomnia/2023.5.8"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/auth/register",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"auth",
+										"register"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "Text",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "0"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 09 Feb 2024 00:16:59 GMT"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "USER LOGIN",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "User-Agent",
+								"value": "insomnia/2023.5.8"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"login\": \"newUser\",\r\n\t\"password\": \"newPassword\"\r\n}"
+						},
+						"url": {
+							"raw": "{{baseURL1}}/auth/login",
+							"host": [
+								"{{baseURL1}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "successfully / 200",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "User-Agent",
+										"value": "insomnia/2023.5.8"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/auth/login",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"auth",
+										"login"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 09 Feb 2024 00:20:55 GMT"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"token\": \"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJibG9nLXNhbiIsInN1YiI6Im5vdm9Vc2VyIiwiZXhwIjoxNzA3NDQ1MjU1fQ.CYZNgFHOU1niFJAAtT7ULKB9kDZTncYtBZneFFDQPDI\"\n}"
+						}
+					]
+				}
+			],
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				},
+				{
+					"listen": "test",
+					"script": {
+						"type": "text/javascript",
+						"exec": [
+							""
+						]
+					}
+				}
+			]
+		},
+		{
+			"name": "PUBLICATIONS",
+			"item": [
+				{
+					"name": "CREATE PUBLICATION",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "User-Agent",
+								"value": "insomnia/2023.5.8"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJibG9nLXNhbiIsInN1YiI6Im5vdm9Vc2VyIiwiZXhwIjoxNzA3NDQ1MjU1fQ.CYZNgFHOU1niFJAAtT7ULKB9kDZTncYtBZneFFDQPDI"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\"description\": \"Publication creation example\",\r\n\"imageLink\": \"image.com\"\r\n}"
+						},
+						"url": {
+							"raw": "{{baseURL1}}/blog/publications/create",
+							"host": [
+								"{{baseURL1}}"
+							],
+							"path": [
+								"blog",
+								"publications",
+								"create"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "forbidden / 403",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "User-Agent",
+										"value": "insomnia/2023.5.8"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJibG9nLXNhbiIsInN1YiI6Im5vdm9Vc2VyIiwiZXhwIjoxNzA3NDQ1MjU1fQ.CYZNgFHOU1niFJAAtT7ULKB9kDZTncYtBZneFFDQPDI"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/blog/publications/create",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"blog",
+										"publications",
+										"create"
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "Text",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "0"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 09 Feb 2024 00:21:22 GMT"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "SHOW PUBLICATION",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "User-Agent",
+								"value": "insomnia/2023.5.8"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL1}}/blog/publications/2",
+							"host": [
+								"{{baseURL1}}"
+							],
+							"path": [
+								"blog",
+								"publications",
+								"2"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "successfully / 200",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "User-Agent",
+										"value": "insomnia/2023.5.8"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/blog/publications/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"blog",
+										"publications",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json",
+									"name": "Content-Type",
+									"description": "",
+									"type": "text"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 09 Feb 2024 00:17:41 GMT"
+								}
+							],
+							"cookie": [],
+							"body": "{\n    \"publicationId\": 2,\n    \"userId\": 1,\n    \"nameUser\": \"tal-tal-san2\",\n    \"description\": \"Pub 2\",\n    \"imageLink\": \"\",\n    \"date\": \"2024-02-08 19:05\",\n    \"comments\": [\n        {\n            \"commentId\": 2,\n            \"userId\": 1,\n            \"text\": \"Foi editado\",\n            \"date\": \"2024-02-08 21:15\",\n            \"edited\": true\n        },\n        {\n            \"commentId\": 3,\n            \"userId\": 1,\n            \"text\": \"Comment 21\",\n            \"date\": \"2024-02-08 21:16\",\n            \"edited\": false\n        }\n    ]\n}"
+						}
+					]
+				},
+				{
+					"name": "UPDATE PUBLICATION",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "User-Agent",
+								"value": "insomnia/2023.5.8"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJibG9nLXNhbiIsInN1YiI6InJvb3QiLCJleHAiOjE3MDc0NDQ5MzJ9.IbE-8OLFWRw_hxHHTkKK5vcd7v4P0GpMeFvTkHmaQOQ"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"id\": 2,\r\n\t\"description\": \"Publication edition example\"\r\n}"
+						},
+						"url": {
+							"raw": "{{baseURL1}}/blog/publications/update",
+							"host": [
+								"{{baseURL1}}"
+							],
+							"path": [
+								"blog",
+								"publications",
+								"update"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "successfully / 200",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "User-Agent",
+										"value": "insomnia/2023.5.8"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJibG9nLXNhbiIsInN1YiI6InJvb3QiLCJleHAiOjE3MDc0NDQ5MzJ9.IbE-8OLFWRw_hxHHTkKK5vcd7v4P0GpMeFvTkHmaQOQ"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/blog/publications/update",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"blog",
+										"publications",
+										"update"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 09 Feb 2024 00:18:15 GMT"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"publicationId\": 2,\n \"userId\": 1,\n \"nameUser\": \"tal-tal-san2\",\n \"description\": \"Pub 2 editada\",\n \"imageLink\": \"\",\n \"date\": \"2024-02-08 21:18\"\n}"
+						}
+					]
+				},
+				{
+					"name": "ALL PUBLICATION",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "User-Agent",
+								"value": "insomnia/2023.5.8"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL1}}/blog/publications/all",
+							"host": [
+								"{{baseURL1}}"
+							],
+							"path": [
+								"blog",
+								"publications",
+								"all"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "successfully / 200",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "User-Agent",
+										"value": "insomnia/2023.5.8"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/blog/publications/all",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"blog",
+										"publications",
+										"all"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 09 Feb 2024 00:18:20 GMT"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"content\": [\n  {\n   \"publicationId\": 2,\n   \"userId\": 1,\n   \"nameUser\": \"tal-tal-san2\",\n   \"description\": \"Pub 2 editada\",\n   \"imageLink\": \"\",\n   \"date\": \"2024-02-08 21:18\"\n  },\n  {\n   \"publicationId\": 3,\n   \"userId\": 1,\n   \"nameUser\": \"tal-tal-san2\",\n   \"description\": \"Pub 50\",\n   \"imageLink\": \"\",\n   \"date\": \"2024-02-08 21:17\"\n  }\n ],\n \"pageable\": {\n  \"pageNumber\": 0,\n  \"pageSize\": 10,\n  \"sort\": {\n   \"empty\": true,\n   \"sorted\": false,\n   \"unsorted\": true\n  },\n  \"offset\": 0,\n  \"paged\": true,\n  \"unpaged\": false\n },\n \"last\": true,\n \"totalPages\": 1,\n \"totalElements\": 2,\n \"size\": 10,\n \"number\": 0,\n \"sort\": {\n  \"empty\": true,\n  \"sorted\": false,\n  \"unsorted\": true\n },\n \"first\": true,\n \"numberOfElements\": 2,\n \"empty\": false\n}"
+						}
+					]
+				},
+				{
+					"name": "ALL PUBLICATION BY DATE",
+					"protocolProfileBehavior": {
+						"disableBodyPruning": true
+					},
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "User-Agent",
+								"value": "insomnia/2023.5.8"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"date\": \"2024-10-02\" \r\n}"
+						},
+						"url": {
+							"raw": "{{baseURL1}}/blog/publications/by-date/2024-02-10",
+							"host": [
+								"{{baseURL1}}"
+							],
+							"path": [
+								"blog",
+								"publications",
+								"by-date",
+								"2024-02-10"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "successfully / 200",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "User-Agent",
+										"value": "insomnia/2023.5.8"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/blog/publications/by-date",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"blog",
+										"publications",
+										"by-date"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 09 Feb 2024 00:18:30 GMT"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"content\": [\n  {\n   \"publicationId\": 2,\n   \"userId\": 1,\n   \"nameUser\": \"tal-tal-san2\",\n   \"description\": \"Pub 2 editada\",\n   \"imageLink\": \"\",\n   \"date\": \"2024-02-08 21:18\"\n  },\n  {\n   \"publicationId\": 3,\n   \"userId\": 1,\n   \"nameUser\": \"tal-tal-san2\",\n   \"description\": \"Pub 50\",\n   \"imageLink\": \"\",\n   \"date\": \"2024-02-08 21:17\"\n  }\n ],\n \"pageable\": {\n  \"pageNumber\": 0,\n  \"pageSize\": 10,\n  \"sort\": {\n   \"empty\": true,\n   \"sorted\": false,\n   \"unsorted\": true\n  },\n  \"offset\": 0,\n  \"paged\": true,\n  \"unpaged\": false\n },\n \"last\": true,\n \"totalPages\": 1,\n \"totalElements\": 2,\n \"size\": 10,\n \"number\": 0,\n \"sort\": {\n  \"empty\": true,\n  \"sorted\": false,\n  \"unsorted\": true\n },\n \"first\": true,\n \"numberOfElements\": 2,\n \"empty\": false\n}"
+						}
+					]
+				},
+				{
+					"name": "ALL PUBLICATION BY USER",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "User-Agent",
+								"value": "insomnia/2023.5.8"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL1}}/blog/publications/by-user/1",
+							"host": [
+								"{{baseURL1}}"
+							],
+							"path": [
+								"blog",
+								"publications",
+								"by-user",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "successfully / 200",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "User-Agent",
+										"value": "insomnia/2023.5.8"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/blog/publications/by-user/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"blog",
+										"publications",
+										"by-user",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 09 Feb 2024 00:18:34 GMT"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"content\": [\n  {\n   \"publicationId\": 2,\n   \"userId\": 1,\n   \"nameUser\": \"tal-tal-san2\",\n   \"description\": \"Pub 2 editada\",\n   \"imageLink\": \"\",\n   \"date\": \"2024-02-08 21:18\"\n  },\n  {\n   \"publicationId\": 3,\n   \"userId\": 1,\n   \"nameUser\": \"tal-tal-san2\",\n   \"description\": \"Pub 50\",\n   \"imageLink\": \"\",\n   \"date\": \"2024-02-08 21:17\"\n  }\n ],\n \"pageable\": {\n  \"pageNumber\": 0,\n  \"pageSize\": 10,\n  \"sort\": {\n   \"empty\": true,\n   \"sorted\": false,\n   \"unsorted\": true\n  },\n  \"offset\": 0,\n  \"paged\": true,\n  \"unpaged\": false\n },\n \"last\": true,\n \"totalPages\": 1,\n \"totalElements\": 2,\n \"size\": 10,\n \"number\": 0,\n \"sort\": {\n  \"empty\": true,\n  \"sorted\": false,\n  \"unsorted\": true\n },\n \"first\": true,\n \"numberOfElements\": 2,\n \"empty\": false\n}"
+						}
+					]
+				},
+				{
+					"name": "DELETE PUBLICATION",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "User-Agent",
+								"value": "insomnia/2023.5.8"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJibG9nLXNhbiIsInN1YiI6InJvb3QiLCJleHAiOjE3MDc0NDQ5MzJ9.IbE-8OLFWRw_hxHHTkKK5vcd7v4P0GpMeFvTkHmaQOQ"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL1}}/blog/publications/delete/1",
+							"host": [
+								"{{baseURL1}}"
+							],
+							"path": [
+								"blog",
+								"publications",
+								"delete",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "no-content / 204",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "User-Agent",
+										"value": "insomnia/2023.5.8"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJibG9nLXNhbiIsInN1YiI6InJvb3QiLCJleHAiOjE3MDc0NDQ5MzJ9.IbE-8OLFWRw_hxHHTkKK5vcd7v4P0GpMeFvTkHmaQOQ"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/blog/publications/delete/2",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"blog",
+										"publications",
+										"delete",
+										"2"
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "Text",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 09 Feb 2024 00:18:47 GMT"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				}
+			]
+		},
+		{
+			"name": "COMMENT",
+			"item": [
+				{
+					"name": "CREATE COMMENT",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "User-Agent",
+								"value": "insomnia/2023.5.8"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"publicationId\": 1,\r\n\t\"text\": \"Comment example\"\r\n}"
+						},
+						"url": {
+							"raw": "{{baseURL1}}/blog/comments/create",
+							"host": [
+								"{{baseURL1}}"
+							],
+							"path": [
+								"blog",
+								"comments",
+								"create"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "forbidden / 403",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "User-Agent",
+										"value": "insomnia/2023.5.8"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/blog/comments/create",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"blog",
+										"comments",
+										"create"
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "Text",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "0"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 09 Feb 2024 00:16:12 GMT"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "UPDATE COMMENT",
+					"request": {
+						"method": "PUT",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "User-Agent",
+								"value": "insomnia/2023.5.8"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJibG9nLXNhbiIsInN1YiI6InJvb3QiLCJleHAiOjE3MDc0NDQ5MzJ9.IbE-8OLFWRw_hxHHTkKK5vcd7v4P0GpMeFvTkHmaQOQ"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"id\": 1,\r\n\t\"text\": \"Comment edited example\"\r\n}"
+						},
+						"url": {
+							"raw": "{{baseURL1}}/blog/comments/update",
+							"host": [
+								"{{baseURL1}}"
+							],
+							"path": [
+								"blog",
+								"comments",
+								"update"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "forbidden / 403",
+							"originalRequest": {
+								"method": "PUT",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "User-Agent",
+										"value": "insomnia/2023.5.8"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJibG9nLXNhbiIsInN1YiI6InJvb3QiLCJleHAiOjE3MDc0NDQ5MzJ9.IbE-8OLFWRw_hxHHTkKK5vcd7v4P0GpMeFvTkHmaQOQ"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/blog/comments/update",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"blog",
+										"comments",
+										"update"
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "Text",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "0"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 09 Feb 2024 00:15:52 GMT"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "COMMENTS BY USER",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "User-Agent",
+								"value": "insomnia/2023.5.8"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL1}}/blog/comments/by-user/1?page=0",
+							"host": [
+								"{{baseURL1}}"
+							],
+							"path": [
+								"blog",
+								"comments",
+								"by-user",
+								"1"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "forbidden / 403",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "User-Agent",
+										"value": "insomnia/2023.5.8"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/blog/comments/by-user/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"blog",
+										"comments",
+										"by-user",
+										"1"
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "Text",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "0"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 09 Feb 2024 00:09:35 GMT"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "COMMENTS BY PUBLICATION",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "User-Agent",
+								"value": "insomnia/2023.5.8"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJibG9nLXNhbiIsInN1YiI6InJvb3QiLCJleHAiOjE3MDc0MzY5ODd9.etVHmS-4rIk4z1b6KyDEkAXmgXKagD38ioWhLDN__zU"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL1}}/blog/comments/by-publication/1?page=0",
+							"host": [
+								"{{baseURL1}}"
+							],
+							"path": [
+								"blog",
+								"comments",
+								"by-publication",
+								"1"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "successfully / 200",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "User-Agent",
+										"value": "insomnia/2023.5.8"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJibG9nLXNhbiIsInN1YiI6InJvb3QiLCJleHAiOjE3MDc0MzY5ODd9.etVHmS-4rIk4z1b6KyDEkAXmgXKagD38ioWhLDN__zU"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/blog/comments/by-publication/1",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"blog",
+										"comments",
+										"by-publication",
+										"1"
+									]
+								}
+							},
+							"status": "OK",
+							"code": 200,
+							"_postman_previewlanguage": "json",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Type",
+									"value": "application/json"
+								},
+								{
+									"key": "Transfer-Encoding",
+									"value": "chunked"
+								},
+								{
+									"key": "Date",
+									"value": "Thu, 08 Feb 2024 22:06:09 GMT"
+								}
+							],
+							"cookie": [],
+							"body": "{\n \"content\": [\n  {\n   \"commentId\": 2,\n   \"userId\": 1,\n   \"text\": \"Foi editado\",\n   \"date\": \"2024-02-08 19:06\",\n   \"edited\": true\n  }\n ],\n \"pageable\": {\n  \"pageNumber\": 0,\n  \"pageSize\": 10,\n  \"sort\": {\n   \"empty\": true,\n   \"sorted\": false,\n   \"unsorted\": true\n  },\n  \"offset\": 0,\n  \"paged\": true,\n  \"unpaged\": false\n },\n \"last\": true,\n \"totalElements\": 1,\n \"totalPages\": 1,\n \"size\": 10,\n \"number\": 0,\n \"sort\": {\n  \"empty\": true,\n  \"sorted\": false,\n  \"unsorted\": true\n },\n \"first\": true,\n \"numberOfElements\": 1,\n \"empty\": false\n}"
+						}
+					]
+				},
+				{
+					"name": "DELETE COMMENT",
+					"request": {
+						"method": "DELETE",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "User-Agent",
+								"value": "insomnia/2023.5.8"
+							},
+							{
+								"key": "Authorization",
+								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJibG9nLXNhbiIsInN1YiI6InJvb3QiLCJleHAiOjE3MDc0NDQ5MzJ9.IbE-8OLFWRw_hxHHTkKK5vcd7v4P0GpMeFvTkHmaQOQ"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL1}}/blog/comments/delete/1",
+							"host": [
+								"{{baseURL1}}"
+							],
+							"path": [
+								"blog",
+								"comments",
+								"delete",
+								"1"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "no-content / 204",
+							"originalRequest": {
+								"method": "DELETE",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "User-Agent",
+										"value": "insomnia/2023.5.8"
+									},
+									{
+										"key": "Authorization",
+										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJibG9nLXNhbiIsInN1YiI6InJvb3QiLCJleHAiOjE3MDc0NDQ5MzJ9.IbE-8OLFWRw_hxHHTkKK5vcd7v4P0GpMeFvTkHmaQOQ"
+									}
+								],
+								"url": {
+									"raw": "http://localhost:8080/blog/comments/delete/2",
+									"protocol": "http",
+									"host": [
+										"localhost"
+									],
+									"port": "8080",
+									"path": [
+										"blog",
+										"comments",
+										"delete",
+										"2"
+									]
+								}
+							},
+							"status": "No Content",
+							"code": 204,
+							"_postman_previewlanguage": "Text",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 09 Feb 2024 00:16:35 GMT"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				}
+			]
+		}
+	],
+	"auth": {
+		"type": "bearer",
+		"bearer": [
+			{
+				"key": "token",
+				"value": "",
+				"type": "string"
+			}
+		]
+	},
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseURL1",
+			"value": "http://localhost:8080",
+			"type": "any"
+		}
+	]
+}
