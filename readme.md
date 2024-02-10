@@ -64,6 +64,7 @@ To become an `ADMIN`, you need to `change your role` attribute in the database. 
 
 **POST:** `/auth/login`   
 **Content-Type: application/json**
+
 ```
 {
 	"login": "newUser",
@@ -71,15 +72,21 @@ To become an `ADMIN`, you need to `change your role` attribute in the database. 
 }
 ```
 
-**You will receive a token:**
+**Response:**
+
 ```
 {
-  "token": "seu_token_de_acesso"
+  "token": "your_access_token"
 }
 ```
-Which will be your 'free pass' to create posts and comments
 
-## Using the access token
+This access token will be your 'free pass' to create posts and comments
+
+---
+
+
+### Using the access token
+
 After receiveing the successful access token, you need to include the header for your future requests. The access token must be passed as parte of the "Authorization" title. 
 
 **Header example:**
@@ -87,6 +94,59 @@ After receiveing the successful access token, you need to include the header for
 ```
 Authorization: Bearer your_access_token
 ```
+
+---
+
+### Publication creation
+
+**POST:** `/blog/publications/create`
+
+```
+{
+  "description": "Publication content",
+  "imageLink": "link_for_image"
+}
+```
+
+**Response:**
+
+```
+{
+    "publicationId": 1,
+    "userId": 1,
+    "nameUser": "Your User Name",
+    "description": "Publication content",
+    "imageLink": "link_for_image",
+    "date": "2024-02-10 19:13"
+}
+```
+---
+
+### Comment creation
+
+**POST:** `blog/comments/create`
+
+```
+{
+	"publicationId": 1,
+	"text": "Comment example"
+}
+```
+
+**Response:**
+```
+{
+    "commentId": 1,
+    "userId": 1,
+    "text": "Comment example",
+    "date": "2024-02-10 19:10",
+    "edited": false
+}
+```
+---
+
+### These are basic examples, and you can explore other endpoints as needed. Be sure to replace the dummy values with actual data from your development environment.
+
 
 ---
 
