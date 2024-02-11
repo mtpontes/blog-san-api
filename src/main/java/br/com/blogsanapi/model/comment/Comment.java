@@ -1,15 +1,19 @@
 package br.com.blogsanapi.model.comment;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 import br.com.blogsanapi.model.publication.Publication;
 import br.com.blogsanapi.model.user.User;
+import jakarta.persistence.CascadeType;
 import jakarta.persistence.Entity;
+import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
@@ -37,10 +41,26 @@ public class Comment {
     @JoinColumn(name = "publication_id")
     private Publication publication;
     
+    @ManyToOne @JoinColumn(name = "parent_comment_id")
+    private Comment parentComment;
+    
+    @OneToMany(mappedBy = "parentComment", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<Comment> replies;
+    
+    
     public Comment(String text, User user, Publication publication) {
     	this.text = text;
     	this.user = user;
     	this.publication = publication;
+    	this.date = LocalDateTime.now();
+    	this.edited = false;
+    }
+    
+    public Comment(String text, User user, Comment comment) {
+    	this.text = text;
+    	this.user = user;
+    	this.publication = comment.getPublication();
+    	this.parentComment = comment;
     	this.date = LocalDateTime.now();
     	this.edited = false;
     }

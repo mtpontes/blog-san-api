@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.blogsanapi.model.comment.Comment;
+import br.com.blogsanapi.model.comment.request.CommentRepliRequestDTO;
 import br.com.blogsanapi.model.comment.request.CommentRequestDTO;
 import br.com.blogsanapi.model.comment.request.CommentUpdateDTO;
 import br.com.blogsanapi.model.comment.response.CommentResponseDTO;
@@ -40,7 +41,18 @@ public class CommentController {
 		
 		return ResponseEntity.created(uri).body(new CommentResponseDTO(comment));
 	}
-	
+	@PostMapping("/create/reply")
+	public ResponseEntity<CommentResponseDTO> replyComment(@RequestBody @Valid CommentRepliRequestDTO dto, UriComponentsBuilder uriBuilder) {
+		Comment comment = service.replyComment(dto);
+		
+		var uri = uriBuilder.path("/blog/comments/{id}").buildAndExpand(dto).toUri();
+		
+		return ResponseEntity.created(uri).body(new CommentResponseDTO(comment));
+	}
+	@GetMapping("/replies/{id}")
+	public ResponseEntity<Page<CommentResponseDTO>> getAllRepliesByComment(@PageableDefault(size = 5) Pageable pageable, @PathVariable Long id) {
+		return ResponseEntity.ok(service.getRepliesByComment(pageable, id));
+	}
 	@GetMapping("/by-user/{id}")
 	public ResponseEntity<Page<CommentResponseDTO>> getAllCommentsByUser(@PageableDefault(size = 10) Pageable pageable, @PathVariable Long id) {
 		return ResponseEntity.ok(service.getCommentsByUser(pageable, id).map(CommentResponseDTO::new));

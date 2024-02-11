@@ -36,8 +36,7 @@ public class PublicationService {
 	public PublicationResponseDTO createPublication(PublicationRequestDTO publication) {
 		User user = this.getUser();
 		
-		Publication publi = new Publication(
-				publication.description(), publication.imageLink(), user);
+		Publication publi = new Publication(publication.description(), publication.imageLink(), user);
 		publicationRepository.save(publi);
 		
 		return new PublicationResponseDTO(publi);
