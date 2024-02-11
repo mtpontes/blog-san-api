@@ -1,14 +1,12 @@
 ## 🖥️ About the project
 
-Blog-san is an simple platform for sharing thoughts and
-ideas through blog posts. It provides an interactive space for
-readers to engage with content and authors to showcase their
-work.
+Blog-san is a simple REST API project, with the intention of practicing, CRUD, mapping and entity relationships. There, users can create an account, publish, comment and respond.
 
 --- 
 
 ## ⚙️ Functionalities
 - ✅ User registration;
+- ✅ Authentication and authorization;
 - ✅ CRUD for publications and comments;
 - ✅ Public acces for readers, but without interactions with publications and other users;
 - ✅ Integrations between publications to comments and comments to comments;
