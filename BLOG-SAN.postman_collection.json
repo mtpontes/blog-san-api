@@ -28,7 +28,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\t\"login\": \"newUser1\",\r\n\t\"password\": \"newPassword\",\r\n\t\"name\": \"Example Name\",\r\n\t\"email\": \"example@email.com\"\r\n}"
+							"raw": "{\r\n\t\"login\": \"newUser\",\r\n\t\"password\": \"newPassword\",\r\n\t\"name\": \"Example Name\",\r\n\t\"email\": \"example@email.com\"\r\n}"
 						},
 						"url": {
 							"raw": "{{baseURL1}}/auth/register",
@@ -57,12 +57,10 @@
 									}
 								],
 								"url": {
-									"raw": "http://localhost:8080/auth/register",
-									"protocol": "http",
+									"raw": "{{baseURL1}}/auth/register",
 									"host": [
-										"localhost"
+										"{{baseURL1}}"
 									],
-									"port": "8080",
 									"path": [
 										"auth",
 										"register"
@@ -142,7 +140,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\t\"login\": \"newUser\",\r\n\t\"password\": \"newPassword\"\r\n}"
+							"raw": "{\r\n\t\"login\": \"root\",\r\n\t\"password\": \"root\"\r\n}"
 						},
 						"url": {
 							"raw": "{{baseURL1}}/auth/login",
@@ -171,12 +169,10 @@
 									}
 								],
 								"url": {
-									"raw": "http://localhost:8080/auth/login",
-									"protocol": "http",
+									"raw": "{{baseURL1}}/auth/login",
 									"host": [
-										"localhost"
+										"{{baseURL1}}"
 									],
-									"port": "8080",
 									"path": [
 										"auth",
 										"login"
@@ -286,7 +282,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\"description\": \"Publication creation example\",\r\n\"imageLink\": \"image.com\"\r\n}"
+							"raw": "{\r\n\"description\": \"New Publication Example\",\r\n\"imageLink\": \"image.com\"\r\n}"
 						},
 						"url": {
 							"raw": "{{baseURL1}}/blog/publications/create",
@@ -320,12 +316,10 @@
 									}
 								],
 								"url": {
-									"raw": "http://localhost:8080/blog/publications/create",
-									"protocol": "http",
+									"raw": "{{baseURL1}}/blog/publications/create",
 									"host": [
-										"localhost"
+										"{{baseURL1}}"
 									],
-									"port": "8080",
 									"path": [
 										"blog",
 										"publications",
@@ -401,14 +395,14 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseURL1}}/blog/publications/2",
+							"raw": "{{baseURL1}}/blog/publications/1",
 							"host": [
 								"{{baseURL1}}"
 							],
 							"path": [
 								"blog",
 								"publications",
-								"2"
+								"1"
 							]
 						}
 					},
@@ -424,12 +418,10 @@
 									}
 								],
 								"url": {
-									"raw": "http://localhost:8080/blog/publications/1",
-									"protocol": "http",
+									"raw": "{{baseURL1}}/blog/publications/1",
 									"host": [
-										"localhost"
+										"{{baseURL1}}"
 									],
-									"port": "8080",
 									"path": [
 										"blog",
 										"publications",
@@ -552,12 +544,10 @@
 									}
 								],
 								"url": {
-									"raw": "http://localhost:8080/blog/publications/update",
-									"protocol": "http",
+									"raw": "{{baseURL1}}/blog/publications/update",
 									"host": [
-										"localhost"
+										"{{baseURL1}}"
 									],
-									"port": "8080",
 									"path": [
 										"blog",
 										"publications",
@@ -668,12 +658,10 @@
 									}
 								],
 								"url": {
-									"raw": "http://localhost:8080/blog/publications/all",
-									"protocol": "http",
+									"raw": "{{baseURL1}}/blog/publications/all",
 									"host": [
-										"localhost"
+										"{{baseURL1}}"
 									],
-									"port": "8080",
 									"path": [
 										"blog",
 										"publications",
@@ -792,12 +780,10 @@
 									}
 								],
 								"url": {
-									"raw": "http://localhost:8080/blog/publications/by-date",
-									"protocol": "http",
+									"raw": "{{baseURL1}}/blog/publications/by-date",
 									"host": [
-										"localhost"
+										"{{baseURL1}}"
 									],
-									"port": "8080",
 									"path": [
 										"blog",
 										"publications",
@@ -909,12 +895,10 @@
 									}
 								],
 								"url": {
-									"raw": "http://localhost:8080/blog/publications/by-user/1",
-									"protocol": "http",
+									"raw": "{{baseURL1}}/blog/publications/by-user/1",
 									"host": [
-										"localhost"
+										"{{baseURL1}}"
 									],
-									"port": "8080",
 									"path": [
 										"blog",
 										"publications",
@@ -1024,12 +1008,10 @@
 									}
 								],
 								"url": {
-									"raw": "http://localhost:8080/blog/publications/delete/2",
-									"protocol": "http",
+									"raw": "{{baseURL1}}/blog/publications/delete/2",
 									"host": [
-										"localhost"
+										"{{baseURL1}}"
 									],
-									"port": "8080",
 									"path": [
 										"blog",
 										"publications",
@@ -1139,12 +1121,122 @@
 									}
 								],
 								"url": {
-									"raw": "http://localhost:8080/blog/comments/create",
-									"protocol": "http",
+									"raw": "{{baseURL1}}/blog/comments/create",
 									"host": [
-										"localhost"
+										"{{baseURL1}}"
 									],
-									"port": "8080",
+									"path": [
+										"blog",
+										"comments",
+										"create"
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "Text",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "0"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 09 Feb 2024 00:16:12 GMT"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
+					"name": "CREATE REPLI",
+					"request": {
+						"method": "POST",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "User-Agent",
+								"value": "insomnia/2023.5.8"
+							}
+						],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n\t\"targetCommentId\": 1,\r\n\t\"text\": \"Reply\"\r\n}"
+						},
+						"url": {
+							"raw": "{{baseURL1}}/blog/comments/create/reply",
+							"host": [
+								"{{baseURL1}}"
+							],
+							"path": [
+								"blog",
+								"comments",
+								"create",
+								"reply"
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "forbidden / 403",
+							"originalRequest": {
+								"method": "POST",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "User-Agent",
+										"value": "insomnia/2023.5.8"
+									}
+								],
+								"url": {
+									"raw": "{{baseURL1}}/blog/comments/create",
+									"host": [
+										"{{baseURL1}}"
+									],
 									"path": [
 										"blog",
 										"comments",
@@ -1260,12 +1352,10 @@
 									}
 								],
 								"url": {
-									"raw": "http://localhost:8080/blog/comments/update",
-									"protocol": "http",
+									"raw": "{{baseURL1}}/blog/comments/update",
 									"host": [
-										"localhost"
+										"{{baseURL1}}"
 									],
-									"port": "8080",
 									"path": [
 										"blog",
 										"comments",
@@ -1379,12 +1469,10 @@
 									}
 								],
 								"url": {
-									"raw": "http://localhost:8080/blog/comments/by-user/1",
-									"protocol": "http",
+									"raw": "{{baseURL1}}/blog/comments/by-user/1",
 									"host": [
-										"localhost"
+										"{{baseURL1}}"
 									],
-									"port": "8080",
 									"path": [
 										"blog",
 										"comments",
@@ -1499,12 +1587,10 @@
 									}
 								],
 								"url": {
-									"raw": "http://localhost:8080/blog/comments/by-publication/1",
-									"protocol": "http",
+									"raw": "{{baseURL1}}/blog/comments/by-publication/1",
 									"host": [
-										"localhost"
+										"{{baseURL1}}"
 									],
-									"port": "8080",
 									"path": [
 										"blog",
 										"comments",
@@ -1572,6 +1658,124 @@
 					]
 				},
 				{
+					"name": "REPLIES BY COMMENT",
+					"request": {
+						"auth": {
+							"type": "noauth"
+						},
+						"method": "GET",
+						"header": [
+							{
+								"key": "Content-Type",
+								"value": "application/json"
+							},
+							{
+								"key": "User-Agent",
+								"value": "insomnia/2023.5.8"
+							}
+						],
+						"url": {
+							"raw": "{{baseURL1}}/blog/comments/replies/1?page=0",
+							"host": [
+								"{{baseURL1}}"
+							],
+							"path": [
+								"blog",
+								"comments",
+								"replies",
+								"1"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "0"
+								}
+							]
+						}
+					},
+					"response": [
+						{
+							"name": "forbidden / 403",
+							"originalRequest": {
+								"method": "GET",
+								"header": [
+									{
+										"key": "Content-Type",
+										"value": "application/json"
+									},
+									{
+										"key": "User-Agent",
+										"value": "insomnia/2023.5.8"
+									}
+								],
+								"url": {
+									"raw": "{{baseURL1}}/blog/comments/by-user/1",
+									"host": [
+										"{{baseURL1}}"
+									],
+									"path": [
+										"blog",
+										"comments",
+										"by-user",
+										"1"
+									]
+								}
+							},
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "Text",
+							"header": [
+								{
+									"key": "Vary",
+									"value": "Origin"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Method"
+								},
+								{
+									"key": "Vary",
+									"value": "Access-Control-Request-Headers"
+								},
+								{
+									"key": "X-Content-Type-Options",
+									"value": "nosniff"
+								},
+								{
+									"key": "X-XSS-Protection",
+									"value": "0"
+								},
+								{
+									"key": "Cache-Control",
+									"value": "no-cache, no-store, max-age=0, must-revalidate"
+								},
+								{
+									"key": "Pragma",
+									"value": "no-cache"
+								},
+								{
+									"key": "Expires",
+									"value": "0"
+								},
+								{
+									"key": "X-Frame-Options",
+									"value": "DENY"
+								},
+								{
+									"key": "Content-Length",
+									"value": "0"
+								},
+								{
+									"key": "Date",
+									"value": "Fri, 09 Feb 2024 00:09:35 GMT"
+								}
+							],
+							"cookie": [],
+							"body": ""
+						}
+					]
+				},
+				{
 					"name": "DELETE COMMENT",
 					"request": {
 						"method": "DELETE",
@@ -1622,12 +1826,10 @@
 									}
 								],
 								"url": {
-									"raw": "http://localhost:8080/blog/comments/delete/2",
-									"protocol": "http",
+									"raw": "{{baseURL1}}/blog/comments/delete/2",
 									"host": [
-										"localhost"
+										"{{baseURL1}}"
 									],
-									"port": "8080",
 									"path": [
 										"blog",
 										"comments",
@@ -1694,7 +1896,7 @@
 		"bearer": [
 			{
 				"key": "token",
-				"value": "",
+				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJibG9nLXNhbiIsInN1YiI6InJvb3QiLCJleHAiOjE3MDc2NzQyODV9.lt22mDQ6sqTKJbHd1utm_j4-DfIlzHA9dRhyUlUaOt0",
 				"type": "string"
 			}
 		]
