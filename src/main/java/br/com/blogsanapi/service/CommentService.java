@@ -25,14 +25,15 @@ public class CommentService {
 	
 	@Autowired
 	private CommentRepository commentRepository;
-	@Autowired
-	private PublicationRepository publicationRepository;
-	
+
 	
 	public CommentResponseDTO createComment(CommentRequestDTO dto) {
 		User user = this.getUser();
-		Publication publi = publicationRepository.getReferenceById(dto.publicationId());
-		Comment comment = new Comment(dto.text(), user, publi);
+		
+		Publication publication = new Publication();
+		publication.setId(dto.publicationId());
+		
+		Comment comment = new Comment(dto.text(), user, publication);
 		commentRepository.save(comment);
 		
 		return new CommentResponseDTO(comment);
