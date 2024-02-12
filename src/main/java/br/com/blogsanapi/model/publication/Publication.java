@@ -47,6 +47,7 @@ public class Publication {
     	this.imageLink = imageLink;
     	this.user = user;
     	this.date = LocalDateTime.now();
+    	this.edited = false;
     }
 
 
