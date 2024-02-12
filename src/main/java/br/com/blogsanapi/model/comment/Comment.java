@@ -56,11 +56,10 @@ public class Comment {
     	this.edited = false;
     }
     
-    public Comment(String text, User user, Comment comment) {
+    public Comment(String text, User user, Comment parentComment) {
     	this.text = text;
     	this.user = user;
-    	this.publication = comment.getPublication();
-    	this.parentComment = comment;
+    	this.parentComment = parentComment;
     	this.date = LocalDateTime.now();
     	this.edited = false;
     }

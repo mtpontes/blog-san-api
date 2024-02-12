@@ -59,7 +59,7 @@ public class CommentService {
 		return commentRepository.findAllByUserId(pageable, id);
 	}
 	public Page<Comment> getCommentsByPublicationId(Pageable pageable, Long id) {
-		return commentRepository.findByPublicationId(pageable, id);
+		return commentRepository.findAllByPublicationId(pageable, id);
 	}
 	
 	public Comment updateComment(CommentUpdateDTO dto) {
@@ -68,7 +68,6 @@ public class CommentService {
 		
 		comment.updateText(dto.text());
 		commentRepository.flush();
-		
 		return comment;
 	}
 	
