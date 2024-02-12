@@ -15,7 +15,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import br.com.blogsanapi.model.comment.Comment;
 import br.com.blogsanapi.model.comment.request.CommentRepliRequestDTO;
 import br.com.blogsanapi.model.comment.request.CommentRequestDTO;
 import br.com.blogsanapi.model.comment.request.CommentUpdateDTO;
@@ -35,19 +34,19 @@ public class CommentController {
 
 	@PostMapping("/create")
 	public ResponseEntity<CommentResponseDTO> createComment(@RequestBody @Valid CommentRequestDTO dto, UriComponentsBuilder uriBuilder) {
-		Comment comment = service.createComment(dto);
+		CommentResponseDTO commentResponse = service.createComment(dto);
 		
 		var uri = uriBuilder.path("/blog/comments/{id}").buildAndExpand(dto).toUri();
 		
-		return ResponseEntity.created(uri).body(new CommentResponseDTO(comment));
+		return ResponseEntity.created(uri).body(commentResponse);
 	}
 	@PostMapping("/create/reply")
 	public ResponseEntity<CommentResponseDTO> replyComment(@RequestBody @Valid CommentRepliRequestDTO dto, UriComponentsBuilder uriBuilder) {
-		Comment comment = service.replyComment(dto);
+		CommentResponseDTO commentResponse = service.replyComment(dto);
 		
 		var uri = uriBuilder.path("/blog/comments/{id}").buildAndExpand(dto).toUri();
 		
-		return ResponseEntity.created(uri).body(new CommentResponseDTO(comment));
+		return ResponseEntity.created(uri).body(commentResponse);
 	}
 	@GetMapping("/replies/{id}")
 	public ResponseEntity<Page<CommentResponseDTO>> getAllRepliesByComment(@PageableDefault(size = 5) Pageable pageable, @PathVariable Long id) {
@@ -64,8 +63,8 @@ public class CommentController {
 	
 	@PutMapping("/update")
 	public ResponseEntity<CommentResponseDTO> updateComment(@RequestBody @Valid CommentUpdateDTO dto) {
-		Comment comment = service.updateComment(dto);
-		return ResponseEntity.ok(new CommentResponseDTO(comment));
+		CommentResponseDTO commentResponse = service.updateComment(dto);
+		return ResponseEntity.ok(commentResponse);
 	}
 	
 	@DeleteMapping("/delete/{id}")

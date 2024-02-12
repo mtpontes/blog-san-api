@@ -29,15 +29,15 @@ public class CommentService {
 	private PublicationRepository publicationRepository;
 	
 	
-	public Comment createComment(CommentRequestDTO dto) {
+	public CommentResponseDTO createComment(CommentRequestDTO dto) {
 		User user = this.getUser();
 		Publication publi = publicationRepository.getReferenceById(dto.publicationId());
 		Comment comment = new Comment(dto.text(), user, publi);
 		commentRepository.save(comment);
 		
-		return comment;
+		return new CommentResponseDTO(comment);
 	}
-	public Comment replyComment(CommentRepliRequestDTO dto) {
+	public CommentResponseDTO replyComment(CommentRepliRequestDTO dto) {
 		User user = this.getUser();
 		Comment commentPrincipal = commentRepository.getReferenceById(dto.targetCommentId());
 		
@@ -49,7 +49,7 @@ public class CommentService {
 		}
 		commentRepository.save(comment);
 		
-		return comment;
+		return new CommentResponseDTO(comment);
 	}
 	public Page<CommentResponseDTO> getRepliesByComment(Pageable pageable, Long id) {
 		return commentRepository.findAllReplies(pageable, id).map(CommentResponseDTO::new);
@@ -62,13 +62,14 @@ public class CommentService {
 		return commentRepository.findAllByPublicationId(pageable, id);
 	}
 	
-	public Comment updateComment(CommentUpdateDTO dto) {
+	public CommentResponseDTO updateComment(CommentUpdateDTO dto) {
 		Comment comment = commentRepository.getReferenceById(dto.id());
 		this.accesVerify(comment);
 		
 		comment.updateText(dto.text());
 		commentRepository.flush();
-		return comment;
+		
+		return new CommentResponseDTO(comment);
 	}
 	
 	public void deleteComment(Long id) {
