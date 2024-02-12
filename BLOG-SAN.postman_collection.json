@@ -28,7 +28,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\t\"login\": \"newUser\",\r\n\t\"password\": \"newPassword\",\r\n\t\"name\": \"Example Name\",\r\n\t\"email\": \"example@email.com\"\r\n}"
+							"raw": "{\r\n\t\"login\": \"newUser\",\r\n\t\"password\": \"newUser\",\r\n\t\"name\": \"Example Name\",\r\n\t\"email\": \"example@email.com\"\r\n}"
 						},
 						"url": {
 							"raw": "{{baseURL1}}/auth/register",
@@ -140,7 +140,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\t\"login\": \"root\",\r\n\t\"password\": \"root\"\r\n}"
+							"raw": "{\r\n\t\"login\": \"newUser\",\r\n\t\"password\": \"newUser\"\r\n}"
 						},
 						"url": {
 							"raw": "{{baseURL1}}/auth/login",
@@ -510,7 +510,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\t\"id\": 2,\r\n\t\"description\": \"Publication edition example\"\r\n}"
+							"raw": "{\r\n\t\"id\": 1,\r\n\t\"description\": \"Publication edition example\"\r\n}"
 						},
 						"url": {
 							"raw": "{{baseURL1}}/blog/publications/update",
@@ -631,7 +631,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseURL1}}/blog/publications/all",
+							"raw": "{{baseURL1}}/blog/publications/all?page=?size=",
 							"host": [
 								"{{baseURL1}}"
 							],
@@ -639,6 +639,12 @@
 								"blog",
 								"publications",
 								"all"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "?size="
+								}
 							]
 						}
 					},
@@ -867,7 +873,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseURL1}}/blog/publications/by-user/1",
+							"raw": "{{baseURL1}}/blog/publications/by-user/1?page=?size=",
 							"host": [
 								"{{baseURL1}}"
 							],
@@ -876,6 +882,12 @@
 								"publications",
 								"by-user",
 								"1"
+							],
+							"query": [
+								{
+									"key": "page",
+									"value": "?size="
+								}
 							]
 						}
 					},
@@ -1091,7 +1103,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\t\"publicationId\": 1,\r\n\t\"text\": \"Comment example\"\r\n}"
+							"raw": "{\r\n\t\"publicationId\": 1,\r\n\t\"text\": \"Creating a comment\"\r\n}"
 						},
 						"url": {
 							"raw": "{{baseURL1}}/blog/comments/create",
@@ -1202,7 +1214,7 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\t\"targetCommentId\": 1,\r\n\t\"text\": \"Reply\"\r\n}"
+							"raw": "{\r\n\t\"targetCommentId\": 1,\r\n    \"publicationId\": 1,\r\n\t\"text\": \"Replying\"\r\n}"
 						},
 						"url": {
 							"raw": "{{baseURL1}}/blog/comments/create/reply",
@@ -1318,17 +1330,18 @@
 						],
 						"body": {
 							"mode": "raw",
-							"raw": "{\r\n\t\"id\": 1,\r\n\t\"text\": \"Comment edited example\"\r\n}"
+							"raw": "{\r\n    \"id\": 1,\r\n\t\"text\": \"Comment edited example\"\r\n}"
 						},
 						"url": {
-							"raw": "{{baseURL1}}/blog/comments/update",
+							"raw": "{{baseURL1}}/blog/comments/update/2",
 							"host": [
 								"{{baseURL1}}"
 							],
 							"path": [
 								"blog",
 								"comments",
-								"update"
+								"update",
+								"2"
 							]
 						}
 					},
@@ -1435,7 +1448,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseURL1}}/blog/comments/by-user/1?page=0",
+							"raw": "{{baseURL1}}/blog/comments/by-user/1?page=?size=",
 							"host": [
 								"{{baseURL1}}"
 							],
@@ -1448,7 +1461,7 @@
 							"query": [
 								{
 									"key": "page",
-									"value": "0"
+									"value": "?size="
 								}
 							]
 						}
@@ -1544,16 +1557,16 @@
 						"method": "GET",
 						"header": [
 							{
-								"key": "User-Agent",
-								"value": "insomnia/2023.5.8"
+								"key": "Content-Type",
+								"value": "application/json"
 							},
 							{
-								"key": "Authorization",
-								"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJibG9nLXNhbiIsInN1YiI6InJvb3QiLCJleHAiOjE3MDc0MzY5ODd9.etVHmS-4rIk4z1b6KyDEkAXmgXKagD38ioWhLDN__zU"
+								"key": "User-Agent",
+								"value": "insomnia/2023.5.8"
 							}
 						],
 						"url": {
-							"raw": "{{baseURL1}}/blog/comments/by-publication/1?page=0",
+							"raw": "{{baseURL1}}/blog/comments/by-publication/1?page=?size=",
 							"host": [
 								"{{baseURL1}}"
 							],
@@ -1566,42 +1579,42 @@
 							"query": [
 								{
 									"key": "page",
-									"value": "0"
+									"value": "?size="
 								}
 							]
 						}
 					},
 					"response": [
 						{
-							"name": "successfully / 200",
+							"name": "forbidden / 403",
 							"originalRequest": {
 								"method": "GET",
 								"header": [
 									{
-										"key": "User-Agent",
-										"value": "insomnia/2023.5.8"
+										"key": "Content-Type",
+										"value": "application/json"
 									},
 									{
-										"key": "Authorization",
-										"value": "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJibG9nLXNhbiIsInN1YiI6InJvb3QiLCJleHAiOjE3MDc0MzY5ODd9.etVHmS-4rIk4z1b6KyDEkAXmgXKagD38ioWhLDN__zU"
+										"key": "User-Agent",
+										"value": "insomnia/2023.5.8"
 									}
 								],
 								"url": {
-									"raw": "{{baseURL1}}/blog/comments/by-publication/1",
+									"raw": "{{baseURL1}}/blog/comments/by-user/1",
 									"host": [
 										"{{baseURL1}}"
 									],
 									"path": [
 										"blog",
 										"comments",
-										"by-publication",
+										"by-user",
 										"1"
 									]
 								}
 							},
-							"status": "OK",
-							"code": 200,
-							"_postman_previewlanguage": "json",
+							"status": "Forbidden",
+							"code": 403,
+							"_postman_previewlanguage": "Text",
 							"header": [
 								{
 									"key": "Vary",
@@ -1640,20 +1653,16 @@
 									"value": "DENY"
 								},
 								{
-									"key": "Content-Type",
-									"value": "application/json"
-								},
-								{
-									"key": "Transfer-Encoding",
-									"value": "chunked"
+									"key": "Content-Length",
+									"value": "0"
 								},
 								{
 									"key": "Date",
-									"value": "Thu, 08 Feb 2024 22:06:09 GMT"
+									"value": "Fri, 09 Feb 2024 00:09:35 GMT"
 								}
 							],
 							"cookie": [],
-							"body": "{\n \"content\": [\n  {\n   \"commentId\": 2,\n   \"userId\": 1,\n   \"text\": \"Foi editado\",\n   \"date\": \"2024-02-08 19:06\",\n   \"edited\": true\n  }\n ],\n \"pageable\": {\n  \"pageNumber\": 0,\n  \"pageSize\": 10,\n  \"sort\": {\n   \"empty\": true,\n   \"sorted\": false,\n   \"unsorted\": true\n  },\n  \"offset\": 0,\n  \"paged\": true,\n  \"unpaged\": false\n },\n \"last\": true,\n \"totalElements\": 1,\n \"totalPages\": 1,\n \"size\": 10,\n \"number\": 0,\n \"sort\": {\n  \"empty\": true,\n  \"sorted\": false,\n  \"unsorted\": true\n },\n \"first\": true,\n \"numberOfElements\": 1,\n \"empty\": false\n}"
+							"body": ""
 						}
 					]
 				},
@@ -1675,7 +1684,7 @@
 							}
 						],
 						"url": {
-							"raw": "{{baseURL1}}/blog/comments/replies/1?page=0",
+							"raw": "{{baseURL1}}/blog/comments/replies/1?page=?size=",
 							"host": [
 								"{{baseURL1}}"
 							],
@@ -1688,7 +1697,7 @@
 							"query": [
 								{
 									"key": "page",
-									"value": "0"
+									"value": "?size="
 								}
 							]
 						}
@@ -1896,7 +1905,7 @@
 		"bearer": [
 			{
 				"key": "token",
-				"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJibG9nLXNhbiIsInN1YiI6InJvb3QiLCJleHAiOjE3MDc2NzQyODV9.lt22mDQ6sqTKJbHd1utm_j4-DfIlzHA9dRhyUlUaOt0",
+				"value": "",
 				"type": "string"
 			}
 		]
