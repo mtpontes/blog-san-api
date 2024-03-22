@@ -17,11 +17,10 @@ import br.com.blogsanapi.model.comment.response.CommentResponseDTO;
 import br.com.blogsanapi.model.publication.Publication;
 import br.com.blogsanapi.model.user.User;
 import br.com.blogsanapi.repository.CommentRepository;
-import br.com.blogsanapi.repository.PublicationRepository;
 
 @Service
 public class CommentService {
-	private static Logger logger = LoggerFactory.getLogger(PublicationService.class);
+	private static Logger logger = LoggerFactory.getLogger(CommentService.class);
 	
 	@Autowired
 	private CommentRepository commentRepository;
@@ -38,6 +37,7 @@ public class CommentService {
 		
 		return new CommentResponseDTO(comment);
 	}
+	
 	public CommentResponseDTO replyComment(CommentRepliRequestDTO dto) {
 		User user = this.getUser();
 		Comment commentPrincipal = commentRepository.getReferenceById(dto.targetCommentId());
@@ -52,19 +52,19 @@ public class CommentService {
 		
 		return new CommentResponseDTO(comment);
 	}
+	
 	public Page<CommentResponseDTO> getRepliesByComment(Pageable pageable, Long id) {
 		return commentRepository.findAllReplies(pageable, id).map(CommentResponseDTO::new);
 	}
-	
-	public Page<Comment> getCommentsByUser(Pageable pageable, Long id) {
-		return commentRepository.findAllByUserId(pageable, id);
+	public Page<CommentResponseDTO> getCommentsByUser(Pageable pageable, Long id) {
+		return commentRepository.findAllByUserId(pageable, id).map(CommentResponseDTO::new);
 	}
-	public Page<Comment> getCommentsByPublicationId(Pageable pageable, Long id) {
-		return commentRepository.findAllByPublicationId(pageable, id);
+	public Page<CommentResponseDTO> getCommentsByPublicationId(Pageable pageable, Long id) {
+		return commentRepository.findAllByPublicationId(pageable, id).map(CommentResponseDTO::new);
 	}
 	
-	public CommentResponseDTO updateComment(CommentUpdateDTO dto) {
-		Comment comment = commentRepository.getReferenceById(dto.id());
+	public CommentResponseDTO updateComment(CommentUpdateDTO dto, Long id) {
+		Comment comment = commentRepository.getReferenceById(id);
 		this.accesVerify(comment);
 		
 		comment.updateText(dto.text());
@@ -78,6 +78,7 @@ public class CommentService {
 		commentRepository.deleteByUserIdAndId(user.getId(), id);
 	}
 	
+	
 	private User getUser() {
 		return (User) SecurityContextHolder
 				.getContext()
@@ -87,8 +88,8 @@ public class CommentService {
 	private void accesVerify(Comment comment) throws AccessDeniedException {
 		User userByToken = this.getUser();
 		User userByComment = comment.getUser();
+		
 		if (userByToken == null || !userByComment.getId().equals(userByToken.getId())) 
 			throw new AccessDeniedException("User do not have permission for access this resource");
 	}
-
 }
