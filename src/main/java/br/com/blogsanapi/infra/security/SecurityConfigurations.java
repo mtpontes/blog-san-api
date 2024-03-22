@@ -26,11 +26,11 @@ public class SecurityConfigurations {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
-                		.requestMatchers(HttpMethod.POST, "/auth/admin/register").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.POST, "/auth/login", "/auth/register").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/blog/publications/create").hasRole("ADMIN")
                         .requestMatchers(HttpMethod.GET, "/blog/publications/**", "/blog/comments/**").permitAll()
 						.requestMatchers("/v3/api-docs/**", "/swagger-ui.html/**", "/swagger-ui/**").permitAll()
+						.requestMatchers(HttpMethod.POST, "/auth/admin/register").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.POST, "/blog/publications/create").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
