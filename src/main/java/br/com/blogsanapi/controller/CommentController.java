@@ -48,22 +48,23 @@ public class CommentController {
 		
 		return ResponseEntity.created(uri).body(commentResponse);
 	}
+	
 	@GetMapping("/replies/{id}")
 	public ResponseEntity<Page<CommentResponseDTO>> getAllRepliesByComment(@PageableDefault(size = 5) Pageable pageable, @PathVariable Long id) {
 		return ResponseEntity.ok(service.getRepliesByComment(pageable, id));
 	}
 	@GetMapping("/by-user/{id}")
 	public ResponseEntity<Page<CommentResponseDTO>> getAllCommentsByUser(@PageableDefault(size = 10) Pageable pageable, @PathVariable Long id) {
-		return ResponseEntity.ok(service.getCommentsByUser(pageable, id).map(CommentResponseDTO::new));
+		return ResponseEntity.ok(service.getCommentsByUser(pageable, id));
 	}
 	@GetMapping("/by-publication/{id}")
 	public ResponseEntity<Page<CommentResponseDTO>> getCommentsByPublication(@PageableDefault(size = 10) Pageable pageable, @PathVariable Long id) {
-		return ResponseEntity.ok(service.getCommentsByPublicationId(pageable, id).map(CommentResponseDTO::new));
+		return ResponseEntity.ok(service.getCommentsByPublicationId(pageable, id));
 	}
 	
-	@PutMapping("/update")
-	public ResponseEntity<CommentResponseDTO> updateComment(@RequestBody @Valid CommentUpdateDTO dto) {
-		CommentResponseDTO commentResponse = service.updateComment(dto);
+	@PutMapping("/update/{id}")
+	public ResponseEntity<CommentResponseDTO> updateComment(@RequestBody @Valid CommentUpdateDTO dto, @PathVariable Long id) {
+		CommentResponseDTO commentResponse = service.updateComment(dto, id);
 		return ResponseEntity.ok(commentResponse);
 	}
 	
