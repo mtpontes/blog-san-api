@@ -1,7 +1,6 @@
 package br.com.blogsanapi.infra.exception;
 
 import org.springframework.dao.DataIntegrityViolationException;
-import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -51,11 +50,7 @@ public class ErrorHandler {
     @ExceptionHandler(Exception.class)
     public ResponseEntity handleError500(Exception ex) {
     	var seila = ex.getLocalizedMessage();
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + ex.getLocalizedMessage());
-    }
-    @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity handleError500(DataIntegrityViolationException ex) {
-    	return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error: " + ex.getRootCause().getMessage());
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal server error");
     }
     
     private record DataValidationErrorDTO(String field, String message) {
