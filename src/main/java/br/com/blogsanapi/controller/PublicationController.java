@@ -67,10 +67,14 @@ public class PublicationController {
 		return ResponseEntity.ok(publicationService.getAllPublications(pageable, date, userId));
 	}
 	
-	@PutMapping("/update")
+	@PutMapping("/{publicationId}")
 	@Transactional
-	protected ResponseEntity<PublicationResponseDTO> updatePublication(@RequestBody @Valid PublicationUpdateRequestDTO dto) {
-		return ResponseEntity.ok(publicationService.updatePublication(dto));
+	protected ResponseEntity<PublicationResponseDTO> updatePublication(
+			@PathVariable Long publicationId, 
+			@RequestBody @Valid PublicationUpdateRequestDTO dto
+			) {
+		
+		return ResponseEntity.ok(publicationService.updatePublication(publicationId, dto));
 	}
 	
 	@DeleteMapping("/delete/{id}")

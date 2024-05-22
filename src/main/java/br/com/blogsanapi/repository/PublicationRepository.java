@@ -1,6 +1,7 @@
 package br.com.blogsanapi.repository;
 
 import java.time.LocalDate;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -23,4 +24,6 @@ public interface PublicationRepository extends JpaRepository<Publication, Long>{
 	void deleteByUserIdAndId(Long userId, Long publiId);
 
 	Page<Publication> findAllByUserId(Pageable pageable, Long id);
+
+	Optional<Publication> findByIdAndUserId(Long publicationId, Long id);
 }

@@ -21,6 +21,7 @@ import br.com.blogsanapi.model.publication.response.PublicationResponseWithComme
 import br.com.blogsanapi.model.user.User;
 import br.com.blogsanapi.repository.CommentRepository;
 import br.com.blogsanapi.repository.PublicationRepository;
+import jakarta.persistence.EntityNotFoundException;
 import jakarta.persistence.NoResultException;
 
 @Service
@@ -66,27 +67,13 @@ public class PublicationService {
 		return publicationRepository.findAllByParams(pageable, date, userId)
 				.map(PublicationResponseDTO::new);
 	}
-	public Page<PublicationResponseDTO> getAllPublicationsByDate(Pageable pageable, LocalDate date) {
-		return publicationRepository.findAllByDate(pageable, date).map(PublicationResponseDTO::new);
-	}
 	public Page<PublicationResponseDTO> getAllPublicationsByUser(Pageable pageable, Long id) {
 		return publicationRepository.findAllByUserId(pageable, id).map(PublicationResponseDTO::new);
 	}
 	
-	/**
-	 * Updates the publication with the data provided
-	 * 
-	 * @param dto DTO with data for update
-	 * @throws IllegalArgumentException If both atributes `description` and `imageLink` are null
-	 */
-	public PublicationResponseDTO updatePublication(PublicationUpdateRequestDTO dto) {
-		Publication publi = publicationRepository.getReferenceById(dto.id());
-		User user = this.getUser();
-		this.accesVerify(publi);
-		
-		if (dto.description() == null && publi.getImageLink() == null) {
-			throw new IllegalArgumentException("Both description and imgeLink cannot be null");
-		}
+	public PublicationResponseDTO updatePublication(Long publicationId, PublicationUpdateRequestDTO dto) {
+		Publication publi = publicationRepository.findByIdAndUserId(publicationId, this.getUser().getId())
+				.orElseThrow(EntityNotFoundException::new);
 		
 		publi.updateDescription(dto.description());
 		publicationRepository.save(publi);
