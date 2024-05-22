@@ -77,7 +77,7 @@ public class PublicationController {
 		return ResponseEntity.ok(publicationService.updatePublication(publicationId, dto));
 	}
 	
-	@DeleteMapping("/delete/{id}")
+	@DeleteMapping("/{id}")
 	@Transactional
 	protected ResponseEntity<?> deletePublication(@PathVariable Long id) {
 		publicationService.deletePublication(id);
