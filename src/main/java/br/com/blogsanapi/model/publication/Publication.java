@@ -28,6 +28,7 @@ import lombok.Setter;
 @AllArgsConstructor
 @EqualsAndHashCode(of = "id")
 public class Publication {
+	
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Setter
     private Long id;
     
@@ -38,11 +39,15 @@ public class Publication {
     
     @ManyToOne @JoinColumn(name = "user_id")
     private User user;
+    
     @OneToMany(mappedBy = "publication", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Comment> comments;
     
     
     public Publication(String description, String imageLink, User user) {
+    	if ( (description == null || description.isBlank()) && (imageLink == null || imageLink.isBlank()) )
+    		throw new IllegalArgumentException("Description and imageLink cannot be null simultaneously");
+    	
     	this.description = description;
     	this.imageLink = imageLink;
     	this.user = user;
@@ -50,8 +55,12 @@ public class Publication {
     	this.edited = false;
     }
 
-
 	public void updateDescription(String description) {
+		if (this.imageLink == null || this.imageLink.isBlank()) {
+			if (description == null || description.isBlank()) 
+				throw new IllegalArgumentException("Can't add an empty comment to a post without an image");
+		}
+		
 		this.description = description;
 		this.date = LocalDateTime.now();
 		this.edited = true;
