@@ -18,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import br.com.blogsanapi.model.comment.request.CommentRepliRequestDTO;
 import br.com.blogsanapi.model.comment.request.CommentRequestDTO;
 import br.com.blogsanapi.model.comment.request.CommentUpdateDTO;
 import br.com.blogsanapi.model.comment.response.CommentResponseDTO;
@@ -49,7 +48,6 @@ public class PublicationController {
 		PublicationResponseDTO dtoResponse = publicationService.createPublication(dto);
 		
 		var uri = uriBuilder.path("/blog/publications/{id}").buildAndExpand(dto).toUri();
-		
 		return ResponseEntity.created(uri).body(dtoResponse);
 	}
 	
