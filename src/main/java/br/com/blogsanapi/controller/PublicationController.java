@@ -98,11 +98,16 @@ public class PublicationController {
 		
 		return ResponseEntity.created(uri).body(commentResponse);
 	}
-	@PostMapping("/comments/create/reply")
-	public ResponseEntity<CommentResponseDTO> replyComment(@RequestBody @Valid CommentRepliRequestDTO dto, UriComponentsBuilder uriBuilder) {
-		CommentResponseDTO commentResponse = commentService.replyComment(dto);
+	@PostMapping("/comments/{targetCommentId}")
+	public ResponseEntity<CommentResponseDTO> createReply(
+			@PathVariable Long targetCommentId,
+			@RequestBody @Valid CommentRequestDTO dto, 
+			UriComponentsBuilder uriBuilder
+			) {
 		
-		var uri = uriBuilder.path("/blog/comments/{id}").buildAndExpand(dto).toUri();
+		CommentResponseDTO commentResponse = commentService.replyComment(targetCommentId, dto);
+		
+		var uri = uriBuilder.path("/publications/comments/{id}").buildAndExpand(dto).toUri();
 		
 		return ResponseEntity.created(uri).body(commentResponse);
 	}

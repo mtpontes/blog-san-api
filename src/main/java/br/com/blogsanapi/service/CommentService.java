@@ -10,7 +10,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import br.com.blogsanapi.model.comment.Comment;
-import br.com.blogsanapi.model.comment.request.CommentRepliRequestDTO;
 import br.com.blogsanapi.model.comment.request.CommentRequestDTO;
 import br.com.blogsanapi.model.comment.request.CommentUpdateDTO;
 import br.com.blogsanapi.model.comment.response.CommentResponseDTO;
@@ -38,9 +37,9 @@ public class CommentService {
 		return new CommentResponseDTO(comment);
 	}
 	
-	public CommentResponseDTO replyComment(CommentRepliRequestDTO dto) {
+	public CommentResponseDTO replyComment(Long targetCommentId, CommentRequestDTO dto) {
 		User user = this.getUser();
-		Comment commentPrincipal = commentRepository.getReferenceById(dto.targetCommentId());
+		Comment commentPrincipal = commentRepository.getReferenceById(targetCommentId);
 		
 		Comment comment;
 		if (commentPrincipal.getParentComment() == null) {
