@@ -62,8 +62,9 @@ public class PublicationService {
 		);
 	}
 
-	public Page<PublicationResponseDTO> getAllPublications(Pageable pageable) {
-		return publicationRepository.findAll(pageable).map(PublicationResponseDTO::new);
+	public Page<PublicationResponseDTO> getAllPublications(Pageable pageable, LocalDate date, Long userId) {
+		return publicationRepository.findAllByParams(pageable, date, userId)
+				.map(PublicationResponseDTO::new);
 	}
 	public Page<PublicationResponseDTO> getAllPublicationsByDate(Pageable pageable, LocalDate date) {
 		return publicationRepository.findAllByDate(pageable, date).map(PublicationResponseDTO::new);

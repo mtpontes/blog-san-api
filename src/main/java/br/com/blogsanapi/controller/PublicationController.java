@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
@@ -57,8 +58,13 @@ public class PublicationController {
 		return ResponseEntity.ok(publicationService.getAPublicationWhithComments(pageable, id));
 	}
 	@GetMapping
-	protected ResponseEntity<Page<PublicationResponseDTO>> getPublicationsByDate(@PageableDefault(size = 10) Pageable pageable) {
-		return ResponseEntity.ok(publicationService.getAllPublications(pageable));
+	protected ResponseEntity<Page<PublicationResponseDTO>> getPublicationsByParams(
+			@PageableDefault(size = 10) Pageable pageable,
+			@RequestParam(name = "date", required = false) LocalDate date,
+			@RequestParam(name = "userId", required = false) Long userId
+			) {
+		
+		return ResponseEntity.ok(publicationService.getAllPublications(pageable, date, userId));
 	}
 	@GetMapping("/by-date/{date}")
 	protected ResponseEntity<Page<PublicationResponseDTO>> getPublicationsByDate(@PageableDefault(size = 10) Pageable pageable, @PathVariable @Valid LocalDate date) {
