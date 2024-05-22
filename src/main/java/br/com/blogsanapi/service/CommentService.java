@@ -26,11 +26,11 @@ public class CommentService {
 	private CommentRepository commentRepository;
 
 	
-	public CommentResponseDTO createComment(CommentRequestDTO dto) {
+	public CommentResponseDTO createComment(Long publicationId, CommentRequestDTO dto) {
 		User user = this.getUser();
 		
 		Publication publication = new Publication();
-		publication.setId(dto.publicationId());
+		publication.setId(publicationId);
 		
 		Comment comment = new Comment(dto.text(), user, publication);
 		commentRepository.save(comment);
