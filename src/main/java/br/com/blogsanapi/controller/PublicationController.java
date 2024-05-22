@@ -42,7 +42,7 @@ public class PublicationController {
 	private CommentService commentService;
 	
 	
-	@PostMapping("/create")
+	@PostMapping
 	@Transactional
 	protected ResponseEntity<PublicationResponseDTO> createPublication(@RequestBody @Valid PublicationRequestDTO dto, UriComponentsBuilder uriBuilder){
 		PublicationResponseDTO dtoResponse = publicationService.createPublication(dto);
