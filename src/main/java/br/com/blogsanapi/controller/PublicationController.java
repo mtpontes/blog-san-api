@@ -32,7 +32,7 @@ import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
 @RestController
-@RequestMapping("/blog")
+@RequestMapping("/publications")
 @SecurityRequirement(name = "bearer-key")
 public class PublicationController {
 	
@@ -42,7 +42,7 @@ public class PublicationController {
 	private CommentService commentService;
 	
 	
-	@PostMapping("/publications/create")
+	@PostMapping("/create")
 	@Transactional
 	protected ResponseEntity<PublicationResponseDTO> createPublication(@RequestBody @Valid PublicationRequestDTO dto, UriComponentsBuilder uriBuilder){
 		PublicationResponseDTO dtoResponse = publicationService.createPublication(dto);
@@ -52,30 +52,30 @@ public class PublicationController {
 		return ResponseEntity.created(uri).body(dtoResponse);
 	}
 	
-	@GetMapping("/publications/{id}")
+	@GetMapping("/{id}")
 	protected ResponseEntity<PublicationResponseWithCommentsDTO> getPublication(@PageableDefault(size = 5) Pageable pageable, @PathVariable Long id) {
 		return ResponseEntity.ok(publicationService.getAPublicationWhithComments(pageable, id));
 	}
-	@GetMapping("/publications")
+	@GetMapping
 	protected ResponseEntity<Page<PublicationResponseDTO>> getPublicationsByDate(@PageableDefault(size = 10) Pageable pageable) {
 		return ResponseEntity.ok(publicationService.getAllPublications(pageable));
 	}
-	@GetMapping("/publications/by-date/{date}")
+	@GetMapping("/by-date/{date}")
 	protected ResponseEntity<Page<PublicationResponseDTO>> getPublicationsByDate(@PageableDefault(size = 10) Pageable pageable, @PathVariable @Valid LocalDate date) {
 		return ResponseEntity.ok(publicationService.getAllPublicationsByDate(pageable, date));
 	}
-	@GetMapping("/publications/by-user/{id}")
+	@GetMapping("/by-user/{id}")
 	protected ResponseEntity<Page<PublicationResponseDTO>> getAllPublicationsByUser(@PageableDefault(size = 10) Pageable pageable, @PathVariable Long id) {
 		return ResponseEntity.ok(publicationService.getAllPublicationsByUser(pageable, id));
 	}
 	
-	@PutMapping("/publications/update")
+	@PutMapping("/update")
 	@Transactional
 	protected ResponseEntity<PublicationResponseDTO> updatePublication(@RequestBody @Valid PublicationUpdateRequestDTO dto) {
 		return ResponseEntity.ok(publicationService.updatePublication(dto));
 	}
 	
-	@DeleteMapping("/publications/delete/{id}")
+	@DeleteMapping("/delete/{id}")
 	@Transactional
 	protected ResponseEntity<?> deletePublication(@PathVariable Long id) {
 		publicationService.deletePublication(id);
