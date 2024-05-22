@@ -66,10 +66,6 @@ public class PublicationController {
 		
 		return ResponseEntity.ok(publicationService.getAllPublications(pageable, date, userId));
 	}
-	@GetMapping("/by-user/{id}")
-	protected ResponseEntity<Page<PublicationResponseDTO>> getAllPublicationsByUser(@PageableDefault(size = 10) Pageable pageable, @PathVariable Long id) {
-		return ResponseEntity.ok(publicationService.getAllPublicationsByUser(pageable, id));
-	}
 	
 	@PutMapping("/update")
 	@Transactional
