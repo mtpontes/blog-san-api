@@ -92,10 +92,4 @@ public class PublicationService {
 				.getAuthentication()
 				.getPrincipal();
 	}
-	private void accesVerify(Publication publi) throws AccessDeniedException {
-		User userByToken = this.getUser();
-		User userByPubli = publi.getUser();
-		if (userByToken == null || !userByPubli.getId().equals(userByToken.getId())) 
-			throw new AccessDeniedException("User do not have permission for access this resource");
-	}
 }
