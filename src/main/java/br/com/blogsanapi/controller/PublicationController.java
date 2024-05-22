@@ -112,29 +112,24 @@ public class PublicationController {
 		return ResponseEntity.created(uri).body(commentResponse);
 	}
 	
-	@GetMapping("/comments/replies/{id}")
-	public ResponseEntity<Page<CommentResponseDTO>> getAllRepliesByComment(@PageableDefault(size = 5) Pageable pageable, @PathVariable Long id) {
-		return ResponseEntity.ok(commentService.getRepliesByComment(pageable, id));
+	@GetMapping("/comments/{targetCommentId}/replies")
+	public ResponseEntity<Page<CommentResponseDTO>> getAllRepliesByComment(@PageableDefault(size = 5) Pageable pageable, @PathVariable Long targetCommentId) {
+		return ResponseEntity.ok(commentService.getRepliesByComment(pageable, targetCommentId));
+	}
+	@GetMapping("/{publicationId}/comments")
+	public ResponseEntity<Page<CommentResponseDTO>> getCommentsByPublication(@PageableDefault(size = 10) Pageable pageable, @PathVariable Long publicationId) {
+		return ResponseEntity.ok(commentService.getCommentsByPublicationId(pageable, publicationId));
 	}
 	
-	@GetMapping("/comments/by-user/{id}")
-	public ResponseEntity<Page<CommentResponseDTO>> getAllCommentsByUser(@PageableDefault(size = 10) Pageable pageable, @PathVariable Long id) {
-		return ResponseEntity.ok(commentService.getCommentsByUser(pageable, id));
-	}
-	@GetMapping("/comments/by-publication/{id}")
-	public ResponseEntity<Page<CommentResponseDTO>> getCommentsByPublication(@PageableDefault(size = 10) Pageable pageable, @PathVariable Long id) {
-		return ResponseEntity.ok(commentService.getCommentsByPublicationId(pageable, id));
-	}
-	
-	@PutMapping("/comments/update/{id}")
-	public ResponseEntity<CommentResponseDTO> updateComment(@RequestBody @Valid CommentUpdateDTO dto, @PathVariable Long id) {
-		CommentResponseDTO commentResponse = commentService.updateComment(dto, id);
+	@PutMapping("/comments/{commentId}")
+	public ResponseEntity<CommentResponseDTO> updateComment(@RequestBody @Valid CommentUpdateDTO dto, @PathVariable Long commentId) {
+		CommentResponseDTO commentResponse = commentService.updateComment(dto, commentId);
 		return ResponseEntity.ok(commentResponse);
 	}
 	
-	@DeleteMapping("/comments/delete/{id}")
-	public ResponseEntity<?> deleteComment(@PathVariable Long id) {
-		commentService.deleteComment(id);
+	@DeleteMapping("/comments/{commentId}")
+	public ResponseEntity<?> deleteComment(@PathVariable Long commentId) {
+		commentService.deleteComment(commentId);
 		return ResponseEntity.noContent().build();
 	}
 }
