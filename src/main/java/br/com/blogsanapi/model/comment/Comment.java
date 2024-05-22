@@ -25,6 +25,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
 public class Comment {
+	
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
@@ -41,30 +42,28 @@ public class Comment {
     @JoinColumn(name = "publication_id")
     private Publication publication;
     
-    @ManyToOne @JoinColumn(name = "parent_comment_id")
+    @ManyToOne 
+    @JoinColumn(name = "parent_comment_id")
     private Comment parentComment;
     
     @OneToMany(mappedBy = "parentComment", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Comment> replies;
     
     
-    public Comment(String text, User user, Publication publication) {
+    public Comment(String text, User user, Publication publication, Comment parentComment) {
     	this.text = text;
     	this.user = user;
+    	this.date = LocalDateTime.now();
+    	this.edited = false;
+
     	this.publication = publication;
-    	this.date = LocalDateTime.now();
-    	this.edited = false;
-    }
-    
-    public Comment(String text, User user, Comment parentComment) {
-    	this.text = text;
-    	this.user = user;
     	this.parentComment = parentComment;
-    	this.date = LocalDateTime.now();
-    	this.edited = false;
     }
 
 	public void updateText(String text) {
+		if (text == null || text.isBlank()) 
+			throw new IllegalArgumentException("It is not possible to comment with empty text");
+		
 		this.text = text;
 		this.date = LocalDateTime.now();
 		this.edited = true;

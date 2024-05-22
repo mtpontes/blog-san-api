@@ -1,7 +1,5 @@
 package br.com.blogsanapi.service;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -19,7 +17,6 @@ import br.com.blogsanapi.repository.CommentRepository;
 
 @Service
 public class CommentService {
-	private static Logger logger = LoggerFactory.getLogger(CommentService.class);
 	
 	@Autowired
 	private CommentRepository commentRepository;
@@ -31,25 +28,17 @@ public class CommentService {
 		Publication publication = new Publication();
 		publication.setId(publicationId);
 		
-		Comment comment = new Comment(dto.text(), user, publication);
+		Comment comment = new Comment(dto.text(), user, publication, null);
 		commentRepository.save(comment);
 		
 		return new CommentResponseDTO(comment);
 	}
 	
 	public CommentResponseDTO replyComment(Long targetCommentId, CommentRequestDTO dto) {
-		User user = this.getUser();
 		Comment commentPrincipal = commentRepository.getReferenceById(targetCommentId);
-		
-		Comment comment;
-		if (commentPrincipal.getParentComment() == null) {
-			comment = new Comment(dto.text(), user, commentPrincipal);
-		} else {
-			comment = new Comment(dto.text(), user, commentPrincipal.getParentComment());
-		}
-		commentRepository.save(comment);
-		
-		return new CommentResponseDTO(comment);
+		Comment comment = new Comment(dto.text(), this.getUser(), null, commentPrincipal.getParentComment());
+
+		return new CommentResponseDTO(commentRepository.save(comment));
 	}
 	
 	public Page<CommentResponseDTO> getRepliesByComment(Pageable pageable, Long id) {
