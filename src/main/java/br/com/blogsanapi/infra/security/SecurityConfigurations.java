@@ -27,10 +27,10 @@ public class SecurityConfigurations {
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
                         .requestMatchers(HttpMethod.POST, "/auth/login", "/auth/register").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/blog/publications/**", "/blog/comments/**").permitAll()
+                        .requestMatchers(HttpMethod.GET, "/publications/**").permitAll()
 						.requestMatchers("/v3/api-docs/**", "/swagger-ui.html/**", "/swagger-ui/**").permitAll()
 						.requestMatchers(HttpMethod.POST, "/auth/admin/register").hasRole("ADMIN")
-						.requestMatchers(HttpMethod.POST, "/blog/publications/create").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.POST, "/publications").hasRole("ADMIN")
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
