@@ -33,17 +33,15 @@ public class PublicationService {
 	
 	
 	public PublicationResponseDTO createPublication(PublicationRequestDTO publication) {
-		User user = this.getUser();
-		
-		Publication publi = new Publication(publication.description(), publication.imageLink(), user);
+		Publication publi = new Publication(publication.description(), publication.imageLink(), this.getUser());
 		publicationRepository.save(publi);
 		
 		return new PublicationResponseDTO(publi);
 	}
 	
 	public PublicationResponseWithCommentsDTO getAPublicationWhithComments(Pageable pageable, Long publicationId) {
-		Publication publication = publicationRepository.findById(publicationId).orElse(null);
-		if (publication == null) throw new NoResultException("Publication not found");
+		Publication publication = publicationRepository.findById(publicationId)
+				.orElseThrow(EntityNotFoundException::new);
 		
 		Page<Comment> commentsPage = commentRepository.findAllByPublicationId(pageable, publicationId);
 		List<CommentResponseDTO> commentResponse = commentsPage.getContent().stream()
