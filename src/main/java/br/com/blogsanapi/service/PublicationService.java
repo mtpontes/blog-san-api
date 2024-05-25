@@ -21,7 +21,6 @@ import br.com.blogsanapi.model.user.User;
 import br.com.blogsanapi.repository.CommentRepository;
 import br.com.blogsanapi.repository.PublicationRepository;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
 
 @Service
 public class PublicationService {
@@ -31,7 +30,6 @@ public class PublicationService {
 	@Autowired
 	private CommentRepository commentRepository;
 	
-	@Transactional
 	public PublicationResponseDTO createPublication(PublicationRequestDTO publication) {
 		Publication publi = new Publication(publication.description(), publication.imageLink(), this.getUser());
 		publicationRepository.save(publi);
@@ -67,7 +65,6 @@ public class PublicationService {
 		return publicationRepository.findAllByUserId(pageable, id).map(PublicationResponseDTO::new);
 	}
 	
-	@Transactional
 	public PublicationResponseDTO updatePublication(Long publicationId, PublicationUpdateRequestDTO dto) {
 		Publication publi = publicationRepository.findByIdAndUserId(publicationId, this.getUser().getId())
 				.orElseThrow(EntityNotFoundException::new);
@@ -78,7 +75,6 @@ public class PublicationService {
 		return new PublicationResponseDTO(publi);
 	}
 	
-	@Transactional
 	public void deletePublication(Long id) {
 		User user = this.getUser();
 		publicationRepository.deleteByUserIdAndId(user.getId(), id);

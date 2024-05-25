@@ -9,9 +9,9 @@ import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -64,7 +64,7 @@ public class PublicationController {
 		return ResponseEntity.ok(publicationService.getAllPublications(pageable, date, userId));
 	}
 	
-	@PutMapping("/{publicationId}")
+	@PatchMapping("/{publicationId}")
 	@Transactional
 	protected ResponseEntity<PublicationResponseDTO> updatePublication(
 			@PathVariable Long publicationId, 
@@ -83,6 +83,7 @@ public class PublicationController {
 	
 	
 	@PostMapping("/{publicationId}/comments")
+	@Transactional
 	public ResponseEntity<CommentResponseDTO> createComment(
 			@PathVariable Long publicationId,
 			@RequestBody @Valid CommentRequestDTO dto,
@@ -96,6 +97,7 @@ public class PublicationController {
 		return ResponseEntity.created(uri).body(commentResponse);
 	}
 	@PostMapping("/comments/{targetCommentId}")
+	@Transactional
 	public ResponseEntity<CommentResponseDTO> createReply(
 			@PathVariable Long targetCommentId,
 			@RequestBody @Valid CommentRequestDTO dto, 
@@ -118,13 +120,15 @@ public class PublicationController {
 		return ResponseEntity.ok(commentService.getCommentsByPublicationId(pageable, publicationId));
 	}
 	
-	@PutMapping("/comments/{commentId}")
+	@PatchMapping("/comments/{commentId}")
+	@Transactional
 	public ResponseEntity<CommentResponseDTO> updateComment(@PathVariable Long commentId, @RequestBody @Valid CommentRequestDTO dto) {
 		CommentResponseDTO commentResponse = commentService.updateComment(commentId, dto);
 		return ResponseEntity.ok(commentResponse);
 	}
 	
 	@DeleteMapping("/comments/{commentId}")
+	@Transactional
 	public ResponseEntity<?> deleteComment(@PathVariable Long commentId) {
 		commentService.deleteComment(commentId);
 		return ResponseEntity.noContent().build();
