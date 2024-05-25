@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.util.UriComponentsBuilder;
 
 import br.com.blogsanapi.model.comment.request.CommentRequestDTO;
-import br.com.blogsanapi.model.comment.request.CommentUpdateDTO;
 import br.com.blogsanapi.model.comment.response.CommentResponseDTO;
 import br.com.blogsanapi.model.publication.request.PublicationRequestDTO;
 import br.com.blogsanapi.model.publication.request.PublicationUpdateRequestDTO;
@@ -120,7 +119,7 @@ public class PublicationController {
 	}
 	
 	@PutMapping("/comments/{commentId}")
-	public ResponseEntity<CommentResponseDTO> updateComment(@PathVariable Long commentId, @RequestBody @Valid CommentUpdateDTO dto) {
+	public ResponseEntity<CommentResponseDTO> updateComment(@PathVariable Long commentId, @RequestBody @Valid CommentRequestDTO dto) {
 		CommentResponseDTO commentResponse = commentService.updateComment(commentId, dto);
 		return ResponseEntity.ok(commentResponse);
 	}

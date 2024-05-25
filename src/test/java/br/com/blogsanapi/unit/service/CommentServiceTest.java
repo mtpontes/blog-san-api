@@ -23,7 +23,6 @@ import org.springframework.security.core.context.SecurityContextHolder;
 
 import br.com.blogsanapi.model.comment.Comment;
 import br.com.blogsanapi.model.comment.request.CommentRequestDTO;
-import br.com.blogsanapi.model.comment.request.CommentUpdateDTO;
 import br.com.blogsanapi.model.comment.response.CommentResponseDTO;
 import br.com.blogsanapi.model.user.User;
 import br.com.blogsanapi.model.user.UserRole;
@@ -155,7 +154,7 @@ class CommentServiceTest {
 							.build();
 
 		Long commentId = 1L;
-		CommentUpdateDTO update = new CommentUpdateDTO("newText");
+		CommentRequestDTO update = new CommentRequestDTO("newText");
 
 		when(repository.findByIdAndUserId(any(), any())).thenReturn(Optional.of(comment));
 		when(repository.save(any())).thenReturn(comment);

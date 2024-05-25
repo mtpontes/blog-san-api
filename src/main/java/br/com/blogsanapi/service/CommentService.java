@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 
 import br.com.blogsanapi.model.comment.Comment;
 import br.com.blogsanapi.model.comment.request.CommentRequestDTO;
-import br.com.blogsanapi.model.comment.request.CommentUpdateDTO;
 import br.com.blogsanapi.model.comment.response.CommentResponseDTO;
 import br.com.blogsanapi.model.publication.Publication;
 import br.com.blogsanapi.model.user.User;
@@ -55,7 +54,7 @@ public class CommentService {
 	}
 	
 	@Transactional
-	public CommentResponseDTO updateComment(Long commentId, CommentUpdateDTO dto) {
+	public CommentResponseDTO updateComment(Long commentId, CommentRequestDTO dto) {
 		Comment comment = commentRepository.findByIdAndUserId(commentId, this.getUser().getId())
 				.orElseThrow(EntityNotFoundException::new);
 		
