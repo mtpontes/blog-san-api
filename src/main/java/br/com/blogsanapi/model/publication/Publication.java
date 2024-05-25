@@ -1,6 +1,7 @@
 package br.com.blogsanapi.model.publication;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.List;
 
 import br.com.blogsanapi.model.comment.Comment;
@@ -41,7 +42,7 @@ public class Publication {
     private User user;
     
     @OneToMany(mappedBy = "publication", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private List<Comment> comments;
+    private List<Comment> comments = new ArrayList<>();
     
     
     public Publication(String description, String imageLink, User user) {
@@ -65,4 +66,20 @@ public class Publication {
 		this.date = LocalDateTime.now();
 		this.edited = true;
 	}
+	
+	public void addComment(Comment comment) {
+		this.comments.add(comment);
+	}
+	
+    @Override
+    public String toString() {
+        return "Publication[" +
+                "id=" + id +
+                ", description='" + description + '\'' +
+                ", imageLink='" + imageLink + '\'' +
+                ", date=" + date +
+                ", edited=" + edited +
+                ", user=" + user +
+                ']';
+    }
 }	
