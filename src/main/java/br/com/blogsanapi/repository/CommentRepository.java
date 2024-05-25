@@ -1,12 +1,13 @@
 package br.com.blogsanapi.repository;
 
+import java.util.Optional;
+
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 import br.com.blogsanapi.model.comment.Comment;
-import br.com.blogsanapi.model.publication.Publication;
 
 public interface CommentRepository extends JpaRepository<Comment, Long>{
 
@@ -21,4 +22,6 @@ public interface CommentRepository extends JpaRepository<Comment, Long>{
 
 	@Query("SELECT c FROM Comment c WHERE c.parentComment.id = :id")
 	Page<Comment> findAllReplies(Pageable pageable, Long id);
+
+	Optional<Comment> findByIdAndUserId(Long commentId, Long id);
 }
