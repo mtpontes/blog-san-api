@@ -3,7 +3,6 @@ package br.com.blogsanapi.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
@@ -14,6 +13,8 @@ import br.com.blogsanapi.model.comment.response.CommentResponseDTO;
 import br.com.blogsanapi.model.publication.Publication;
 import br.com.blogsanapi.model.user.User;
 import br.com.blogsanapi.repository.CommentRepository;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
 
 @Service
 public class CommentService {
@@ -22,6 +23,7 @@ public class CommentService {
 	private CommentRepository commentRepository;
 
 	
+	@Transactional
 	public CommentResponseDTO createComment(Long publicationId, CommentRequestDTO dto) {
 		User user = this.getUser();
 		
@@ -34,9 +36,10 @@ public class CommentService {
 		return new CommentResponseDTO(comment);
 	}
 	
+	@Transactional
 	public CommentResponseDTO replyComment(Long targetCommentId, CommentRequestDTO dto) {
 		Comment commentPrincipal = commentRepository.getReferenceById(targetCommentId);
-		Comment comment = new Comment(dto.text(), this.getUser(), null, commentPrincipal.getParentComment());
+		Comment comment = new Comment(dto.text(), this.getUser(), null, commentPrincipal.getCommentReference());
 
 		return new CommentResponseDTO(commentRepository.save(comment));
 	}
@@ -51,33 +54,25 @@ public class CommentService {
 		return commentRepository.findAllByPublicationId(pageable, id).map(CommentResponseDTO::new);
 	}
 	
-	public CommentResponseDTO updateComment(CommentUpdateDTO dto, Long id) {
-		Comment comment = commentRepository.getReferenceById(id);
-		this.accesVerify(comment);
+	@Transactional
+	public CommentResponseDTO updateComment(Long commentId, CommentUpdateDTO dto) {
+		Comment comment = commentRepository.findByIdAndUserId(commentId, this.getUser().getId())
+				.orElseThrow(EntityNotFoundException::new);
 		
 		comment.updateText(dto.text());
-		commentRepository.flush();
-		
-		return new CommentResponseDTO(comment);
+		return new CommentResponseDTO(commentRepository.save(comment));
 	}
 	
+	@Transactional
 	public void deleteComment(Long id) {
 		User user = this.getUser();
 		commentRepository.deleteByUserIdAndId(user.getId(), id);
 	}
-	
 	
 	private User getUser() {
 		return (User) SecurityContextHolder
 				.getContext()
 				.getAuthentication()
 				.getPrincipal();
-	}
-	private void accesVerify(Comment comment) throws AccessDeniedException {
-		User userByToken = this.getUser();
-		User userByComment = comment.getUser();
-		
-		if (userByToken == null || !userByComment.getId().equals(userByToken.getId())) 
-			throw new AccessDeniedException("User do not have permission for access this resource");
 	}
 }
