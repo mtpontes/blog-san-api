@@ -26,6 +26,10 @@ public class ErrorHandler {
 		var erros = ex.getFieldErrors();
 		return ResponseEntity.badRequest().body(erros.stream().map(DataValidationErrorDTO::new).toList());
 	}
+	@ExceptionHandler(IllegalArgumentException.class)
+	public ResponseEntity handleIllegalArgument(IllegalArgumentException ex) {
+		return ResponseEntity.badRequest().body(new ErrorMessage(ex.getMessage()));
+	}
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity handleError400(HttpMessageNotReadableException ex) {
         return ResponseEntity.badRequest().body(new DataValidationErrorDTO(null, ex.getMessage()));
@@ -47,11 +51,12 @@ public class ErrorHandler {
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity handleError500(Exception ex) {
-    	var seila = ex.getLocalizedMessage();
-        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Internal server error");
+    public ResponseEntity<ErrorMessage> handleError500(Exception ex) {
+    	ex.printStackTrace();
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorMessage("Internal server error"));
     }
     
+    private record ErrorMessage(String message) {};
     private record DataValidationErrorDTO(String field, String message) {
         public DataValidationErrorDTO(FieldError erro) {
             this(erro.getField(), erro.getDefaultMessage());
