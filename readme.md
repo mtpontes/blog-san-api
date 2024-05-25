@@ -97,7 +97,7 @@ Authorization: Bearer your_access_token
 
 ### Publication creation
 
-**POST:** `/blog/publications/create`
+**POST:** `/publications`
 
 ```
 {
@@ -122,7 +122,7 @@ Authorization: Bearer your_access_token
 
 ### Comment creation
 
-**POST:** `blog/comments/create`
+**POST:** `/publications/{publicationId/comments}`
 
 ```
 {
@@ -152,4 +152,6 @@ Authorization: Bearer your_access_token
 - To access the complete project documentation, implemented with SpringDoc OpenApi, visit http://localhost:8080/swagger-ui/index.html when the application is running.
 
 ### Postman
-- You can also import my set of requests into Postman. There you have all the endpoints with all the necessary URL parameters and body details to interact with the API.
+You can also import my set of requests into Postman. There you have all the endpoints with all the necessary URL parameters and body details to interact with the API.
+
+[<img src="https://run.pstmn.io/button.svg" alt="Run In Postman" style="width: 128px; height: 32px;">](https://app.getpostman.com/run-collection/31232249-755011b3-0b0f-4120-9699-7677b4c10832?action=collection%2Ffork&source=rip_markdown&collection-url=entityId%3D31232249-755011b3-0b0f-4120-9699-7677b4c10832%26entityType%3Dcollection%26workspaceId%3Daae15406-ac2a-4087-8c9e-47072e8aa119)
