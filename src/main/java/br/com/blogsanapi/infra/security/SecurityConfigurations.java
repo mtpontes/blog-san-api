@@ -26,11 +26,20 @@ public class SecurityConfigurations {
                 .csrf(csrf -> csrf.disable())
                 .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
                 .authorizeHttpRequests(authorize -> authorize
+                		.requestMatchers("/v3/api-docs/**", "/swagger-ui.html/**", "/swagger-ui/**").permitAll()
                         .requestMatchers(HttpMethod.POST, "/auth/login", "/auth/register").permitAll()
-                        .requestMatchers(HttpMethod.GET, "/publications/**").permitAll()
-						.requestMatchers("/v3/api-docs/**", "/swagger-ui.html/**", "/swagger-ui/**").permitAll()
 						.requestMatchers(HttpMethod.POST, "/auth/admin/register").hasRole("ADMIN")
-						.requestMatchers(HttpMethod.POST, "/publications").hasRole("ADMIN")
+						
+						.requestMatchers(HttpMethod.POST, "/publications/**").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.PATCH, "/publications/**").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.DELETE, "/publications/**").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.GET, "/publications/**").permitAll()
+
+						.requestMatchers(HttpMethod.POST, "/publications/{publicationId}/comments").permitAll()
+						.requestMatchers(HttpMethod.POST, "/publications/comments/{targetCommendId}").permitAll()
+						.requestMatchers(HttpMethod.PATCH, "/publications/comments/{commentId}").permitAll()
+						.requestMatchers(HttpMethod.DELETE, "/publications/comments/{commentId}").permitAll()
+						
                         .anyRequest().authenticated()
                 )
                 .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
