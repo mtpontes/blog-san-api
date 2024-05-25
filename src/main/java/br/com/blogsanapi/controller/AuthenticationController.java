@@ -19,6 +19,7 @@ import br.com.blogsanapi.model.user.auth.AuthenticationDTO;
 import br.com.blogsanapi.model.user.auth.LoginResponseDTO;
 import br.com.blogsanapi.model.user.auth.RegisterDTO;
 import br.com.blogsanapi.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import jakarta.validation.Valid;
 
 @RestController
@@ -44,6 +45,7 @@ public class AuthenticationController {
     }
 
     @PostMapping("/register")
+    @Transactional
     public ResponseEntity<?> register(@RequestBody @Valid RegisterDTO data){
         if(this.repository.findByLogin(data.login()) != null) return ResponseEntity.badRequest().build();
         
@@ -61,6 +63,7 @@ public class AuthenticationController {
     }
     
     @PostMapping("/admin/register")
+    @Transactional
     public ResponseEntity<?> adminRegister(@RequestBody @Valid RegisterDTO data){
         if(this.repository.findByLogin(data.login()) != null) return ResponseEntity.badRequest().build();
 
