@@ -15,12 +15,17 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
+
 @Entity(name = "Comment")
 @Table(name = "comments")
+@Builder
+@AllArgsConstructor
 @Getter
 @NoArgsConstructor
 @EqualsAndHashCode(of = "id")
@@ -74,4 +79,19 @@ public class Comment {
 		if (text == null || text.isBlank()) 
 			throw new IllegalArgumentException("It is not possible to comment with empty text");
 	}
+	
+	public Comment getCommentReference() {
+		return this.parentComment == null ? this : this.parentComment;
+	}
+	
+    @Override
+    public String toString() {
+        return "Comment{" +
+                "id=" + id +
+                ", text='" + text + '\'' +
+                ", date=" + date +
+                ", edited=" + edited +
+                ", user=" + user +
+                '}';
+    }
 }
