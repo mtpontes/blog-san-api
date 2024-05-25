@@ -120,8 +120,8 @@ public class PublicationController {
 	}
 	
 	@PutMapping("/comments/{commentId}")
-	public ResponseEntity<CommentResponseDTO> updateComment(@RequestBody @Valid CommentUpdateDTO dto, @PathVariable Long commentId) {
-		CommentResponseDTO commentResponse = commentService.updateComment(dto, commentId);
+	public ResponseEntity<CommentResponseDTO> updateComment(@PathVariable Long commentId, @RequestBody @Valid CommentUpdateDTO dto) {
+		CommentResponseDTO commentResponse = commentService.updateComment(commentId, dto);
 		return ResponseEntity.ok(commentResponse);
 	}
 	

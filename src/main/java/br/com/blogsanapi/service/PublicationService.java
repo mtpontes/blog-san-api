@@ -21,7 +21,6 @@ import br.com.blogsanapi.model.user.User;
 import br.com.blogsanapi.repository.CommentRepository;
 import br.com.blogsanapi.repository.PublicationRepository;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.persistence.NoResultException;
 
 @Service
 public class PublicationService {
