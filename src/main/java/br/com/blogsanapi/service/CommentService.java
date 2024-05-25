@@ -13,7 +13,6 @@ import br.com.blogsanapi.model.publication.Publication;
 import br.com.blogsanapi.model.user.User;
 import br.com.blogsanapi.repository.CommentRepository;
 import jakarta.persistence.EntityNotFoundException;
-import jakarta.transaction.Transactional;
 
 @Service
 public class CommentService {
@@ -22,7 +21,6 @@ public class CommentService {
 	private CommentRepository commentRepository;
 
 	
-	@Transactional
 	public CommentResponseDTO createComment(Long publicationId, CommentRequestDTO dto) {
 		User user = this.getUser();
 		
@@ -35,7 +33,6 @@ public class CommentService {
 		return new CommentResponseDTO(comment);
 	}
 	
-	@Transactional
 	public CommentResponseDTO replyComment(Long targetCommentId, CommentRequestDTO dto) {
 		Comment commentPrincipal = commentRepository.getReferenceById(targetCommentId);
 		Comment comment = new Comment(dto.text(), this.getUser(), null, commentPrincipal.getCommentReference());
@@ -53,7 +50,6 @@ public class CommentService {
 		return commentRepository.findAllByPublicationId(pageable, id).map(CommentResponseDTO::new);
 	}
 	
-	@Transactional
 	public CommentResponseDTO updateComment(Long commentId, CommentRequestDTO dto) {
 		Comment comment = commentRepository.findByIdAndUserId(commentId, this.getUser().getId())
 				.orElseThrow(EntityNotFoundException::new);
@@ -62,7 +58,6 @@ public class CommentService {
 		return new CommentResponseDTO(commentRepository.save(comment));
 	}
 	
-	@Transactional
 	public void deleteComment(Long id) {
 		User user = this.getUser();
 		commentRepository.deleteByUserIdAndId(user.getId(), id);
