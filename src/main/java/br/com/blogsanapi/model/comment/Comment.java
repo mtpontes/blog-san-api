@@ -51,6 +51,8 @@ public class Comment {
     
     
     public Comment(String text, User user, Publication publication, Comment parentComment) {
+    	this.validateText(text);
+    	
     	this.text = text;
     	this.user = user;
     	this.date = LocalDateTime.now();
@@ -61,11 +63,15 @@ public class Comment {
     }
 
 	public void updateText(String text) {
-		if (text == null || text.isBlank()) 
-			throw new IllegalArgumentException("It is not possible to comment with empty text");
+		this.validateText(text);
 		
 		this.text = text;
 		this.date = LocalDateTime.now();
 		this.edited = true;
+	}
+
+	private void validateText(String text) {
+		if (text == null || text.isBlank()) 
+			throw new IllegalArgumentException("It is not possible to comment with empty text");
 	}
 }
