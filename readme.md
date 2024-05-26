@@ -122,7 +122,7 @@ Authorization: Bearer your_access_token
 
 ### Comment creation
 
-**POST:** `/publications/{publicationId/comments}`
+**POST:** `/publications/{publicationId/comments`
 
 ```
 {
