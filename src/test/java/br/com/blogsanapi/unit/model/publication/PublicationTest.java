@@ -9,44 +9,44 @@ import br.com.blogsanapi.model.publication.Publication;
 class PublicationTest {
 	
 	@Test
-	@DisplayName("Deve lançar exception ao instanciar Publication com `description` e `imageLink` null")
+	@DisplayName("Must throw exception when instantiating Publication with `description` and `imageLink` null")
 	void instanciatePublicatonTest01() {
 		Assertions.assertThrows(
 				IllegalArgumentException.class, 
 				() -> new Publication(null, null, null), 
-				"Instanciando com os dois atributos null");
+				"Instantiating with both null attributes");
 	}
 	
 	@Test
-	@DisplayName("Deve lançar exception ao instanciar Publication com `description` e `imageLink` blank")
+	@DisplayName("Must throw exception when instantiating Publication with `description` and `imageLink` blank")
 	void instanciatePublicatonTest02() {
 		Assertions.assertThrows(
 				IllegalArgumentException.class, 
 				() -> new Publication("", "", null), 
-				"Instanciando com os dois atributos blank");
+				"Instanciating with both blank attributes");
 	}
 	
 	@Test
-	@DisplayName("Deve instanciar Publication com pelo menos um valor válido para `description` e `imageLink`")
+	@DisplayName("Must instantiate Publication with at least one valid value for `description` and `imageLink`")
 	void instanciatePublicatonTest03() {
-		Assertions.assertDoesNotThrow(() -> new Publication("description", "", null), "Instanciando com `imageLink` blank");
-		Assertions.assertDoesNotThrow(() -> new Publication("description", null, null), "Instanciando com `imageLink` null");
+		Assertions.assertDoesNotThrow(() -> new Publication("description", "", null), "Instanciating with `imageLink` blank");
+		Assertions.assertDoesNotThrow(() -> new Publication("description", null, null), "Instanciating with `imageLink` null");
 		
-		Assertions.assertDoesNotThrow(() -> new Publication("", "imageLink", null), "Instanciando com `description` blank");
-		Assertions.assertDoesNotThrow(() -> new Publication(null, "imageLink", null), "Instanciando com `description` null");
+		Assertions.assertDoesNotThrow(() -> new Publication("", "imageLink", null), "Instanciating with `description` blank");
+		Assertions.assertDoesNotThrow(() -> new Publication(null, "imageLink", null), "Instanciating with `description` null");
 	}
 	
 	@Test
-	@DisplayName("Instancia com `imageLink` null deve lançar exception ao atualizar `description` com valor inválido")
+	@DisplayName("Instance with `imageLink` null must throw exception when updating `description` with invalid value")
 	void updateDescriptionTest01() {
 		Publication publiImageLinkNull = new Publication("description", null, null);
 		
-		// passando null
+		// passing null
 		Assertions.assertThrows(
 				IllegalArgumentException.class, 
 				() -> publiImageLinkNull.updateDescription(null) ,
 				"Updating with null value");
-		// passando blank
+		// passing blank
 		Assertions.assertThrows(
 				IllegalArgumentException.class, 
 				() -> publiImageLinkNull.updateDescription("") ,
@@ -54,16 +54,16 @@ class PublicationTest {
 	}
 	
 	@Test
-	@DisplayName("Instancia com `imageLink` blank deve lançar exception ao atualizar `description` com valor inválido")
+	@DisplayName("Instance with `imageLink` blank must throw exception when updating `description` with invalid value")
 	void updateDescriptionTest02() {
 		Publication publiImageLinkBlank = new Publication("description", "", null);
 		
-		// passando null
+		// passing null
 		Assertions.assertThrows(
 				IllegalArgumentException.class, 
 				() -> publiImageLinkBlank.updateDescription(null) ,
 				"Updating with null value");
-		// passando blank
+		// passing blank
 		Assertions.assertThrows(
 				IllegalArgumentException.class, 
 				() -> publiImageLinkBlank.updateDescription("") ,
@@ -71,7 +71,7 @@ class PublicationTest {
 	}
 	
 	@Test
-	@DisplayName("Deve atualizar `description` sem lançar exception")
+	@DisplayName("Must update `description` without throwing exception")
 	void updateDescriptionTest03() {
 		// arrange
 		Publication publiDescriptionNull = new Publication(null, "imageLink", null);
@@ -90,7 +90,7 @@ class PublicationTest {
 	}
 	
 	@Test
-	@DisplayName("Deve atualizar `description` sem lançar exception")
+	@DisplayName("Must update `description` without throwing exception")
 	void updateDescriptionTest04() {
 		// arrange
 		Publication publiDescriptionBlank = new Publication("", "ImageLink", null);
