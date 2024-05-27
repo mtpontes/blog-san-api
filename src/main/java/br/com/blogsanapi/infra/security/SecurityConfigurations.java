@@ -30,15 +30,16 @@ public class SecurityConfigurations {
                         .requestMatchers(HttpMethod.POST, "/auth/login", "/auth/register").permitAll()
 						.requestMatchers(HttpMethod.POST, "/auth/admin/register").hasRole("ADMIN")
 						
-						.requestMatchers(HttpMethod.POST, "/publications/**").hasRole("ADMIN")
-						.requestMatchers(HttpMethod.PATCH, "/publications/**").hasRole("ADMIN")
-						.requestMatchers(HttpMethod.DELETE, "/publications/**").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.POST, "/publications").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.PATCH, "/publications/{publicationId}").hasRole("ADMIN")
+						.requestMatchers(HttpMethod.DELETE, "/publications/{id}").hasRole("ADMIN")
+						
 						.requestMatchers(HttpMethod.GET, "/publications/**").permitAll()
 
-						.requestMatchers(HttpMethod.POST, "/publications/{publicationId}/comments").permitAll()
-						.requestMatchers(HttpMethod.POST, "/publications/comments/{targetCommendId}").permitAll()
-						.requestMatchers(HttpMethod.PATCH, "/publications/comments/{commentId}").permitAll()
-						.requestMatchers(HttpMethod.DELETE, "/publications/comments/{commentId}").permitAll()
+						.requestMatchers(HttpMethod.POST, "/publications/{publicationId}/comments").hasAnyRole("ADMIN", "CLIENT")
+						.requestMatchers(HttpMethod.POST, "/publications/comments/{targetCommentId}").hasAnyRole("ADMIN", "CLIENT")
+						.requestMatchers(HttpMethod.PATCH, "/publications/comments/{commentId}").hasAnyRole("ADMIN", "CLIENT")
+						.requestMatchers(HttpMethod.DELETE, "/publications/comments/{commentId}").hasAnyRole("ADMIN", "CLIENT")
 						
                         .anyRequest().authenticated()
                 )
