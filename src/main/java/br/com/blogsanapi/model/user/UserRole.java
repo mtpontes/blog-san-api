@@ -2,7 +2,7 @@ package br.com.blogsanapi.model.user;
 
 public enum UserRole {
     ADMIN("admin"),
-    USER("user");
+    CLIENT("client");
 
     private String role;
 

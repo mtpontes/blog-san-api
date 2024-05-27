@@ -55,7 +55,7 @@ public class AuthenticationController {
         
 
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
-        User newUser = new User(data.login(), encryptedPassword, UserRole.USER, data.name(), data.email());
+        User newUser = new User(data.login(), encryptedPassword, UserRole.CLIENT, data.name(), data.email());
 
         this.repository.save(newUser);
 
