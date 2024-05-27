@@ -46,13 +46,13 @@ public class PublicationController {
 	protected ResponseEntity<PublicationResponseDTO> createPublication(@RequestBody @Valid PublicationRequestDTO dto, UriComponentsBuilder uriBuilder){
 		PublicationResponseDTO dtoResponse = publicationService.createPublication(dto);
 		
-		var uri = uriBuilder.path("/blog/publications/{id}").buildAndExpand(dto).toUri();
+		var uri = uriBuilder.path("/publications/{id}").buildAndExpand(dto).toUri();
 		return ResponseEntity.created(uri).body(dtoResponse);
 	}
 	
 	@GetMapping("/{id}")
 	protected ResponseEntity<PublicationResponseWithCommentsDTO> getPublication(@PageableDefault(size = 5) Pageable pageable, @PathVariable Long id) {
-		return ResponseEntity.ok(publicationService.getAPublicationWhithComments(pageable, id));
+		return ResponseEntity.ok(publicationService.getPublicationWithComments(pageable, id));
 	}
 	@GetMapping
 	protected ResponseEntity<Page<PublicationResponseDTO>> getPublicationsByParams(
@@ -107,17 +107,18 @@ public class PublicationController {
 		CommentResponseDTO commentResponse = commentService.replyComment(targetCommentId, dto);
 		
 		var uri = uriBuilder.path("/publications/comments/{id}").buildAndExpand(dto).toUri();
+		System.out.println("VALOR DO NEGÓCIO: " + commentResponse);
 		
 		return ResponseEntity.created(uri).body(commentResponse);
 	}
 	
-	@GetMapping("/comments/{targetCommentId}/replies")
-	public ResponseEntity<Page<CommentResponseDTO>> getAllRepliesByComment(@PageableDefault(size = 5) Pageable pageable, @PathVariable Long targetCommentId) {
-		return ResponseEntity.ok(commentService.getRepliesByComment(pageable, targetCommentId));
-	}
 	@GetMapping("/{publicationId}/comments")
 	public ResponseEntity<Page<CommentResponseDTO>> getCommentsByPublication(@PageableDefault(size = 10) Pageable pageable, @PathVariable Long publicationId) {
 		return ResponseEntity.ok(commentService.getCommentsByPublicationId(pageable, publicationId));
+	}
+	@GetMapping("/comments/{targetCommentId}/replies")
+	public ResponseEntity<Page<CommentResponseDTO>> getAllRepliesByComment(@PageableDefault(size = 5) Pageable pageable, @PathVariable Long targetCommentId) {
+		return ResponseEntity.ok(commentService.getRepliesByComment(pageable, targetCommentId));
 	}
 	
 	@PatchMapping("/comments/{commentId}")

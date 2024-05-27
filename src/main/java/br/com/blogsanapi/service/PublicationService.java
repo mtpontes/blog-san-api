@@ -37,7 +37,7 @@ public class PublicationService {
 		return new PublicationResponseDTO(publi);
 	}
 	
-	public PublicationResponseWithCommentsDTO getAPublicationWhithComments(Pageable pageable, Long publicationId) {
+	public PublicationResponseWithCommentsDTO getPublicationWithComments(Pageable pageable, Long publicationId) {
 		Publication publication = publicationRepository.findById(publicationId)
 				.orElseThrow(EntityNotFoundException::new);
 		
