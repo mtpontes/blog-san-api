@@ -1,5 +1,6 @@
 package br.com.blogsanapi.infra.exception;
 
+import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -9,6 +10,7 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
+import org.springframework.validation.FieldError;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
@@ -24,7 +26,20 @@ public class ErrorHandler {
 	}
 	
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorMessageWithFields> handlerMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
+    public ResponseEntity<?> handlerMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
+    	List<FieldError> fieldErrors = ex.getFieldErrors();
+    	
+    	if (fieldErrors.isEmpty()) {
+    	    String annotationMessage = ex.getBindingResult()
+                    .getAllErrors()
+                    .stream()
+                    .filter(error -> error.getCode().equals("DescriptionAndImageLinkCannotBeBlank"))
+                    .map(a -> a.getDefaultMessage())
+                    .findFirst()
+                    .orElse("");
+    		
+			return ResponseEntity.badRequest().body(new ErrorMessage(annotationMessage));
+		}
     	
     	Map<String, String> fields = ex.getFieldErrors().stream()
     			.collect(Collectors.toMap(f -> f.getField().toString(), f -> f.getDefaultMessage()));
@@ -42,7 +57,7 @@ public class ErrorHandler {
 	public ResponseEntity handleIllegalArgument(IllegalArgumentException ex) {
 		return ResponseEntity.badRequest().body(new ErrorMessage(ex.getMessage()));
 	}
-    
+    // rever
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity handleError400(HttpMessageNotReadableException ex) {
         return ResponseEntity.badRequest().body(new ErrorMessage(ex.getMessage()));
