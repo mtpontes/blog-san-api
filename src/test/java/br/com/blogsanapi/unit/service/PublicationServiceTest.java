@@ -99,7 +99,7 @@ class PublicationServiceTest {
 			.thenReturn(new PageImpl<>(List.of(comment0, comment1, comment2)));
 		
 		// act
-		PublicationResponseWithCommentsDTO result = service.getAPublicationWhithComments(PageRequest.of(0, 10), 1L);
+		PublicationResponseWithCommentsDTO result = service.getPublicationWithComments(PageRequest.of(0, 10), 1L);
 		
 		// assert
 		
