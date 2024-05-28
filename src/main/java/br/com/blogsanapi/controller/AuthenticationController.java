@@ -1,7 +1,5 @@
 package br.com.blogsanapi.controller;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -25,8 +23,7 @@ import jakarta.validation.Valid;
 @RestController
 @RequestMapping("/auth")
 public class AuthenticationController {
-	private static final Logger logger = LoggerFactory.getLogger(AuthenticationController.class);
-
+	
     @Autowired
     private AuthenticationManager authenticationManager;
     @Autowired
@@ -48,11 +45,6 @@ public class AuthenticationController {
     @Transactional
     public ResponseEntity<?> register(@RequestBody @Valid RegisterDTO data){
         if(this.repository.findByLogin(data.login()) != null) return ResponseEntity.badRequest().build();
-        
-        logger.info(data.name());
-        logger.info(data.email());
-        System.out.println(data.name());
-        
 
         String encryptedPassword = new BCryptPasswordEncoder().encode(data.password());
         User newUser = new User(data.login(), encryptedPassword, UserRole.CLIENT, data.name(), data.email());

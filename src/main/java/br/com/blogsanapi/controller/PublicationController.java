@@ -107,7 +107,6 @@ public class PublicationController {
 		CommentResponseDTO commentResponse = commentService.replyComment(targetCommentId, dto);
 		
 		var uri = uriBuilder.path("/publications/comments/{id}").buildAndExpand(dto).toUri();
-		System.out.println("VALOR DO NEGÓCIO: " + commentResponse);
 		
 		return ResponseEntity.created(uri).body(commentResponse);
 	}
