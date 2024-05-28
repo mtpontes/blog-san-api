@@ -11,9 +11,11 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.validation.FieldError;
+import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
 
 import jakarta.persistence.EntityNotFoundException;
 
@@ -24,9 +26,13 @@ public class ErrorHandler {
 	public ResponseEntity handleError404() {
 		return ResponseEntity.notFound().build();
 	}
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity handleError404(NoResourceFoundException ex) {
+    	return ResponseEntity.notFound().build();
+    }
 	
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<?> handlerMethodArgumentNotValidException(MethodArgumentNotValidException ex) {
+    public ResponseEntity<?> handlerErro400(MethodArgumentNotValidException ex) {
     	List<FieldError> fieldErrors = ex.getFieldErrors();
     	
     	if (fieldErrors.isEmpty()) {
@@ -52,15 +58,25 @@ public class ErrorHandler {
     			.badRequest()
     			.body(response);
     }
-    
 	@ExceptionHandler(IllegalArgumentException.class)
-	public ResponseEntity handleIllegalArgument(IllegalArgumentException ex) {
+	public ResponseEntity handlerErro400(IllegalArgumentException ex) {
 		return ResponseEntity.badRequest().body(new ErrorMessage(ex.getMessage()));
 	}
-    // rever
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity handleError400(HttpMessageNotReadableException ex) {
-        return ResponseEntity.badRequest().body(new ErrorMessage(ex.getMessage()));
+    	var message = ex.getMessage().split(":")[0];
+        return ResponseEntity.badRequest().body(new ErrorMessage(message));
+    }
+    
+    @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
+    public ResponseEntity<ErrorMessage> handlerErro415(HttpMediaTypeNotSupportedException ex) {
+        String unsupported = ex.getContentType() != null ? ex.getContentType().getType() + "/" + ex.getContentType().getSubtype() : "unknown";
+        String supported = ex.getSupportedMediaTypes().stream()
+                              .map(mediaType -> mediaType.getType() + "/" + mediaType.getSubtype())
+                              .collect(Collectors.joining(", "));
+        String message = String.format("Unsupported media type '%s'. Supported media types are: %s", unsupported, supported);
+
+        return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value()).body(new ErrorMessage(message));
     }
 
     @ExceptionHandler(BadCredentialsException.class)
@@ -77,7 +93,7 @@ public class ErrorHandler {
     public ResponseEntity handleErrorAccessDenied() {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorMessage("Access denied"));
     }
-
+    
     @ExceptionHandler(Exception.class)
     public ResponseEntity handleError500(Exception ex) {
     	ex.printStackTrace();
