@@ -1,3 +1,5 @@
 package br.com.blogsanapi.model.comment.request;
 
-public record CommentRequestDTO(String text) {}
+import jakarta.validation.constraints.NotBlank;
+
+public record CommentRequestDTO(@NotBlank String text) {}
