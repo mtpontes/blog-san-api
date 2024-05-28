@@ -12,22 +12,23 @@ import br.com.blogsanapi.model.comment.response.CommentResponseDTO;
 import br.com.blogsanapi.model.publication.Publication;
 import br.com.blogsanapi.model.user.User;
 import br.com.blogsanapi.repository.CommentRepository;
+import br.com.blogsanapi.repository.PublicationRepository;
 import jakarta.persistence.EntityNotFoundException;
 
 @Service
 public class CommentService {
 	
 	@Autowired
+	private PublicationRepository publicationRepository;
+	@Autowired
 	private CommentRepository commentRepository;
 
 	
 	public CommentResponseDTO createComment(Long publicationId, CommentRequestDTO dto) {
-		User user = this.getUser();
+		Publication publication = publicationRepository.findById(publicationId)
+				.orElseThrow(EntityNotFoundException::new);
 		
-		Publication publication = new Publication();
-		publication.setId(publicationId);
-		
-		Comment comment = new Comment(dto.text(), user, publication, null);
+		Comment comment = new Comment(dto.text(), this.getUser(), publication, null);
 		commentRepository.save(comment);
 		
 		return new CommentResponseDTO(comment);

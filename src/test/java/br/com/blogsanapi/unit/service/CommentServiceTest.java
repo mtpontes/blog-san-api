@@ -24,14 +24,18 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import br.com.blogsanapi.model.comment.Comment;
 import br.com.blogsanapi.model.comment.request.CommentRequestDTO;
 import br.com.blogsanapi.model.comment.response.CommentResponseDTO;
+import br.com.blogsanapi.model.publication.Publication;
 import br.com.blogsanapi.model.user.User;
 import br.com.blogsanapi.model.user.UserRole;
 import br.com.blogsanapi.repository.CommentRepository;
+import br.com.blogsanapi.repository.PublicationRepository;
 import br.com.blogsanapi.service.CommentService;
 
 @ExtendWith(MockitoExtension.class)
 class CommentServiceTest {
 	
+	@Mock
+	private PublicationRepository publicationRepository;
 	@Mock
 	private CommentRepository repository;
 
@@ -67,6 +71,9 @@ class CommentServiceTest {
 		this.mockSecurity();
 		Long publicationId = 1l;
 		CommentRequestDTO dto = new CommentRequestDTO("text");
+		Publication publi = Publication.builder().description("description").imageLink("link").user(new User()).id(1L).build();
+		when(publicationRepository.findById(any())).thenReturn(Optional.of(publi));
+
 		
 		// act
 		service.createComment(publicationId, dto);
