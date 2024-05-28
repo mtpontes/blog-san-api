@@ -1,4 +1,4 @@
-package br.com.blogsanapi.integration.controller;
+package br.com.blogsanapi.unit.controller;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;

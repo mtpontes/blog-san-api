@@ -1,4 +1,4 @@
-package br.com.blogsanapi.unit.model.publication;
+package br.com.blogsanapi.unit.model;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
