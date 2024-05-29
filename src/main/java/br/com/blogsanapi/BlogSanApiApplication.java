@@ -24,10 +24,11 @@ public class BlogSanApiApplication implements CommandLineRunner {
 	public void run(String... args) throws Exception {
 		if(!repository.existsByLogin("root")) {
 			User userAdmin = User.builder()
-								.login("root")
-								.password(new BCryptPasswordEncoder().encode("root"))
-								.role(UserRole.ADMIN)
-								.build();
+				.name("admin")
+				.login("root")
+				.password(new BCryptPasswordEncoder().encode("root"))
+				.role(UserRole.ADMIN)
+				.build();
 
 			repository.save(userAdmin);
 		}

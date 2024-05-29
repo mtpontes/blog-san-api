@@ -10,7 +10,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.test.context.ActiveProfiles;
 
 import br.com.blogsanapi.model.comment.Comment;
 import br.com.blogsanapi.model.publication.Publication;
@@ -20,7 +19,6 @@ import br.com.blogsanapi.repository.PublicationRepository;
 import br.com.blogsanapi.repository.UserRepository;
 
 @DataJpaTest
-@ActiveProfiles(profiles = "test")
 public class CommentRepositoryTest {
 
     @Autowired

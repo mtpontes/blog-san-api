@@ -21,7 +21,7 @@ import org.springframework.web.util.UriComponentsBuilder;
 import br.com.blogsanapi.model.comment.request.CommentRequestDTO;
 import br.com.blogsanapi.model.comment.response.CommentResponseDTO;
 import br.com.blogsanapi.model.publication.request.PublicationRequestDTO;
-import br.com.blogsanapi.model.publication.request.PublicationUpdateRequestDTO;
+import br.com.blogsanapi.model.publication.request.PublicationUpdateDTO;
 import br.com.blogsanapi.model.publication.response.PublicationResponseDTO;
 import br.com.blogsanapi.model.publication.response.PublicationResponseWithCommentsDTO;
 import br.com.blogsanapi.service.CommentService;
@@ -54,23 +54,21 @@ public class PublicationController {
 	protected ResponseEntity<PublicationResponseWithCommentsDTO> getPublication(@PageableDefault(size = 5) Pageable pageable, @PathVariable Long id) {
 		return ResponseEntity.ok(publicationService.getPublicationWithComments(pageable, id));
 	}
+
 	@GetMapping
 	protected ResponseEntity<Page<PublicationResponseDTO>> getPublicationsByParams(
 			@PageableDefault(size = 10) Pageable pageable,
 			@RequestParam(name = "date", required = false) LocalDate date,
-			@RequestParam(name = "userId", required = false) Long userId
-			) {
-		
+			@RequestParam(name = "userId", required = false) Long userId) {
+
 		return ResponseEntity.ok(publicationService.getAllPublications(pageable, date, userId));
 	}
 	
 	@PatchMapping("/{publicationId}")
 	@Transactional
-	protected ResponseEntity<PublicationResponseDTO> updatePublication(
-			@PathVariable Long publicationId, 
-			@RequestBody @Valid PublicationUpdateRequestDTO dto
-			) {
-		
+	protected ResponseEntity<PublicationResponseDTO> updatePublication(@PathVariable Long publicationId,
+			@RequestBody @Valid PublicationUpdateDTO dto) {
+
 		return ResponseEntity.ok(publicationService.updatePublication(publicationId, dto));
 	}
 	
@@ -86,14 +84,11 @@ public class PublicationController {
 	@Transactional
 	public ResponseEntity<CommentResponseDTO> createComment(
 			@PathVariable Long publicationId,
-			@RequestBody @Valid CommentRequestDTO dto,
-			UriComponentsBuilder uriBuilder
-			) {
+			@RequestBody @Valid CommentRequestDTO dto, 
+			UriComponentsBuilder uriBuilder) {
 
 		CommentResponseDTO commentResponse = commentService.createComment(publicationId, dto);
-		
 		var uri = uriBuilder.path("/publications/comments/{id}").buildAndExpand(dto).toUri();
-		
 		return ResponseEntity.created(uri).body(commentResponse);
 	}
 	@PostMapping("/comments/{targetCommentId}")
@@ -105,9 +100,7 @@ public class PublicationController {
 			) {
 		
 		CommentResponseDTO commentResponse = commentService.replyComment(targetCommentId, dto);
-		
 		var uri = uriBuilder.path("/publications/comments/{id}").buildAndExpand(dto).toUri();
-		
 		return ResponseEntity.created(uri).body(commentResponse);
 	}
 	

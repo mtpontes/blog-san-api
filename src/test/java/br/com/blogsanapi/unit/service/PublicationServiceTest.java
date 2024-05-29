@@ -27,7 +27,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import br.com.blogsanapi.model.comment.Comment;
 import br.com.blogsanapi.model.publication.Publication;
 import br.com.blogsanapi.model.publication.request.PublicationRequestDTO;
-import br.com.blogsanapi.model.publication.request.PublicationUpdateRequestDTO;
+import br.com.blogsanapi.model.publication.request.PublicationUpdateDTO;
 import br.com.blogsanapi.model.publication.response.PublicationResponseDTO;
 import br.com.blogsanapi.model.publication.response.PublicationResponseWithCommentsDTO;
 import br.com.blogsanapi.model.user.User;
@@ -149,7 +149,7 @@ class PublicationServiceTest {
 		// arrange
 		this.mockSecurity();
 		Publication publi = new Publication("description", "imagelink", new User());
-		PublicationUpdateRequestDTO dto = new PublicationUpdateRequestDTO("description-update");
+		PublicationUpdateDTO dto = new PublicationUpdateDTO("description-update");
 		when(pRepository.findByIdAndUserId(any(), any())).thenReturn(Optional.of(publi));
 		
 		// act

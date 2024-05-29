@@ -14,7 +14,7 @@ import br.com.blogsanapi.model.comment.Comment;
 import br.com.blogsanapi.model.comment.response.CommentResponseDTO;
 import br.com.blogsanapi.model.publication.Publication;
 import br.com.blogsanapi.model.publication.request.PublicationRequestDTO;
-import br.com.blogsanapi.model.publication.request.PublicationUpdateRequestDTO;
+import br.com.blogsanapi.model.publication.request.PublicationUpdateDTO;
 import br.com.blogsanapi.model.publication.response.PublicationResponseDTO;
 import br.com.blogsanapi.model.publication.response.PublicationResponseWithCommentsDTO;
 import br.com.blogsanapi.model.user.User;
@@ -65,7 +65,7 @@ public class PublicationService {
 		return publicationRepository.findAllByUserId(pageable, id).map(PublicationResponseDTO::new);
 	}
 	
-	public PublicationResponseDTO updatePublication(Long publicationId, PublicationUpdateRequestDTO dto) {
+	public PublicationResponseDTO updatePublication(Long publicationId, PublicationUpdateDTO dto) {
 		Publication publi = publicationRepository.findByIdAndUserId(publicationId, this.getUser().getId())
 				.orElseThrow(EntityNotFoundException::new);
 		

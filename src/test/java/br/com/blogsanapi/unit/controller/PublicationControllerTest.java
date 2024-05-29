@@ -29,7 +29,7 @@ import br.com.blogsanapi.model.comment.request.CommentRequestDTO;
 import br.com.blogsanapi.model.comment.response.CommentResponseDTO;
 import br.com.blogsanapi.model.publication.Publication;
 import br.com.blogsanapi.model.publication.request.PublicationRequestDTO;
-import br.com.blogsanapi.model.publication.request.PublicationUpdateRequestDTO;
+import br.com.blogsanapi.model.publication.request.PublicationUpdateDTO;
 import br.com.blogsanapi.model.publication.response.PublicationResponseDTO;
 import br.com.blogsanapi.model.user.User;
 import br.com.blogsanapi.model.user.UserRole;
@@ -106,7 +106,7 @@ public class PublicationControllerTest {
     @Autowired
     private JacksonTester<CommentRequestDTO> commentRequestJson;
     @Autowired
-    private JacksonTester<PublicationUpdateRequestDTO> publicationUpdateJson;
+    private JacksonTester<PublicationUpdateDTO> publicationUpdateJson;
 
     @Autowired
     private JacksonTester<PublicationResponseDTO> publicationResponseJson;
@@ -140,7 +140,7 @@ public class PublicationControllerTest {
     @WithMockUser(roles = {"ADMIN", "CLIENT"})
     void updatePublicationTest() throws Exception {
         // act
-        var update = new PublicationUpdateRequestDTO("update");
+        var update = new PublicationUpdateDTO("update");
         when(publicationService.updatePublication(any(), any())).thenReturn(publicationResponseDTO);
 
         var resultRequestWithEmptyJsonBody = mvc.perform(

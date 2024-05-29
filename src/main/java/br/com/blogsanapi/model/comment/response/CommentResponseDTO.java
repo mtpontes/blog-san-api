@@ -17,10 +17,12 @@ public record CommentResponseDTO(
 		Long parentCommentId) {
 	
 	public CommentResponseDTO(Comment c) {
-		this(c.getId(), c.getUser().getId(), c.getUser().getName() , c.getText(), c.getDate(), c.getEdited(), getParentCommentId(c));
-	}
-	
-	public static Long getParentCommentId(Comment c) {
-		return c.getParentComment() != null ? c.getParentComment().getId() : null;
+		this(
+				c.getId(), 
+				c.getUser().getId(), 
+				c.getUser().getName() , 
+				c.getText(), c.getDate(), 
+				c.getEdited(), 
+				c.getParentComment() == null ? null : c.getParentComment().getId());
 	}
 }
