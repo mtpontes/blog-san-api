@@ -2,7 +2,6 @@ package br.com.blogsanapi.integration.controller;
 
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 
-import java.util.Base64;
 import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
