@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.json.AutoConfigureJsonTesters;
@@ -110,145 +111,152 @@ public class PublicationControllerIntegrationTest {
     }
 
     @Test
+    @DisplayName("Create Publication Test - Should return new publication details")
     void createPublicationTest() throws Exception {
         // arrange
         var requestBody = new PublicationRequestDTO("Testing", "imageLink");
-        
+
         // act
         var result = mvc.perform(
                 post("/publications")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(publicationRequestDTOJson.write(requestBody).getJson())
                         .header("Authorization", "Bearer " + this.token)
-                        
+
         ).andReturn().getResponse();
 
         var responseBody = publicationResponseDTOJson.parseObject(result.getContentAsString());
 
         // assert
-        Assertions.assertNotNull(responseBody.publicationId());
-        Assertions.assertEquals(requestBody.description(), responseBody.description());
+        Assertions.assertNotNull(responseBody.publicationId(), "The publication ID should not be null");
+        Assertions.assertEquals(requestBody.description(), responseBody.description(), "The description should match");
     }
     
     @Test
+    @DisplayName("Update Publication Test - Should update publication details")
     void updatePublicationTest() throws Exception {
-    	// arrange
-    	var requestBody = new PublicationUpdateDTO("description updated");
-    	
-    	// act
-    	var result = mvc.perform(
-    			patch("/publications/1")
-    			.contentType(MediaType.APPLICATION_JSON)
-    			.content(publicationUpdateDTOJson.write(requestBody).getJson())
-    			.header("Authorization", "Bearer " + this.token)
-    			
-    			).andReturn().getResponse();
-    	
-    	var responseBody = publicationResponseDTOJson.parseObject(result.getContentAsString());
-    	
-    	// assert
-    	Assertions.assertNotNull(responseBody.publicationId());
-    	Assertions.assertEquals(requestBody.description(), responseBody.description());
+        // arrange
+        var requestBody = new PublicationUpdateDTO("description updated");
+
+        // act
+        var result = mvc.perform(
+                patch("/publications/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(publicationUpdateDTOJson.write(requestBody).getJson())
+                        .header("Authorization", "Bearer " + this.token)
+
+        ).andReturn().getResponse();
+
+        var responseBody = publicationResponseDTOJson.parseObject(result.getContentAsString());
+
+        // assert
+        Assertions.assertNotNull(responseBody.publicationId(), "The publication ID should not be null");
+        Assertions.assertEquals(requestBody.description(), responseBody.description(), "The description should match");
     }
-    
+
     @Test
+    @DisplayName("Delete Publication Test - Should return NO_CONTENT status")
     void deletePublicationTest() throws Exception {
-    	// act
-    	var result = mvc.perform(
-    			delete("/publications/1")
-    			.contentType(MediaType.APPLICATION_JSON)
-    			.header("Authorization", "Bearer " + this.token)
-    			
-    			).andReturn().getResponse();
-    	
-    	// assert
-    	Assertions.assertEquals(HttpStatus.NO_CONTENT.value(), result.getStatus());
+        // act
+        var result = mvc.perform(
+                delete("/publications/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + this.token)
+
+        ).andReturn().getResponse();
+
+        // assert
+        Assertions.assertEquals(HttpStatus.NO_CONTENT.value(), result.getStatus(), "The status should be 204 NO_CONTENT");
     }
-    
+
     @Test
+    @DisplayName("Create Comment Test - Should return new comment details")
     void createCommentTest() throws Exception {
         // arrange
         var requestBody = new CommentRequestDTO("Testing");
-        
+
         // act
         var result = mvc.perform(
                 post("/publications/1/comments")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(commentRequestDTOJson.write(requestBody).getJson())
                         .header("Authorization", "Bearer " + this.token)
-                        
+
         ).andReturn().getResponse();
 
         var responseBody = commentResponseDTOJson.parseObject(result.getContentAsString());
 
         // assert
-        Assertions.assertNull(responseBody.parentCommentId());
-        Assertions.assertFalse(responseBody.edited());
-        Assertions.assertEquals(requestBody.text(), responseBody.text());
-        
-        Assertions.assertNotNull(responseBody.commentId());
-        Assertions.assertNotNull(responseBody.nameUser());
-        Assertions.assertNotNull(responseBody.date());
+        Assertions.assertNull(responseBody.parentCommentId(), "The parent comment ID should be null");
+        Assertions.assertFalse(responseBody.edited(), "The comment should not be edited");
+        Assertions.assertEquals(requestBody.text(), responseBody.text(), "The text should match");
+
+        Assertions.assertNotNull(responseBody.commentId(), "The comment ID should not be null");
+        Assertions.assertNotNull(responseBody.nameUser(), "The user name should not be null");
+        Assertions.assertNotNull(responseBody.date(), "The date should not be null");
     }
-    
+
     @Test
+    @DisplayName("Create Reply Test - Should return new reply details")
     void createReplyTest() throws Exception {
-    	// arrange
-    	var requestBody = new CommentRequestDTO("Testing");
-    	
-    	// act
-    	var result = mvc.perform(
-    			post("/publications/comments/1")
-    			.contentType(MediaType.APPLICATION_JSON)
-    			.content(commentRequestDTOJson.write(requestBody).getJson())
-    			.header("Authorization", "Bearer " + this.token)
-    			
-    			).andReturn().getResponse();
-    	
-    	var responseBody = commentResponseDTOJson.parseObject(result.getContentAsString());
-    	
-    	// assert
-    	Assertions.assertFalse(responseBody.edited());
-    	Assertions.assertEquals(requestBody.text(), responseBody.text());
+        // arrange
+        var requestBody = new CommentRequestDTO("Testing");
 
-    	Assertions.assertNotNull(responseBody.commentId());
-    	Assertions.assertNotNull(responseBody.nameUser());
-    	Assertions.assertNotNull(responseBody.date());
-    	Assertions.assertNotNull(responseBody.parentCommentId());
+        // act
+        var result = mvc.perform(
+                post("/publications/comments/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(commentRequestDTOJson.write(requestBody).getJson())
+                        .header("Authorization", "Bearer " + this.token)
+
+        ).andReturn().getResponse();
+
+        var responseBody = commentResponseDTOJson.parseObject(result.getContentAsString());
+
+        // assert
+        Assertions.assertFalse(responseBody.edited(), "The reply should not be edited");
+        Assertions.assertEquals(requestBody.text(), responseBody.text(), "The text should match");
+
+        Assertions.assertNotNull(responseBody.commentId(), "The comment ID should not be null");
+        Assertions.assertNotNull(responseBody.nameUser(), "The user name should not be null");
+        Assertions.assertNotNull(responseBody.date(), "The date should not be null");
+        Assertions.assertNotNull(responseBody.parentCommentId(), "The parent comment ID should not be null");
     }
-    
+
     @Test
+    @DisplayName("Update Comment Test - Should update comment details")
     void updateCommentTest() throws Exception {
-    	// arrange
-    	var requestBody = new CommentRequestDTO("description updated");
-    	
-    	// act
-    	var result = mvc.perform(
-    			patch("/publications/comments/1")
-    			.contentType(MediaType.APPLICATION_JSON)
-    			.content(commentRequestDTOJson.write(requestBody).getJson())
-    			.header("Authorization", "Bearer " + this.token)
-    			
-    			).andReturn().getResponse();
-    	
-    	var responseBody = commentResponseDTOJson.parseObject(result.getContentAsString());
-    	
-    	// assert
-    	Assertions.assertTrue(responseBody.edited());
-    	Assertions.assertEquals(requestBody.text(), responseBody.text());
+        // arrange
+        var requestBody = new CommentRequestDTO("description updated");
+
+        // act
+        var result = mvc.perform(
+                patch("/publications/comments/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(commentRequestDTOJson.write(requestBody).getJson())
+                        .header("Authorization", "Bearer " + this.token)
+
+        ).andReturn().getResponse();
+
+        var responseBody = commentResponseDTOJson.parseObject(result.getContentAsString());
+
+        // assert
+        Assertions.assertTrue(responseBody.edited(), "The comment should be edited");
+        Assertions.assertEquals(requestBody.text(), responseBody.text(), "The text should match");
     }
 
     @Test
+    @DisplayName("Delete Comment Test - Should return NO_CONTENT status")
     void deleteCommentTest() throws Exception {
-    	// act
-    	var result = mvc.perform(
-    			delete("/publications/comments/1")
-    			.contentType(MediaType.APPLICATION_JSON)
-    			.header("Authorization", "Bearer " + this.token)
-    			
-    			).andReturn().getResponse();
-    	
-    	// assert
-    	Assertions.assertEquals(HttpStatus.NO_CONTENT.value(), result.getStatus());
+        // act
+        var result = mvc.perform(
+                delete("/publications/comments/1")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .header("Authorization", "Bearer " + this.token)
+
+        ).andReturn().getResponse();
+
+        // assert
+        Assertions.assertEquals(HttpStatus.NO_CONTENT.value(), result.getStatus(), "The status should be 204 NO_CONTENT");
     }
 }
