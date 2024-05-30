@@ -38,117 +38,120 @@ import br.com.blogsanapi.utils.TokenUtils;
 @DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
 public class AuthenticationControllerIntegrationTest {
 
-	@Autowired 
-	BCryptPasswordEncoder encoder;
-	@Autowired 
-	UserRepository userRepository;
+        @Autowired
+        BCryptPasswordEncoder encoder;
+        @Autowired
+        UserRepository userRepository;
 
-    @Autowired
-    private MockMvc mvc;
+        @Autowired
+        private MockMvc mvc;
 
-    @Autowired
-    private JacksonTester<AuthenticationDTO> authenticationDTOJson;
-    @Autowired
-    private JacksonTester<RegisterDTO> registerDTOJson;
-    @Autowired
-    private JacksonTester<LoginResponseDTO> loginResponseDTOJson;
-	
-    @BeforeEach
-    void setup() throws Exception {
-    	List<User> users = List.of(
-    			User.builder().name("Tester-san").login("test").password(encoder.encode("test")).role(UserRole.ADMIN).build(),
-    			User.builder().name("Client-san").login("client").password(encoder.encode("client")).role(UserRole.CLIENT).build()
-    			);
-    	userRepository.saveAll(users);
-    }
+        @Autowired
+        private JacksonTester<AuthenticationDTO> authenticationDTOJson;
+        @Autowired
+        private JacksonTester<RegisterDTO> registerDTOJson;
+        @Autowired
+        private JacksonTester<LoginResponseDTO> loginResponseDTOJson;
 
-    @Test
-    @DisplayName("Login Test - Should return valid token")
-    void loginTest() throws Exception {
-        // arrange
-        var requestBody = new AuthenticationDTO("test", "test");
+        @BeforeEach
+        void setup() throws Exception {
+                List<User> users = List.of(
+                                User.builder().name("Tester-san").login("test").password(encoder.encode("test"))
+                                                .role(UserRole.ADMIN).build(),
+                                User.builder().name("Client-san").login("client").password(encoder.encode("client"))
+                                                .role(UserRole.CLIENT).build());
+                userRepository.saveAll(users);
+        }
 
-        // act
-        var result = mvc.perform(
-                post("/auth/login")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(authenticationDTOJson.write(requestBody).getJson())
-        ).andReturn().getResponse();
+        @Test
+        @DisplayName("Login Test - Should return valid token")
+        void loginTest() throws Exception {
+                // arrange
+                var requestBody = new AuthenticationDTO("test", "test");
 
-        var responseBody = loginResponseDTOJson.parseObject(result.getContentAsString());
+                // act
+                var result = mvc.perform(
+                                post("/auth/login")
+                                                .contentType(MediaType.APPLICATION_JSON)
+                                                .content(authenticationDTOJson.write(requestBody).getJson()))
+                                .andReturn().getResponse();
 
-        // assert
-        Assertions.assertNotNull(responseBody.token(), "The token should not be null");
-        Assertions.assertFalse(responseBody.token().isBlank(), "The token should not be blank");
-        Assertions.assertTrue(TokenUtils.isValidTokenFormat(responseBody.token()), "The token format should be valid");
-    }
+                var responseBody = loginResponseDTOJson.parseObject(result.getContentAsString());
 
-    @Test
-    @DisplayName("Register Test - Should return OK status")
-    void registerTest() throws Exception {
-        // arrange
-        var requestBody = new RegisterDTO("newUser", "test", "Name Test", "email@test.com");
+                // assert
+                Assertions.assertNotNull(responseBody.token(), "The token should not be null");
+                Assertions.assertFalse(responseBody.token().isBlank(), "The token should not be blank");
+                Assertions.assertTrue(TokenUtils.isValidTokenFormat(responseBody.token()),
+                                "The token format should be valid");
+        }
 
-        // act
-        var result = mvc.perform(
-                post("/auth/register")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(registerDTOJson.write(requestBody).getJson())
-        ).andReturn().getResponse();
+        @Test
+        @DisplayName("Register Test - Should return OK status")
+        void registerTest() throws Exception {
+                // arrange
+                var requestBody = new RegisterDTO("newUser", "test", "Name Test", "email@test.com");
 
-        // assert
-        Assertions.assertEquals(HttpStatus.OK.value(), result.getStatus(), "The status should be 200 OK");
-    }
+                // act
+                var result = mvc.perform(
+                                post("/auth/register")
+                                                .contentType(MediaType.APPLICATION_JSON)
+                                                .content(registerDTOJson.write(requestBody).getJson()))
+                                .andReturn().getResponse();
 
-    @Test
-    @DisplayName("Admin Register Test 01 - Should return OK status")
-    void adminRegisterTest01() throws Exception {
-        // arrange
-        var requestBodyToLogin = new AuthenticationDTO("test", "test");
-        var tokenJson = mvc.perform(
-                post("/auth/login")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(authenticationDTOJson.write(requestBodyToLogin).getJson())
-        ).andReturn().getResponse();
-        var token = loginResponseDTOJson.parseObject(tokenJson.getContentAsString()).token();
+                // assert
+                Assertions.assertEquals(HttpStatus.OK.value(), result.getStatus(), "The status should be 200 OK");
+        }
 
-        var requestBodyToCreateAdmin = new RegisterDTO("newUser", "test", "Name Test", "email@test.com");
+        @Test
+        @DisplayName("Admin Register Test 01 - Should return OK status")
+        void adminRegisterTest01() throws Exception {
+                // arrange
+                var requestBodyToLogin = new AuthenticationDTO("test", "test");
+                var tokenJson = mvc.perform(
+                                post("/auth/login")
+                                                .contentType(MediaType.APPLICATION_JSON)
+                                                .content(authenticationDTOJson.write(requestBodyToLogin).getJson()))
+                                .andReturn().getResponse();
+                var token = loginResponseDTOJson.parseObject(tokenJson.getContentAsString()).token();
 
-        // act
-        var result = mvc.perform(
-                post("/auth/register")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(registerDTOJson.write(requestBodyToCreateAdmin).getJson())
-                        .header("Authorization", token)
-        ).andReturn().getResponse();
+                var requestBodyToCreateAdmin = new RegisterDTO("newUser", "test", "Name Test", "email@test.com");
 
-        // assert
-        Assertions.assertEquals(HttpStatus.OK.value(), result.getStatus(), "The status should be 200 OK");
-    }
+                // act
+                var result = mvc.perform(
+                                post("/auth/register")
+                                                .contentType(MediaType.APPLICATION_JSON)
+                                                .content(registerDTOJson.write(requestBodyToCreateAdmin).getJson())
+                                                .header("Authorization", "Bearer " + token))
+                                .andReturn().getResponse();
 
-    @Test
-    @DisplayName("Admin Register Test 02 - Should return FORBIDDEN status")
-    void adminRegisterTest02() throws Exception {
-        // arrange
-        var requestBodyToLogin = new AuthenticationDTO("client", "client");
-        var tokenJson = mvc.perform(
-                post("/auth/login")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(authenticationDTOJson.write(requestBodyToLogin).getJson())
-        ).andReturn().getResponse();
-        var token = loginResponseDTOJson.parseObject(tokenJson.getContentAsString()).token();
+                // assert
+                Assertions.assertEquals(HttpStatus.OK.value(), result.getStatus(), "The status should be 200 OK");
+        }
 
-        var requestBodyToCreateAdmin = new RegisterDTO("newUser", "test", "Name Test", "email@test.com");
+        @Test
+        @DisplayName("Admin Register Test 02 - Should return FORBIDDEN status")
+        void adminRegisterTest02() throws Exception {
+                // arrange
+                var requestBodyToLogin = new AuthenticationDTO("client", "client");
+                var tokenJson = mvc.perform(
+                                post("/auth/login")
+                                                .contentType(MediaType.APPLICATION_JSON)
+                                                .content(authenticationDTOJson.write(requestBodyToLogin).getJson()))
+                                .andReturn().getResponse();
+                var token = loginResponseDTOJson.parseObject(tokenJson.getContentAsString()).token();
 
-        // act
-        var result = mvc.perform(
-                post("/auth/admin/register")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(registerDTOJson.write(requestBodyToCreateAdmin).getJson())
-                        .header("Authorization", token)
-        ).andReturn().getResponse();
+                var requestBodyToCreateAdmin = new RegisterDTO("newUser", "test", "Name Test", "email@test.com");
 
-        // assert
-        Assertions.assertEquals(HttpStatus.FORBIDDEN.value(), result.getStatus(), "The status should be 403 FORBIDDEN");
-    }
+                // act
+                var result = mvc.perform(
+                                post("/auth/admin/register")
+                                                .contentType(MediaType.APPLICATION_JSON)
+                                                .content(registerDTOJson.write(requestBodyToCreateAdmin).getJson())
+                                                .header("Authorization", "Bearer " + token))
+                                .andReturn().getResponse();
+
+                // assert
+                Assertions.assertEquals(HttpStatus.FORBIDDEN.value(), result.getStatus(),
+                                "The status should be 403 FORBIDDEN");
+        }
 }
