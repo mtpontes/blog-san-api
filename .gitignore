@@ -15,3 +15,4 @@ build/
 .mvn/
 HELP.md
 /.metadata/
+.vscode/settings.json
