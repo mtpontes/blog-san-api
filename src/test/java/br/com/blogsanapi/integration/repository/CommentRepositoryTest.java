@@ -5,12 +5,15 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 
+import br.com.blogsanapi.integration.MySQLTestContainer;
 import br.com.blogsanapi.model.comment.Comment;
 import br.com.blogsanapi.model.publication.Publication;
 import br.com.blogsanapi.model.user.User;
@@ -18,7 +21,8 @@ import br.com.blogsanapi.repository.CommentRepository;
 import br.com.blogsanapi.repository.PublicationRepository;
 import br.com.blogsanapi.repository.UserRepository;
 
-@DataJpaTest
+@SpringBootTest
+@ExtendWith(MySQLTestContainer.class)
 public class CommentRepositoryTest {
 
     @Autowired
@@ -29,6 +33,9 @@ public class CommentRepositoryTest {
 
     @Autowired
     private PublicationRepository publicationRepository;
+
+    @BeforeAll
+    private static void setup(){}
 
     @Test
     @DisplayName("Test finding all comments by publication ID")
@@ -52,13 +59,16 @@ public class CommentRepositoryTest {
         Map<Long, Comment> commentsMap = comments.stream().collect(Collectors.toMap(Comment::getId, c -> c));
 
         // act
-        List<Comment> recovers = commentRepository.findAllByPublicationId(PageRequest.of(0, 3), publications.get(0).getId())
-                .getContent();
+        List<Comment> recovers = commentRepository.findAllByPublicationId(
+                PageRequest.of(0, 3), publications.get(0).getId())
+                        .getContent();
 
         // assert
         Assertions.assertEquals(3, recovers.size(), "Should have returned 3 comments");
-        recovers.forEach(c -> Assertions.assertEquals(commentsMap.get(c.getId()).getId(), c.getId(),
-                "Comment IDs should match"));
+        recovers.forEach(c -> {
+                Assertions.assertEquals(commentsMap.get(c.getId()).getId(), c.getId(),"Comment IDs should match");
+                Assertions.assertEquals(commentsMap.get(c.getId()).getText(), c.getText(),"Comment text should match");
+        });
     }
 
     @Test
