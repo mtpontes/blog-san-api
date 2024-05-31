@@ -5,21 +5,14 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.json.AutoConfigureJsonTesters;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.json.JacksonTester;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.web.servlet.MockMvc;
 
 import br.com.blogsanapi.model.user.User;
@@ -30,18 +23,8 @@ import br.com.blogsanapi.model.user.auth.RegisterDTO;
 import br.com.blogsanapi.repository.UserRepository;
 import br.com.blogsanapi.utils.TokenUtils;
 
-@SpringBootTest
-@AutoConfigureMockMvc
-@AutoConfigureJsonTesters
-@ActiveProfiles(profiles = "test")
-@PropertySource("classpath:application-test.properties")
-@DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
+@IntegrationTestsEndToEnd
 public class AuthenticationControllerIntegrationTest {
-
-        @Autowired
-        BCryptPasswordEncoder encoder;
-        @Autowired
-        UserRepository userRepository;
 
         @Autowired
         private MockMvc mvc;
@@ -53,21 +36,23 @@ public class AuthenticationControllerIntegrationTest {
         @Autowired
         private JacksonTester<LoginResponseDTO> loginResponseDTOJson;
 
-        @BeforeEach
-        void setup() throws Exception {
+        @BeforeAll
+        static void setup(
+                @Autowired UserRepository repository, 
+                @Autowired BCryptPasswordEncoder encoder) throws Exception {
                 List<User> users = List.of(
-                                User.builder().name("Tester-san").login("test").password(encoder.encode("test"))
+                                User.builder().name("Tester-san").login("adminLogin").password(encoder.encode("adminPassword"))
                                                 .role(UserRole.ADMIN).build(),
-                                User.builder().name("Client-san").login("client").password(encoder.encode("client"))
+                                User.builder().name("Client-san").login("clientLogin").password(encoder.encode("clientPassword"))
                                                 .role(UserRole.CLIENT).build());
-                userRepository.saveAll(users);
+                repository.saveAll(users);
         }
 
         @Test
         @DisplayName("Login Test - Should return valid token")
         void loginTest() throws Exception {
                 // arrange
-                var requestBody = new AuthenticationDTO("test", "test");
+                var requestBody = new AuthenticationDTO("adminLogin", "adminPassword");
 
                 // act
                 var result = mvc.perform(
@@ -89,7 +74,7 @@ public class AuthenticationControllerIntegrationTest {
         @DisplayName("Register Test - Should return OK status")
         void registerTest() throws Exception {
                 // arrange
-                var requestBody = new RegisterDTO("newUser", "test", "Name Test", "email@test.com");
+                var requestBody = new RegisterDTO("registerTest", "registerTest", "Register Test-san", "email@registertest.com");
 
                 // act
                 var result = mvc.perform(
@@ -106,7 +91,7 @@ public class AuthenticationControllerIntegrationTest {
         @DisplayName("Admin Register Test 01 - Should return OK status")
         void adminRegisterTest01() throws Exception {
                 // arrange
-                var requestBodyToLogin = new AuthenticationDTO("test", "test");
+                var requestBodyToLogin = new AuthenticationDTO("adminLogin", "adminPassword");
                 var tokenJson = mvc.perform(
                                 post("/auth/login")
                                                 .contentType(MediaType.APPLICATION_JSON)
@@ -132,7 +117,7 @@ public class AuthenticationControllerIntegrationTest {
         @DisplayName("Admin Register Test 02 - Should return FORBIDDEN status")
         void adminRegisterTest02() throws Exception {
                 // arrange
-                var requestBodyToLogin = new AuthenticationDTO("client", "client");
+                var requestBodyToLogin = new AuthenticationDTO("clientLogin", "clientPassword");
                 var tokenJson = mvc.perform(
                                 post("/auth/login")
                                                 .contentType(MediaType.APPLICATION_JSON)
