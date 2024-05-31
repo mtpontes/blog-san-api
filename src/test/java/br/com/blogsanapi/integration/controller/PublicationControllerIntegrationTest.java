@@ -7,21 +7,15 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import java.util.List;
 
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.autoconfigure.json.AutoConfigureJsonTesters;
-import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.boot.test.json.JacksonTester;
-import org.springframework.context.annotation.PropertySource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
-import org.springframework.test.annotation.DirtiesContext;
-import org.springframework.test.annotation.DirtiesContext.ClassMode;
-import org.springframework.test.context.ActiveProfiles;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 
 import br.com.blogsanapi.model.comment.Comment;
@@ -38,12 +32,7 @@ import br.com.blogsanapi.repository.CommentRepository;
 import br.com.blogsanapi.repository.PublicationRepository;
 import br.com.blogsanapi.repository.UserRepository;
 
-@SpringBootTest
-@AutoConfigureMockMvc
-@AutoConfigureJsonTesters
-@ActiveProfiles(profiles = "test")
-@PropertySource("classpath:application-test.properties")
-@DirtiesContext(classMode = ClassMode.BEFORE_EACH_TEST_METHOD)
+@IntegrationTestsEndToEnd
 public class PublicationControllerIntegrationTest {
 
     @Autowired
@@ -74,8 +63,17 @@ public class PublicationControllerIntegrationTest {
 	@Autowired 
 	BCryptPasswordEncoder encoder;
 	
-    @BeforeEach
-    void setup() throws Exception {
+    @BeforeAll
+    static void setupContainer() {}
+
+    @BeforeAll
+    static void setup(
+        @Autowired UserRepository userRepository,
+        @Autowired PublicationRepository publicationRepository,
+        @Autowired CommentRepository commentRepository,
+        @Autowired PasswordEncoder encoder,
+        @Autowired MockMvc mvc) throws Exception {
+            
     	List<User> users = List.of(
     			User.builder().name("tester").login("test").password(encoder.encode("test")).role(UserRole.ADMIN).build()
     			);
@@ -96,18 +94,24 @@ public class PublicationControllerIntegrationTest {
     			Comment.builder().text("c5").user(users.get(0)).publication(publications.get(0)).build()
     			);
     	commentRepository.saveAll(comments);
-    	
+    }
+
+    private String getTokenValue(String token) {
+        return token
+                .split(":")[1]
+                .replace("\"", "")
+                .replace("}", "");
+    }
+
+    private String makeLoginAndGetToken() throws Exception {
         var response = mvc.perform(
-        		post("/auth/login")
-        			.contentType(MediaType.APPLICATION_JSON)
-        			.content(authenticationDTOJson.write(new AuthenticationDTO("test", "test")).getJson())
-        		)
-        		.andReturn().getResponse();
-        
-        this.token = response.getContentAsString()
-        				.split(":")[1]
-        				.replace("\"", "")
-        				.replace("}", "");
+            post("/auth/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(authenticationDTOJson.write(new AuthenticationDTO("test", "test")).getJson())
+            )
+            .andReturn().getResponse();
+
+        return getTokenValue(response.getContentAsString());
     }
 
     @Test
@@ -121,7 +125,7 @@ public class PublicationControllerIntegrationTest {
                 post("/publications")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(publicationRequestDTOJson.write(requestBody).getJson())
-                        .header("Authorization", "Bearer " + this.token)
+                        .header("Authorization", "Bearer " + makeLoginAndGetToken())
 
         ).andReturn().getResponse();
 
@@ -140,10 +144,10 @@ public class PublicationControllerIntegrationTest {
 
         // act
         var result = mvc.perform(
-                patch("/publications/1")
+                patch("/publications/2")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(publicationUpdateDTOJson.write(requestBody).getJson())
-                        .header("Authorization", "Bearer " + this.token)
+                        .header("Authorization", "Bearer " + makeLoginAndGetToken())
 
         ).andReturn().getResponse();
 
@@ -159,9 +163,9 @@ public class PublicationControllerIntegrationTest {
     void deletePublicationTest() throws Exception {
         // act
         var result = mvc.perform(
-                delete("/publications/1")
+                delete("/publications/3")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .header("Authorization", "Bearer " + this.token)
+                        .header("Authorization", "Bearer " + makeLoginAndGetToken())
 
         ).andReturn().getResponse();
 
@@ -180,7 +184,7 @@ public class PublicationControllerIntegrationTest {
                 post("/publications/1/comments")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(commentRequestDTOJson.write(requestBody).getJson())
-                        .header("Authorization", "Bearer " + this.token)
+                        .header("Authorization", "Bearer " + makeLoginAndGetToken())
 
         ).andReturn().getResponse();
 
@@ -207,7 +211,7 @@ public class PublicationControllerIntegrationTest {
                 post("/publications/comments/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(commentRequestDTOJson.write(requestBody).getJson())
-                        .header("Authorization", "Bearer " + this.token)
+                        .header("Authorization", "Bearer " + makeLoginAndGetToken())
 
         ).andReturn().getResponse();
 
@@ -231,10 +235,10 @@ public class PublicationControllerIntegrationTest {
 
         // act
         var result = mvc.perform(
-                patch("/publications/comments/1")
+                patch("/publications/comments/2")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(commentRequestDTOJson.write(requestBody).getJson())
-                        .header("Authorization", "Bearer " + this.token)
+                        .header("Authorization", "Bearer " + makeLoginAndGetToken())
 
         ).andReturn().getResponse();
 
@@ -250,9 +254,9 @@ public class PublicationControllerIntegrationTest {
     void deleteCommentTest() throws Exception {
         // act
         var result = mvc.perform(
-                delete("/publications/comments/1")
+                delete("/publications/comments/3")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .header("Authorization", "Bearer " + this.token)
+                        .header("Authorization", "Bearer " + makeLoginAndGetToken())
 
         ).andReturn().getResponse();
 
