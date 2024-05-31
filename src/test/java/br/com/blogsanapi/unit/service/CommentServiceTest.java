@@ -150,7 +150,7 @@ class CommentServiceTest {
 	void updateCommentTest() {
 		// arrange
 		this.mockSecurity();
-		LocalDateTime DATE_COMMENT = LocalDateTime.now();
+		LocalDateTime DATE_COMMENT = LocalDateTime.now().minusMinutes(10);
 		Boolean EDITED_COMMENT = false;
 		Comment comment = Comment.builder()
 							.id(100L)
