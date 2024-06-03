@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
@@ -12,6 +13,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
+import org.springframework.test.annotation.DirtiesContext;
 
 import br.com.blogsanapi.integration.MySQLTestContainer;
 import br.com.blogsanapi.model.comment.Comment;
@@ -23,6 +25,7 @@ import br.com.blogsanapi.repository.UserRepository;
 
 @SpringBootTest
 @ExtendWith(MySQLTestContainer.class)
+@DirtiesContext
 public class CommentRepositoryTest {
 
     @Autowired
@@ -34,17 +37,14 @@ public class CommentRepositoryTest {
     @Autowired
     private PublicationRepository publicationRepository;
 
-    @BeforeAll
-    private static void setup(){}
-
     @Test
     @DisplayName("Test finding all comments by publication ID")
     void findAllByParamsTest() {
     	// arrange
         User user = userRepository.save(User.builder().name("User-san").login("login").build());
         List<Publication> publications = List.of(
-                new Publication("p1", "link1", user),
-                new Publication("p2", "link2", user)
+                new Publication("INTROMETIDO 1", "link1", user),
+                new Publication("INTROMETIDO 2", "link2", user)
         );
         publicationRepository.saveAll(publications);
 
