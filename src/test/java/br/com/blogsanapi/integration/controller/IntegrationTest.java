@@ -11,6 +11,7 @@ import org.springframework.boot.test.autoconfigure.json.AutoConfigureJsonTesters
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureWebMvc;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.annotation.DirtiesContext;
 
 import br.com.blogsanapi.integration.MySQLTestContainer;
 
@@ -22,4 +23,5 @@ import br.com.blogsanapi.integration.MySQLTestContainer;
 @AutoConfigureMockMvc
 @AutoConfigureJsonTesters
 @ImportAutoConfiguration
-public @interface IntegrationTestsEndToEnd {}
+@DirtiesContext
+public @interface IntegrationTest {}
