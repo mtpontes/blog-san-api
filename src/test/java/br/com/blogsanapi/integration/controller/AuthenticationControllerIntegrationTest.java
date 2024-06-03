@@ -23,7 +23,7 @@ import br.com.blogsanapi.model.user.auth.RegisterDTO;
 import br.com.blogsanapi.repository.UserRepository;
 import br.com.blogsanapi.utils.TokenUtils;
 
-@IntegrationTestsEndToEnd
+@IntegrationTest
 public class AuthenticationControllerIntegrationTest {
 
         @Autowired

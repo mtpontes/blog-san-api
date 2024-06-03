@@ -32,7 +32,7 @@ import br.com.blogsanapi.repository.CommentRepository;
 import br.com.blogsanapi.repository.PublicationRepository;
 import br.com.blogsanapi.repository.UserRepository;
 
-@IntegrationTestsEndToEnd
+@IntegrationTest
 public class PublicationControllerIntegrationTest {
 
     @Autowired
@@ -52,7 +52,6 @@ public class PublicationControllerIntegrationTest {
     
     @Autowired
     private JacksonTester<AuthenticationDTO> authenticationDTOJson;
-    private String token;
     
 	@Autowired 
 	UserRepository userRepository;
@@ -63,9 +62,6 @@ public class PublicationControllerIntegrationTest {
 	@Autowired 
 	BCryptPasswordEncoder encoder;
 	
-    @BeforeAll
-    static void setupContainer() {}
-
     @BeforeAll
     static void setup(
         @Autowired UserRepository userRepository,
