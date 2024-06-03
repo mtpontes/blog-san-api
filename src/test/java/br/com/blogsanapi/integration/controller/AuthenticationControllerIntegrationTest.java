@@ -15,6 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 
+import br.com.blogsanapi.configs.IntegrationTest;
 import br.com.blogsanapi.model.user.User;
 import br.com.blogsanapi.model.user.UserRole;
 import br.com.blogsanapi.model.user.auth.AuthenticationDTO;

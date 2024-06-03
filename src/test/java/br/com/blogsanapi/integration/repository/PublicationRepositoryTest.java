@@ -14,7 +14,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.annotation.DirtiesContext;
 
-import br.com.blogsanapi.integration.MySQLTestContainer;
+import br.com.blogsanapi.configs.MySQLTestContainer;
 import br.com.blogsanapi.model.publication.Publication;
 import br.com.blogsanapi.model.user.User;
 import br.com.blogsanapi.repository.PublicationRepository;

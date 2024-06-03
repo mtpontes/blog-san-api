@@ -18,6 +18,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 
+import br.com.blogsanapi.configs.IntegrationTest;
 import br.com.blogsanapi.model.comment.Comment;
 import br.com.blogsanapi.model.comment.request.CommentRequestDTO;
 import br.com.blogsanapi.model.comment.response.CommentResponseDTO;

@@ -20,6 +20,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
+import br.com.blogsanapi.configs.UnityTest;
 import br.com.blogsanapi.model.comment.Comment;
 import br.com.blogsanapi.model.comment.request.CommentRequestDTO;
 import br.com.blogsanapi.model.comment.response.CommentResponseDTO;

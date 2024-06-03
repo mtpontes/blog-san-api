@@ -6,7 +6,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.test.context.ActiveProfiles;
 
-import br.com.blogsanapi.integration.H2Test;
+import br.com.blogsanapi.configs.H2Test;
 
 @SpringBootTest
 @ActiveProfiles("test")

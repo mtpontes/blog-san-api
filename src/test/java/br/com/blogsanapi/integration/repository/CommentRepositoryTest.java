@@ -4,9 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -15,7 +13,7 @@ import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.test.annotation.DirtiesContext;
 
-import br.com.blogsanapi.integration.MySQLTestContainer;
+import br.com.blogsanapi.configs.MySQLTestContainer;
 import br.com.blogsanapi.model.comment.Comment;
 import br.com.blogsanapi.model.publication.Publication;
 import br.com.blogsanapi.model.user.User;

@@ -1,4 +1,4 @@
-package br.com.blogsanapi.integration;
+package br.com.blogsanapi.configs;
 
 import org.junit.jupiter.api.extension.BeforeAllCallback;
 import org.junit.jupiter.api.extension.ExtensionContext;
