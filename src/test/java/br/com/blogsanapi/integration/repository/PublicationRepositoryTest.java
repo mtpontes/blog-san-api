@@ -3,9 +3,7 @@ package br.com.blogsanapi.integration.repository;
 import java.time.LocalDate;
 import java.util.List;
 
-import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
-import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -31,14 +29,8 @@ public class PublicationRepositoryTest {
     @Autowired
     private PublicationRepository publicationRepository;
 
-    @BeforeAll
-    private static void setup(){}
-
-    @AfterAll
-    private static void down(){}
-
     @Test
-    @DisplayName("Test finding all comments by publication ID")
+    @DisplayName("Test finding all publications by date and user ID")
     void findAllByParamsTest() {
     	// arrange
         User user1 = userRepository.save(User.builder().name("User-san").login("login").build());

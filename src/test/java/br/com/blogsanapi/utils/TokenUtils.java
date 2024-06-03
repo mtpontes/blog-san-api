@@ -4,7 +4,7 @@ import java.util.Base64;
 
 public class TokenUtils {
 
-    	public static boolean isValidTokenFormat(String token) {
+	public static boolean isValidTokenFormat(String token) {
 		String[] parts = token.split("\\.");
 
 		if(parts.length != 3) return false;

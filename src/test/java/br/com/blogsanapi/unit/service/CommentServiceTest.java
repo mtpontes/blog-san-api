@@ -82,9 +82,9 @@ class CommentServiceTest {
 		verify(repository).save(commentCaptor.capture());
 		Comment captured = commentCaptor.getValue();
 
+		Assertions.assertNull(captured.getParentComment(), "ParentComment must not be null");
 		Assertions.assertEquals(captured.getPublication().getId(), publicationId, "Id must be matched");
 		Assertions.assertEquals(captured.getText(), dto.text(), "Text must be matched");
-		Assertions.assertNull(captured.getParentComment(), "ParentComment must not be null");
 	}
 	
 	@Test

@@ -39,8 +39,8 @@ class PublicationTest {
 	@Test
 	@DisplayName("Instance with `imageLink` null must throw exception when updating `description` with invalid value")
 	void updateDescriptionTest01() {
-		Publication publiImageLinkNull = new Publication("description", null, null);
-		
+		Publication publiImageLinkNull = Publication.builder().description("description").imageLink(null).build();
+
 		// passing null
 		Assertions.assertThrows(
 				IllegalArgumentException.class, 
@@ -56,7 +56,7 @@ class PublicationTest {
 	@Test
 	@DisplayName("Instance with `imageLink` blank must throw exception when updating `description` with invalid value")
 	void updateDescriptionTest02() {
-		Publication publiImageLinkBlank = new Publication("description", "", null);
+		Publication publiImageLinkBlank = Publication.builder().description("description").imageLink("").build();
 		
 		// passing null
 		Assertions.assertThrows(
@@ -74,11 +74,9 @@ class PublicationTest {
 	@DisplayName("Must update `description` without throwing exception")
 	void updateDescriptionTest03() {
 		// arrange
-		Publication publiDescriptionNull = new Publication(null, "imageLink", null);
+		Publication publiDescriptionNull = Publication.builder().description(null).imageLink("imageLink").build();
 		
 		// act and assert
-		
-        // Testando atualizações em publiImageLinkNull
         Assertions.assertDoesNotThrow(() -> publiDescriptionNull.updateDescription(null), "Updating with null description should not throw exception");
         Assertions.assertNull(publiDescriptionNull.getDescription(), "Description should be null");
 
@@ -93,10 +91,9 @@ class PublicationTest {
 	@DisplayName("Must update `description` without throwing exception")
 	void updateDescriptionTest04() {
 		// arrange
-		Publication publiDescriptionBlank = new Publication("", "ImageLink", null);
+		Publication publiDescriptionBlank = Publication.builder().description("").imageLink("ImageLink").build();
 		
 		// act and assert
-		
 		Assertions.assertDoesNotThrow(() -> publiDescriptionBlank.updateDescription(null), "Updating with null description should not throw exception");
 		Assertions.assertNull(publiDescriptionBlank.getDescription(), "Description should be null");
 		

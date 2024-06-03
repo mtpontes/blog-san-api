@@ -54,15 +54,6 @@ public class PublicationControllerIntegrationTest {
     @Autowired
     private JacksonTester<AuthenticationDTO> authenticationDTOJson;
     
-	@Autowired 
-	UserRepository userRepository;
-	@Autowired 
-	PublicationRepository publicationRepository;
-	@Autowired 
-	CommentRepository commentRepository;
-	@Autowired 
-	BCryptPasswordEncoder encoder;
-	
     @BeforeAll
     static void setup(
         @Autowired UserRepository userRepository,
@@ -122,7 +113,7 @@ public class PublicationControllerIntegrationTest {
                 post("/publications")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(publicationRequestDTOJson.write(requestBody).getJson())
-                        .header("Authorization", "Bearer " + makeLoginAndGetToken())
+                        .header("Authorization", "Bearer " + this.makeLoginAndGetToken())
 
         ).andReturn().getResponse();
 
@@ -144,7 +135,7 @@ public class PublicationControllerIntegrationTest {
                 patch("/publications/2")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(publicationUpdateDTOJson.write(requestBody).getJson())
-                        .header("Authorization", "Bearer " + makeLoginAndGetToken())
+                        .header("Authorization", "Bearer " + this.makeLoginAndGetToken())
 
         ).andReturn().getResponse();
 
@@ -162,7 +153,7 @@ public class PublicationControllerIntegrationTest {
         var result = mvc.perform(
                 delete("/publications/3")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .header("Authorization", "Bearer " + makeLoginAndGetToken())
+                        .header("Authorization", "Bearer " + this.makeLoginAndGetToken())
 
         ).andReturn().getResponse();
 
@@ -181,7 +172,7 @@ public class PublicationControllerIntegrationTest {
                 post("/publications/1/comments")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(commentRequestDTOJson.write(requestBody).getJson())
-                        .header("Authorization", "Bearer " + makeLoginAndGetToken())
+                        .header("Authorization", "Bearer " + this.makeLoginAndGetToken())
 
         ).andReturn().getResponse();
 
@@ -208,7 +199,7 @@ public class PublicationControllerIntegrationTest {
                 post("/publications/comments/1")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(commentRequestDTOJson.write(requestBody).getJson())
-                        .header("Authorization", "Bearer " + makeLoginAndGetToken())
+                        .header("Authorization", "Bearer " + this.makeLoginAndGetToken())
 
         ).andReturn().getResponse();
 
@@ -235,7 +226,7 @@ public class PublicationControllerIntegrationTest {
                 patch("/publications/comments/2")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(commentRequestDTOJson.write(requestBody).getJson())
-                        .header("Authorization", "Bearer " + makeLoginAndGetToken())
+                        .header("Authorization", "Bearer " + this.makeLoginAndGetToken())
 
         ).andReturn().getResponse();
 
@@ -253,7 +244,7 @@ public class PublicationControllerIntegrationTest {
         var result = mvc.perform(
                 delete("/publications/comments/3")
                         .contentType(MediaType.APPLICATION_JSON)
-                        .header("Authorization", "Bearer " + makeLoginAndGetToken())
+                        .header("Authorization", "Bearer " + this.makeLoginAndGetToken())
 
         ).andReturn().getResponse();
 

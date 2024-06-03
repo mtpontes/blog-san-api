@@ -41,11 +41,21 @@ public class AuthenticationControllerIntegrationTest {
         static void setup(
                 @Autowired UserRepository repository, 
                 @Autowired BCryptPasswordEncoder encoder) throws Exception {
+
                 List<User> users = List.of(
-                                User.builder().name("Tester-san").login("adminLogin").password(encoder.encode("adminPassword"))
-                                                .role(UserRole.ADMIN).build(),
-                                User.builder().name("Client-san").login("clientLogin").password(encoder.encode("clientPassword"))
-                                                .role(UserRole.CLIENT).build());
+                                User.builder()
+                                        .name("Admin-san")
+                                        .login("adminLogin")
+                                        .password(encoder.encode("adminPassword"))
+                                        .role(UserRole.ADMIN)
+                                        .build(),
+
+                                User.builder()
+                                        .name("Client-san")
+                                        .login("clientLogin")
+                                        .password(encoder.encode("clientPassword"))
+                                        .role(UserRole.CLIENT)
+                                        .build());
                 repository.saveAll(users);
         }
 

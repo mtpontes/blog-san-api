@@ -35,8 +35,10 @@ class CommentTest {
 	@Test
 	@DisplayName("Should throw exception when passing invalid value")
 	void updateTextTest01() {
+		// arrange
 		Comment comment = new Comment("text", new User(), new Publication(), new Comment());
 		
+		// act and assert
 		Assertions.assertThrows(
 				IllegalArgumentException.class, 
 				() -> comment.updateText(null),
@@ -51,13 +53,12 @@ class CommentTest {
 	@Test
 	@DisplayName("Should not throw exception when passing valid value")
 	void updateTextTest02() {
+		// arrange
 		String NEW_TEXT_VALUE = "updated";
 		Comment comment = new Comment("text", new User(), new Publication(), new Comment());
 		
-		Assertions.assertDoesNotThrow(
-				() -> comment.updateText(NEW_TEXT_VALUE),
-				"Updating with valid value");
-		
-		Assertions.assertEquals(comment.getText(), NEW_TEXT_VALUE);
+		// act and assert
+		Assertions.assertDoesNotThrow(() -> comment.updateText(NEW_TEXT_VALUE), "Should not throw exception when updating with valid value");
+		Assertions.assertEquals(comment.getText(), NEW_TEXT_VALUE, "The text of the comment should be updated to the new value");
 	}
 }

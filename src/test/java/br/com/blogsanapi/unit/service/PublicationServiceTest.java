@@ -77,9 +77,10 @@ class PublicationServiceTest {
 		verify(pRepository).save(publicationCaptor.capture());
 		Publication publi = publicationCaptor.getValue();
 		
-		Assertions.assertEquals(dto.description(), publi.getDescription());
-		Assertions.assertEquals(dto.imageLink(), publi.getImageLink());
+		Assertions.assertEquals(dto.description(), publi.getDescription(), "The description of the publication does not match the DTO");
+		Assertions.assertEquals(dto.imageLink(), publi.getImageLink(), "The image link of the publication does not match the DTO");
 	}
+	
 	
 	@Test
 	@DisplayName("Must return a publication with comments")
