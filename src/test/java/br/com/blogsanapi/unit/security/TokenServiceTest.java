@@ -12,12 +12,12 @@ import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.interfaces.DecodedJWT;
 
-import br.com.blogsanapi.configs.UnityTest;
+import br.com.blogsanapi.configs.UnitTest;
 import br.com.blogsanapi.infra.exception.InvalidTokenException;
 import br.com.blogsanapi.infra.security.TokenService;
 import br.com.blogsanapi.model.user.User;
 
-@UnityTest
+@UnitTest
 public class TokenServiceTest {
 
     @Autowired

@@ -19,4 +19,4 @@ import org.springframework.test.context.ActiveProfiles;
 @AutoConfigureJsonTesters
 @ActiveProfiles(profiles = "test")
 @ExtendWith(H2Test.class)
-public @interface UnityTest {}
+public @interface UnitTest {}

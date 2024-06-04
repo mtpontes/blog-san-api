@@ -16,7 +16,7 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-import br.com.blogsanapi.configs.UnityTest;
+import br.com.blogsanapi.configs.UnitTest;
 import br.com.blogsanapi.model.user.User;
 import br.com.blogsanapi.model.user.UserRole;
 import br.com.blogsanapi.model.user.auth.AuthenticationDTO;
@@ -26,7 +26,7 @@ import br.com.blogsanapi.repository.UserRepository;
 import br.com.blogsanapi.service.UserDetailsServiceImpl;
 import br.com.blogsanapi.utils.TokenUtils;
 
-@UnityTest
+@UnitTest
 public class AuthenticationControllerTest {
 
     @Autowired
