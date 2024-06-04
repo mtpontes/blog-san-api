@@ -3,6 +3,7 @@ package br.com.blogsanapi.infra.security;
 import java.time.Instant;
 import java.time.LocalDateTime;
 import java.time.ZoneOffset;
+import java.time.temporal.ChronoUnit;
 
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
@@ -53,7 +54,7 @@ public class TokenService {
     private Instant genExpirationDate(){
         return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00"));
     }
-    public Instant getExpirationDate() {
-        return this.genExpirationDate();
+    public Instant getExpirationDateWhithoutMiliseconds() {
+        return this.genExpirationDate().truncatedTo(ChronoUnit.SECONDS);
     }
 }
