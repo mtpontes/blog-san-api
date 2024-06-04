@@ -12,10 +12,12 @@ import com.auth0.jwt.algorithms.Algorithm;
 import com.auth0.jwt.exceptions.JWTCreationException;
 import com.auth0.jwt.exceptions.JWTVerificationException;
 
+import br.com.blogsanapi.infra.exception.InvalidTokenException;
 import br.com.blogsanapi.model.user.User;
 
 @Service
 public class TokenService {
+
     @Value("${api.security.token.secret}")
     private String secret;
 
@@ -28,6 +30,7 @@ public class TokenService {
                     .withExpiresAt(genExpirationDate())
                     .sign(algorithm);
             return token;
+
         } catch (JWTCreationException exception) {
             throw new RuntimeException("Error while generating token", exception);
         }
@@ -41,12 +44,16 @@ public class TokenService {
                     .build()
                     .verify(token)
                     .getSubject();
-        } catch (JWTVerificationException exception){
-            return "";
+
+        } catch (JWTVerificationException ex){
+            throw new InvalidTokenException(ex);
         }
     }
 
     private Instant genExpirationDate(){
         return LocalDateTime.now().plusHours(2).toInstant(ZoneOffset.of("-03:00"));
+    }
+    public Instant getExpirationDate() {
+        return this.genExpirationDate();
     }
 }
