@@ -12,8 +12,6 @@ import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
-import org.springframework.security.authentication.AuthenticationManager;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -25,6 +23,7 @@ import br.com.blogsanapi.model.user.auth.AuthenticationDTO;
 import br.com.blogsanapi.model.user.auth.LoginResponseDTO;
 import br.com.blogsanapi.model.user.auth.RegisterDTO;
 import br.com.blogsanapi.repository.UserRepository;
+import br.com.blogsanapi.service.UserDetailsServiceImpl;
 import br.com.blogsanapi.utils.TokenUtils;
 
 @UnityTest
@@ -41,17 +40,15 @@ public class AuthenticationControllerTest {
     private JacksonTester<LoginResponseDTO> loginResponseDTOJson;
 
     @MockBean
-    private AuthenticationManager authenticationManager;
-    @MockBean
-    private Authentication authentication;
-    @MockBean
     private UserRepository repository;
+    @MockBean
+    private UserDetailsServiceImpl userDetailsServiceImpl;
 
     // Mocked User
     private final User userMock = User.builder()
             .id(1L)
-            .login("root")
-            .password(new BCryptPasswordEncoder().encode("root"))
+            .login("userAdminLogin")
+            .password(new BCryptPasswordEncoder().encode("userAdminPassword"))
             .role(UserRole.ADMIN)
             .name("Name Default")
             .email("default@email.com")
@@ -61,9 +58,8 @@ public class AuthenticationControllerTest {
     @DisplayName("Login Test - Should return valid token")
     void loginTest() throws Exception {
         // arrange
-        var requestBody = new AuthenticationDTO("test", "test");
-        when(authenticationManager.authenticate(any())).thenReturn(authentication);
-        when(authentication.getPrincipal()).thenReturn(userMock);
+        var requestBody = new AuthenticationDTO("userAdminLogin", "userAdminPassword");
+        when(userDetailsServiceImpl.loadUserByUsername(any())).thenReturn(userMock);
 
         // act
         var result = mvc.perform(
