@@ -62,6 +62,7 @@ public class ErrorHandler {
 	public ResponseEntity<ErrorMessage> handlerErro400(IllegalArgumentException ex) {
 		return ResponseEntity.badRequest().body(new ErrorMessage(ex.getMessage()));
 	}
+    
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ErrorMessage> handleError400(HttpMessageNotReadableException ex) {
     	var message = ex.getMessage().split(":")[0];
@@ -79,6 +80,10 @@ public class ErrorHandler {
         return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value()).body(new ErrorMessage(message));
     }
 
+    @ExceptionHandler(InvalidTokenException.class)
+    public ResponseEntity<ErrorMessage> handleInvalidTokenException(InvalidTokenException ex) {
+        return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorMessage(ex.getMessage()));
+    }
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<ErrorMessage> handleErrorBadCredentials() {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorMessage("Invalid credentials"));
