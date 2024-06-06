@@ -18,9 +18,9 @@ Blog-san is a simple REST API project, with the intention of practicing, CRUD, m
 - [Docker](https://www.docker.com)
 - [Test Containers](https://testcontainers.com)
 - [Spring Boot](https://spring.io/projects/spring-boot)
-- [Java JWT (Auth0)](https://github.com/auth0/java-jwt)
+- [Java JWT](https://github.com/auth0/java-jwt)
 - [Lombok](https://projectlombok.org/)
-- [MySQL Connector/J](https://dev.mysql.com/downloads/connector/j/)
+- [MySQL](https://dev.mysql.com/downloads/connector/j/)
 - [Springdoc OpenAPI](https://springdoc.org/)
 
 
