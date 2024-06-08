@@ -6,21 +6,16 @@ import java.util.List;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.junit.jupiter.api.extension.ExtendWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.data.domain.PageRequest;
-import org.springframework.test.annotation.DirtiesContext;
 
-import br.com.blogsanapi.configs.MySQLTestContainer;
+import br.com.blogsanapi.configs.RepositoryTest;
 import br.com.blogsanapi.model.publication.Publication;
 import br.com.blogsanapi.model.user.User;
 import br.com.blogsanapi.repository.PublicationRepository;
 import br.com.blogsanapi.repository.UserRepository;
 
-@SpringBootTest
-@ExtendWith(MySQLTestContainer.class)
-@DirtiesContext
+@RepositoryTest
 public class PublicationRepositoryTest {
 
     @Autowired

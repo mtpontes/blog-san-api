@@ -15,7 +15,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 
-import br.com.blogsanapi.configs.IntegrationTest;
+import br.com.blogsanapi.configs.E2ETest;
 import br.com.blogsanapi.model.user.User;
 import br.com.blogsanapi.model.user.UserRole;
 import br.com.blogsanapi.model.user.auth.AuthenticationDTO;
@@ -24,7 +24,7 @@ import br.com.blogsanapi.model.user.auth.RegisterDTO;
 import br.com.blogsanapi.repository.UserRepository;
 import br.com.blogsanapi.utils.TokenUtils;
 
-@IntegrationTest
+@E2ETest
 public class AuthenticationControllerIntegrationTest {
 
         @Autowired
