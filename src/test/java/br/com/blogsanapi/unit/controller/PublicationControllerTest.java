@@ -20,7 +20,7 @@ import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
-import br.com.blogsanapi.configs.UnitTest;
+import br.com.blogsanapi.configs.ControllerUnitTest;
 import br.com.blogsanapi.model.comment.Comment;
 import br.com.blogsanapi.model.comment.request.CommentRequestDTO;
 import br.com.blogsanapi.model.comment.response.CommentResponseDTO;
@@ -33,7 +33,7 @@ import br.com.blogsanapi.model.user.UserRole;
 import br.com.blogsanapi.service.CommentService;
 import br.com.blogsanapi.service.PublicationService;
 
-@UnitTest
+@ControllerUnitTest
 public class PublicationControllerTest {
 
     @MockBean
