@@ -1,7 +1,5 @@
 package br.com.blogsanapi.infra.exception;
 
-import java.util.Arrays;
-import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
@@ -11,7 +9,6 @@ import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.AuthenticationException;
-import org.springframework.validation.FieldError;
 import org.springframework.web.HttpMediaTypeNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -33,32 +30,19 @@ public class ErrorHandler {
     }
 	
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<ErrorMessageWithFields> handlerErro400(MethodArgumentNotValidException ex) {
-    	List<FieldError> fieldErrors = ex.getFieldErrors();
-    	
-    	if (fieldErrors.isEmpty()) {
-    	    String annotationMessage = ex.getBindingResult()
-                    .getAllErrors()
-                    .stream()
-                    .filter(error -> error.getCode().equals("DescriptionAndImageLinkCannotBeBlank"))
-                    .map(a -> a.getDefaultMessage())
-                    .findFirst()
-                    .orElse("");
-    		
-			return ResponseEntity.badRequest().body(new ErrorMessageWithFields(annotationMessage, List.of("description", "imageLink")));
-		}
-    	
+    public ResponseEntity<ErrorMessageWithFields> handleError400(MethodArgumentNotValidException ex) {
     	Map<String, String> fields = ex.getFieldErrors().stream()
     			.collect(Collectors.toMap(f -> f.getField().toString(), f -> f.getDefaultMessage()));
-    	
     	return ResponseEntity
     			.badRequest()
     			.body(new ErrorMessageWithFields(
                     "Input validation error",
-                    fields));
+                    fields
+                    )
+                );
     }
 	@ExceptionHandler(IllegalArgumentException.class)
-	public ResponseEntity<ErrorMessage> handlerErro400(IllegalArgumentException ex) {
+	public ResponseEntity<ErrorMessage> handleError400(IllegalArgumentException ex) {
 		return ResponseEntity.badRequest().body(new ErrorMessage(ex.getMessage()));
 	}
     
@@ -68,7 +52,7 @@ public class ErrorHandler {
     }
     
     @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
-    public ResponseEntity<ErrorMessage> handlerErro415(HttpMediaTypeNotSupportedException ex) {
+    public ResponseEntity<ErrorMessage> handleError415(HttpMediaTypeNotSupportedException ex) {
         String unsupported = ex.getContentType() != null ? ex.getContentType().getType() + "/" + ex.getContentType().getSubtype() : "unknown";
         String supported = ex.getSupportedMediaTypes().stream()
                               .map(mediaType -> mediaType.getType() + "/" + mediaType.getSubtype())
@@ -79,21 +63,20 @@ public class ErrorHandler {
     }
 
     @ExceptionHandler(InvalidTokenException.class)
-    public ResponseEntity<ErrorMessage> handleInvalidTokenException(InvalidTokenException ex) {
+    public ResponseEntity<ErrorMessage> handleInvalidTokenError401(InvalidTokenException ex) {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorMessage(ex.getMessage()));
     }
     @ExceptionHandler(BadCredentialsException.class)
-    public ResponseEntity<ErrorMessage> handleErrorBadCredentials() {
+    public ResponseEntity<ErrorMessage> handleBadCredentialsError401() {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorMessage("Invalid credentials"));
     }
-
     @ExceptionHandler(AuthenticationException.class)
-    public ResponseEntity<ErrorMessage> handleErrorAuthentication() {
+    public ResponseEntity<ErrorMessage> handleAuthenticationError401() {
         return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(new ErrorMessage("Authentication failed"));
     }
 
     @ExceptionHandler(AccessDeniedException.class)
-    public ResponseEntity<ErrorMessage> handleErrorAccessDenied() {
+    public ResponseEntity<ErrorMessage> handleError403() {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorMessage("Access denied"));
     }
     
