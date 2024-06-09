@@ -67,8 +67,8 @@ To become an `ADMIN`, you need to `change your role` attribute in the database. 
 
 ```
 {
-	"login": "newUser",
-	"password": "newPassword",
+	"login": "root",
+	"password": "root",
 }
 ```
 
