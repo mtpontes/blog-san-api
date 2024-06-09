@@ -16,3 +16,4 @@ build/
 HELP.md
 /.metadata/
 .vscode/settings.json
+.vscode/launch.json
