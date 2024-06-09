@@ -3,12 +3,13 @@ package br.com.blogsanapi.unit.security;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
 import org.junit.jupiter.api.Assertions;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.test.context.ActiveProfiles;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.InjectMocks;
+import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.test.util.ReflectionTestUtils;
 
 import com.auth0.jwt.JWT;
 import com.auth0.jwt.algorithms.Algorithm;
@@ -18,19 +19,22 @@ import br.com.blogsanapi.infra.exception.InvalidTokenException;
 import br.com.blogsanapi.infra.security.TokenService;
 import br.com.blogsanapi.model.user.User;
 
-@SpringBootTest
-@ActiveProfiles("test")
-public class TokenServiceTest {
+@ExtendWith(MockitoExtension.class)
+class TokenServiceTest {
 
-    @Autowired
+    @InjectMocks
     private TokenService tokenService;
 
-    @Value("${api.security.token.secret}")
-    private String secret;
-    
+    private String secret = "testSecret";
+
     private final User user = User.builder()
             .login("loginDefault")
             .build();
+
+    @BeforeEach
+    void setup() throws NoSuchFieldException, SecurityException {
+        ReflectionTestUtils.setField(tokenService, "secret", secret);
+    }
 
 
     @Test
