@@ -10,7 +10,7 @@ import jakarta.validation.Payload;
 
 @Target(ElementType.TYPE_USE)
 @Retention(RetentionPolicy.RUNTIME)
-@Constraint(validatedBy = BothCannotBeBlankImpl.class)
+@Constraint(validatedBy = DescriptionAndImageLinkCannotBeBlankImpl.class)
 public @interface DescriptionAndImageLinkCannotBeBlank {
 
     String message() default "Both fields cannot be blank";
