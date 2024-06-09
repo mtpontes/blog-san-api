@@ -31,6 +31,7 @@ class TokenServiceTest {
             .login("loginDefault")
             .build();
 
+            
     @BeforeEach
     void setup() throws NoSuchFieldException, SecurityException {
         ReflectionTestUtils.setField(tokenService, "secret", secret);
@@ -45,14 +46,14 @@ class TokenServiceTest {
         var recoveredSubject = tokenService.validateToken(generatedToken);
     
         // assert
-        Assertions.assertEquals(user.getLogin(), recoveredSubject, "Recovered subject from token does not match user login");
+        Assertions.assertEquals(this.user.getLogin(), recoveredSubject, "Recovered subject from token does not match user login");
     }
     
     @Test
     @DisplayName("Generated token subject matches user login and has expected expiration")
     void generateToken02() {
         // act
-        String generatedToken = this.tokenService.generateToken(user);
+        String generatedToken = this.tokenService.generateToken(this.user);
         DecodedJWT decoded = this.decodeToken(generatedToken);
     
         // assert
@@ -63,8 +64,6 @@ class TokenServiceTest {
     @Test
     @DisplayName("Generate token throws IllegalArgumentException for null or blank login")
     void generateToken03() {
-        // arrange
-        
         // act and assert
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
             tokenService.generateToken(User.builder().login(null).build());
@@ -80,7 +79,7 @@ class TokenServiceTest {
     @DisplayName("Validate token throws InvalidTokenException with tampered tokens")
     void validateTokenTest01() {
       // arrange
-      String generatedToken = tokenService.generateToken(user);
+      String generatedToken = tokenService.generateToken(this.user);
     
       // act and assert
       Assertions.assertAll(
@@ -94,8 +93,7 @@ class TokenServiceTest {
     }
 
     private DecodedJWT decodeToken(String token){
-        Algorithm algorithm = Algorithm.HMAC256(secret);
-        return JWT.require(algorithm)
+        return JWT.require(Algorithm.HMAC256(this.secret))
                 .withIssuer("blog-san")
                 .build()
                 .verify(token);
