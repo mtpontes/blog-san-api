@@ -1,5 +1,6 @@
 package br.com.blogsanapi.infra.exception;
 
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -32,7 +33,7 @@ public class ErrorHandler {
     }
 	
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<?> handlerErro400(MethodArgumentNotValidException ex) {
+    public ResponseEntity<ErrorMessageWithFields> handlerErro400(MethodArgumentNotValidException ex) {
     	List<FieldError> fieldErrors = ex.getFieldErrors();
     	
     	if (fieldErrors.isEmpty()) {
@@ -44,19 +45,17 @@ public class ErrorHandler {
                     .findFirst()
                     .orElse("");
     		
-			return ResponseEntity.badRequest().body(new ErrorMessage(annotationMessage));
+			return ResponseEntity.badRequest().body(new ErrorMessageWithFields(annotationMessage, List.of("description", "imageLink")));
 		}
     	
     	Map<String, String> fields = ex.getFieldErrors().stream()
     			.collect(Collectors.toMap(f -> f.getField().toString(), f -> f.getDefaultMessage()));
     	
-    	var response = new ErrorMessageWithFields(
-    			"Input validation error",
-    			fields);
-    	
     	return ResponseEntity
     			.badRequest()
-    			.body(response);
+    			.body(new ErrorMessageWithFields(
+                    "Input validation error",
+                    fields));
     }
 	@ExceptionHandler(IllegalArgumentException.class)
 	public ResponseEntity<ErrorMessage> handlerErro400(IllegalArgumentException ex) {
@@ -65,8 +64,7 @@ public class ErrorHandler {
     
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ErrorMessage> handleError400(HttpMessageNotReadableException ex) {
-    	var message = ex.getMessage().split(":")[0];
-        return ResponseEntity.badRequest().body(new ErrorMessage(message));
+        return ResponseEntity.badRequest().body(new ErrorMessage(ex.getMessage().split(":")[0]));
     }
     
     @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
@@ -75,9 +73,9 @@ public class ErrorHandler {
         String supported = ex.getSupportedMediaTypes().stream()
                               .map(mediaType -> mediaType.getType() + "/" + mediaType.getSubtype())
                               .collect(Collectors.joining(", "));
-        String message = String.format("Unsupported media type '%s'. Supported media types are: %s", unsupported, supported);
 
-        return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value()).body(new ErrorMessage(message));
+        return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value())
+            .body(new ErrorMessage(String.format("Unsupported media type '%s'. Supported media types are: %s", unsupported, supported)));
     }
 
     @ExceptionHandler(InvalidTokenException.class)
