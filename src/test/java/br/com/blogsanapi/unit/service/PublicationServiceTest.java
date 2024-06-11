@@ -41,21 +41,19 @@ class PublicationServiceTest {
 	
 	@Mock
 	private PublicationRepository pRepository;
-	
 	@Mock
 	private CommentRepository cRepository;
-
 	@Mock
 	private SecurityContext securityContext;
-	
 	@Mock
 	private Authentication authentication;
-	
+
 	@InjectMocks
 	private PublicationService service;
 	
 	@Captor
 	private ArgumentCaptor<Publication> publicationCaptor;
+
 	
 	private void mockSecurity() {
 		SecurityContextHolder.getContext().setAuthentication(authentication);

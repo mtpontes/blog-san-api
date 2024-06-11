@@ -37,7 +37,6 @@ class TokenServiceTest {
         ReflectionTestUtils.setField(tokenService, "secret", secret);
     }
 
-
     @Test
     @DisplayName("Generate token and validate subject matches user login")
     void generateToken01() {

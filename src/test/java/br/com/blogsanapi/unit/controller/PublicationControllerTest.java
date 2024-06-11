@@ -101,7 +101,6 @@ public class PublicationControllerTest {
     private JacksonTester<CommentRequestDTO> commentRequestJson;
     @Autowired
     private JacksonTester<PublicationUpdateDTO> publicationUpdateJson;
-
     @Autowired
     private JacksonTester<PublicationResponseDTO> publicationResponseJson;
     @Autowired

@@ -38,10 +38,8 @@ class CommentServiceTest {
 	private PublicationRepository publicationRepository;
 	@Mock
 	private CommentRepository repository;
-
 	@Mock
 	private SecurityContext securityContext;
-	
 	@Mock
 	private Authentication authentication;
 	
@@ -50,6 +48,7 @@ class CommentServiceTest {
 	
 	@Captor
 	private ArgumentCaptor<Comment> commentCaptor;
+
 	
 	private void mockSecurity() {
 		SecurityContextHolder.getContext().setAuthentication(authentication);
