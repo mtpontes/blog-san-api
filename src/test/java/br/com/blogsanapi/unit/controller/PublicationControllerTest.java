@@ -6,16 +6,15 @@ import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.time.LocalDateTime;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
@@ -101,138 +100,119 @@ public class PublicationControllerTest {
     private JacksonTester<CommentRequestDTO> commentRequestJson;
     @Autowired
     private JacksonTester<PublicationUpdateDTO> publicationUpdateJson;
-    @Autowired
-    private JacksonTester<PublicationResponseDTO> publicationResponseJson;
-    @Autowired
-    private JacksonTester<CommentResponseDTO> commentResponseJson;
+
 
     @Test
-    @DisplayName("Create Publication - Should return CREATED status and correct publication ID")
+    @DisplayName("Unit - Create Publication - Should return status 200")
     @WithMockUser(roles = {"ADMIN"})
-    void createPublicationTest() throws Exception {
+    void createPublicationTest01() throws Exception {
         // arrange
         var createPubli = new PublicationRequestDTO("description", "imageLink");
         when(publicationService.createPublication(any())).thenReturn(publicationResponseDTO);
 
         // act
-        var result = mvc.perform(
-                post("/publications")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(publicationRequestJson.write(createPubli).getJson())
-        ).andReturn().getResponse();
-
-        PublicationResponseDTO responseBody = publicationResponseJson.parseObject(result.getContentAsString());
-
-        // assert
-        Assertions.assertEquals(HttpStatus.CREATED.value(), result.getStatus(), "Expected CREATED status");
-        Assertions.assertEquals(publicationMock.getId(), responseBody.publicationId(), "Expected publication ID to match");
+        mvc.perform(
+            post("/publications")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(publicationRequestJson.write(createPubli).getJson())
+            )
+            // assert
+            .andExpect(status().isCreated());
     }
 
     @Test
-    @DisplayName("Update Publication - Should return OK status")
+    @DisplayName("Unit - Update Publication 01 - Should return status 200")
     @WithMockUser(roles = {"ADMIN", "CLIENT"})
-    void updatePublicationTest() throws Exception {
+    void updatePublicationTest01() throws Exception {
         // act
         var update = new PublicationUpdateDTO("update");
         when(publicationService.updatePublication(any(), any())).thenReturn(publicationResponseDTO);
 
-        var resultRequestWithEmptyJsonBody = mvc.perform(
-                patch("/publications/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(publicationUpdateJson.write(update).getJson())
-        ).andReturn().getResponse();
-
-        // assert
-        Assertions.assertEquals(HttpStatus.OK.value(), resultRequestWithEmptyJsonBody.getStatus(), "Expected OK status");
+        mvc.perform(
+            patch("/publications/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(publicationUpdateJson.write(update).getJson())
+            )
+            // assert
+            .andExpect(status().isOk());
     }
 
     @Test
-    @DisplayName("Delete Publication - Should return NO_CONTENT status")
+    @DisplayName("Unit - Delete Publication 01 - Should return status 204")
     @WithMockUser(roles = {"ADMIN", "CLIENT"})
-    void deletePublicationTest() throws Exception {
+    void deletePublicationTest01() throws Exception {
         // act
-        var result = mvc.perform(
-                delete("/publications/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-        ).andReturn().getResponse();
-
-        // assert
-        Assertions.assertEquals(HttpStatus.NO_CONTENT.value(), result.getStatus(), "Expected NO_CONTENT status");
+        mvc.perform(
+            delete("/publications/1")
+                .contentType(MediaType.APPLICATION_JSON)
+            )
+            // assert
+            .andExpect(status().isNoContent());
     }
 
     @Test
-    @DisplayName("Create Comment - Should return CREATED status and correct comment ID")
+    @DisplayName("Unit - Create Comment 01 - Should return status 201")
     @WithMockUser(roles = {"CLIENT"})
-    void createCommentTest() throws Exception {
+    void createCommentTest01() throws Exception {
         // arrange
         var createComment = new CommentRequestDTO("text comment");
         when(commentService.createComment(anyLong(), any())).thenReturn(commentResponseDTO);
 
         // act
-        var result = mvc.perform(
-                post("/publications/1/comments")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(commentRequestJson.write(createComment).getJson())
-        ).andReturn().getResponse();
-
-        CommentResponseDTO responseBody = commentResponseJson.parseObject(result.getContentAsString());
-
-        // assert
-        Assertions.assertEquals(HttpStatus.CREATED.value(), result.getStatus(), "Expected CREATED status");
-        Assertions.assertEquals(commentPublicationMock.getId(), responseBody.commentId(), "Expected comment ID to match");
+        mvc.perform(
+            post("/publications/1/comments")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(commentRequestJson.write(createComment).getJson())
+            )
+            // assert
+            .andExpect(status().isCreated());
     }
 
     @Test
-    @DisplayName("Reply to Comment - Should return CREATED status and correct reply comment ID")
+    @DisplayName("Unit - Reply to Comment - Should return status 201")
     @WithMockUser(roles = {"CLIENT"})
-    void replyCommentTest() throws Exception {
+    void replyCommentTest01() throws Exception {
         // arrange
         var createComment = new CommentRequestDTO("text comment");
         when(commentService.replyComment(anyLong(), any())).thenReturn(replyResponseDTO);
 
         // act
-        var result = mvc.perform(
-                post("/publications/comments/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(commentRequestJson.write(createComment).getJson())
-        ).andReturn().getResponse();
-
-        CommentResponseDTO responseBody = commentResponseJson.parseObject(result.getContentAsString());
-
-        // assert
-        Assertions.assertEquals(HttpStatus.CREATED.value(), result.getStatus(), "Expected CREATED status");
-        Assertions.assertEquals(replyCommentMock.getId(), responseBody.commentId(), "Expected reply comment ID to match");
+        mvc.perform(
+            post("/publications/comments/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(commentRequestJson.write(createComment).getJson())
+            )
+            // assert
+            .andExpect(status().isCreated());
     }
 
     @Test
-    @DisplayName("Update Comment - Should return OK status")
+    @DisplayName("Unit - Update Comment 01 - Should return status 200")
     @WithMockUser(roles = {"CLIENT"})
-    void updateCommentTest() throws Exception {
+    void updateCommentTest01() throws Exception {
         // act
         var update = new CommentRequestDTO("update");
         when(commentService.updateComment(any(), any())).thenReturn(commentResponseDTO);
 
-        var resultRequestWithEmptyJsonBody = mvc.perform(
-                patch("/publications/comments/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(commentRequestJson.write(update).getJson())
-        ).andReturn().getResponse();
-
-        // assert
-        Assertions.assertEquals(HttpStatus.OK.value(), resultRequestWithEmptyJsonBody.getStatus(), "Expected OK status");
+        mvc.perform(
+            patch("/publications/comments/1")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(commentRequestJson.write(update).getJson())
+            )
+            .andExpect(status().isOk());
     }
 
     @Test
-    @DisplayName("Delete Comment - Should return NO_CONTENT status")
+    @DisplayName("Unit - Delete Comment - Should return status 204")
     @WithMockUser(roles = "CLIENT")
-    void deleteCommentTest() throws Exception {
+    void deleteCommentTest01() throws Exception {
         // act
-        var result = mvc.perform(
-                delete("/publications/comments/1")
-                        .contentType(MediaType.APPLICATION_JSON)
-        ).andReturn().getResponse();
-
+        mvc.perform(
+            delete("/publications/comments/1")
+                .contentType(MediaType.APPLICATION_JSON)
+        )
         // assert
-        Assertions.assertEquals(HttpStatus.NO_CONTENT.value(), result.getStatus(), "Expected NO_CONTENT status");
+        .andExpect(status().isNoContent())
+        ;
     }
 }

@@ -3,6 +3,8 @@ package br.com.blogsanapi.unit.controller;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.DisplayName;
@@ -10,7 +12,6 @@ import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.test.context.support.WithMockUser;
@@ -46,16 +47,16 @@ public class AuthenticationControllerTest {
 
     // Mocked User
     private final User userMock = User.builder()
-            .id(1L)
-            .login("userAdminLogin")
-            .password(new BCryptPasswordEncoder().encode("userAdminPassword"))
-            .role(UserRole.ADMIN)
-            .name("Name Default")
-            .email("default@email.com")
-            .build();
+        .id(1L)
+        .login("userAdminLogin")
+        .password(new BCryptPasswordEncoder().encode("userAdminPassword"))
+        .role(UserRole.ADMIN)
+        .name("Name Default")
+        .email("default@email.com")
+        .build();
 
     @Test
-    @DisplayName("Login Test - Should return valid token")
+    @DisplayName("Unit - Login - Should return status 200 and valid token")
     void loginTest() throws Exception {
         // arrange
         var requestBody = new AuthenticationDTO("userAdminLogin", "userAdminPassword");
@@ -63,39 +64,38 @@ public class AuthenticationControllerTest {
 
         // act
         var result = mvc.perform(
-                post("/auth/login")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(authenticationDTOJson.write(requestBody).getJson()))
-                .andReturn().getResponse();
+            post("/auth/login")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(authenticationDTOJson.write(requestBody).getJson())
+            )
+            // assert
+            .andExpect(status().isOk())
+            .andExpect(jsonPath("$.token").isNotEmpty())
+            .andExpect(jsonPath("$.token").isNotEmpty())
+            .andReturn().getResponse();
         var responseBody = loginResponseDTOJson.parseObject(result.getContentAsString());
-
-        // assert
-        Assertions.assertEquals(HttpStatus.OK.value(), result.getStatus(), "The status should be 200 OK");
-        Assertions.assertNotNull(responseBody.token(), "The token should not be null");
-        Assertions.assertFalse(responseBody.token().isBlank(), "The token should not be blank");
         Assertions.assertTrue(TokenUtils.isValidTokenFormat(responseBody.token()), "The token format should be valid");
     }
 
     @Test
-    @DisplayName("Register Test - Should return OK status")
-    void registerTest() throws Exception {
+    @DisplayName("Unit - Register Test - Should return status 200")
+    void registerTest01() throws Exception {
         // arrange
         var requestBody = new RegisterDTO("newUser", "test", "Name Test", "email@test.com");
         when(repository.save(any())).thenReturn(userMock);
 
         // act
-        var result = mvc.perform(
-                post("/auth/register")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(registerDTOJson.write(requestBody).getJson()))
-                .andReturn().getResponse();
-
-        // assert
-        Assertions.assertEquals(HttpStatus.OK.value(), result.getStatus(), "The status should be 200 OK");
+        mvc.perform(
+            post("/auth/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(registerDTOJson.write(requestBody).getJson())
+            )
+            // assert
+            .andExpect(status().isOk());
     }
 
     @Test
-    @DisplayName("Admin Register Test 01 - Should return OK status")
+    @DisplayName("Unit - Admin Register Test 01 - Should return status 200")
     @WithMockUser(roles = "ADMIN")
     void adminRegisterTest01() throws Exception {
         // arrange
@@ -103,18 +103,17 @@ public class AuthenticationControllerTest {
         when(repository.save(any())).thenReturn(userMock);
 
         // act
-        var result = mvc.perform(
-                post("/auth/admin/register")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(registerDTOJson.write(requestBody).getJson()))
-                .andReturn().getResponse();
-
-        // assert
-        Assertions.assertEquals(HttpStatus.OK.value(), result.getStatus(), "The status should be 200 OK");
+        mvc.perform(
+            post("/auth/admin/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(registerDTOJson.write(requestBody).getJson())
+            )
+            // assert
+            .andExpect(status().isOk());
     }
 
     @Test
-    @DisplayName("Admin Register Test 02 - Should return FORBIDDEN status")
+    @DisplayName("Unit - Admin Register Test 02 - Should return status 403")
     @WithMockUser(roles = "CLIENT")
     void adminRegisterTest02() throws Exception {
         // arrange
@@ -122,13 +121,12 @@ public class AuthenticationControllerTest {
         when(repository.save(any())).thenReturn(userMock);
 
         // act
-        var result = mvc.perform(
-                post("/auth/admin/register")
-                        .contentType(MediaType.APPLICATION_JSON)
-                        .content(registerDTOJson.write(requestBody).getJson()))
-                .andReturn().getResponse();
-
-        // assert
-        Assertions.assertEquals(HttpStatus.FORBIDDEN.value(), result.getStatus(), "The status should be 403 FORBIDDEN");
+        mvc.perform(
+            post("/auth/admin/register")
+                .contentType(MediaType.APPLICATION_JSON)
+                .content(registerDTOJson.write(requestBody).getJson())
+            )
+            // assert
+            .andExpect(status().isForbidden());
     }
 }
