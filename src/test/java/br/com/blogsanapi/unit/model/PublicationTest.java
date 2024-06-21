@@ -12,18 +12,18 @@ class PublicationTest {
 	@DisplayName("Must throw exception when instantiating Publication with `description` and `imageLink` null")
 	void instanciatePublicatonTest01() {
 		Assertions.assertThrows(
-				IllegalArgumentException.class, 
-				() -> new Publication(null, null, null), 
-				"Instantiating with both null attributes");
+			IllegalArgumentException.class,
+			() -> new Publication(null, null, null),
+			"Instantiating with both null attributes");
 	}
 	
 	@Test
 	@DisplayName("Must throw exception when instantiating Publication with `description` and `imageLink` blank")
 	void instanciatePublicatonTest02() {
 		Assertions.assertThrows(
-				IllegalArgumentException.class, 
-				() -> new Publication("", "", null), 
-				"Instanciating with both blank attributes");
+			IllegalArgumentException.class,
+			() -> new Publication("", "", null),
+			"Instanciating with both blank attributes");
 	}
 	
 	@Test
@@ -43,14 +43,14 @@ class PublicationTest {
 
 		// passing null
 		Assertions.assertThrows(
-				IllegalArgumentException.class, 
-				() -> publiImageLinkNull.updateDescription(null) ,
-				"Updating with null value");
+			IllegalArgumentException.class,
+			() -> publiImageLinkNull.updateDescription(null) ,
+			"Updating with null value");
 		// passing blank
 		Assertions.assertThrows(
-				IllegalArgumentException.class, 
-				() -> publiImageLinkNull.updateDescription("") ,
-				"Updating with blank value");
+			IllegalArgumentException.class,
+			() -> publiImageLinkNull.updateDescription("") ,
+			"Updating with blank value");
 	}
 	
 	@Test
@@ -60,14 +60,14 @@ class PublicationTest {
 		
 		// passing null
 		Assertions.assertThrows(
-				IllegalArgumentException.class, 
-				() -> publiImageLinkBlank.updateDescription(null) ,
-				"Updating with null value");
+			IllegalArgumentException.class,
+			() -> publiImageLinkBlank.updateDescription(null) ,
+			"Updating with null value");
 		// passing blank
 		Assertions.assertThrows(
-				IllegalArgumentException.class, 
-				() -> publiImageLinkBlank.updateDescription("") ,
-				"Updating with blank value");
+			IllegalArgumentException.class,
+			() -> publiImageLinkBlank.updateDescription("") ,
+			"Updating with blank value");
 	}
 	
 	@Test

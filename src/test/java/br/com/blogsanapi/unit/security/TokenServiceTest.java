@@ -93,8 +93,8 @@ class TokenServiceTest {
 
     private DecodedJWT decodeToken(String token){
         return JWT.require(Algorithm.HMAC256(this.secret))
-                .withIssuer("blog-san")
-                .build()
-                .verify(token);
+            .withIssuer("blog-san")
+            .build()
+            .verify(token);
     }
 }

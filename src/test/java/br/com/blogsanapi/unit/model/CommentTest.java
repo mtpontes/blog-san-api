@@ -14,22 +14,22 @@ class CommentTest {
 	@DisplayName("Must throw exception when passing invalid value to `text`")
 	void instanciateCommentTest01() {
 		Assertions.assertThrows(
-				IllegalArgumentException.class, 
-				() -> new Comment(null, new User(), new Publication(), new Comment()),
-				"Instanciating with `text` null");
-		
+			IllegalArgumentException.class,
+			() -> new Comment(null, new User(), new Publication(), new Comment()),
+			"Instanciating with `text` null");
+
 		Assertions.assertThrows(
-				IllegalArgumentException.class, 
-				() -> new Comment("", new User(), new Publication(), new Comment()),
-				"Instanciating with `text` blank");
+			IllegalArgumentException.class,
+			() -> new Comment("", new User(), new Publication(), new Comment()),
+			"Instanciating with `text` blank");
 	}
 	
 	@Test
 	@DisplayName("Should not throw exception when passing valid value to `text`")
 	void instanciateCommentTest02() {
 		Assertions.assertDoesNotThrow(
-				() -> new Comment("text", new User(), new Publication(), new Comment()),
-				"Instanciating with valid `text` value");
+			() -> new Comment("text", new User(), new Publication(), new Comment()),
+			"Instanciating with valid `text` value");
 	}
 
 	@Test
@@ -40,14 +40,14 @@ class CommentTest {
 		
 		// act and assert
 		Assertions.assertThrows(
-				IllegalArgumentException.class, 
-				() -> comment.updateText(null),
-				"Updating with null");
+			IllegalArgumentException.class,
+			() -> comment.updateText(null),
+			"Updating with null");
 		
 		Assertions.assertThrows(
-				IllegalArgumentException.class, 
-				() -> comment.updateText(""), 
-				"Updating blank");
+			IllegalArgumentException.class,
+			() -> comment.updateText(""),
+			"Updating blank");
 	}
 	
 	@Test

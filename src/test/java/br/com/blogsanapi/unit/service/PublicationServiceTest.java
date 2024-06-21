@@ -118,8 +118,8 @@ class PublicationServiceTest {
 		
 		// act
 		List<PublicationResponseDTO> result = service
-				.getAllPublications(PageRequest.of(0, 1), LocalDate.now(), 1L)
-				.getContent();
+			.getAllPublications(PageRequest.of(0, 1), LocalDate.now(), 1L)
+			.getContent();
 		
 		// assert
 		Assertions.assertEquals(result.get(0).description(), publi.getDescription(), "The description should match");
@@ -135,7 +135,7 @@ class PublicationServiceTest {
 		
 		// act
 		List<PublicationResponseDTO> result = service.getAllPublicationsByUser(PageRequest.of(0, 1), 1L)
-				.getContent();
+			.getContent();
 		
 		// assert
 		Assertions.assertEquals(result.get(0).description(), publi.getDescription(), "The description should match");

@@ -53,13 +53,13 @@ class CommentServiceTest {
 	private void mockSecurity() {
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		User user = User.builder()
-				.id(1L)
-				.login("root")
-				.password("root")
-				.role(UserRole.ADMIN)
-				.name("name")
-				.email("email")
-				.build();
+			.id(1L)
+			.login("root")
+			.password("root")
+			.role(UserRole.ADMIN)
+			.name("name")
+			.email("email")
+			.build();
 		when(authentication.getPrincipal()).thenReturn(user);
 	}
 	
@@ -94,10 +94,10 @@ class CommentServiceTest {
 		Long targetCommentId = 1l;
 		CommentRequestDTO dto = new CommentRequestDTO("reply");
 		Comment commentReference = Comment.builder()
-				.id(10L)
-				.text("commentReference")
-				.user(User.builder().id(20L).build())
-				.build();
+			.id(10L)
+			.text("commentReference")
+			.user(User.builder().id(20L).build())
+			.build();
 		when(repository.getReferenceById(anyLong())).thenReturn(commentReference);
 		when(repository.save(any())).thenReturn(commentReference);
 		
@@ -120,15 +120,15 @@ class CommentServiceTest {
 		Long targetCommentId = 1l;
 		CommentRequestDTO dto = new CommentRequestDTO("reply");
 		Comment commentReference = Comment.builder()
-				.id(20L)
-				.text("commentReference")
-				.user(User.builder().id(10L).build())
-				.parentComment(Comment.builder()
-						.id(1L)
-						.text("parentComment")
-						.user(User.builder().id(1L).build())
-						.build())
-				.build();
+			.id(20L)
+			.text("commentReference")
+			.user(User.builder().id(10L).build())
+			.parentComment(Comment.builder()
+				.id(1L)
+				.text("parentComment")
+				.user(User.builder().id(1L).build())
+				.build())
+			.build();
 		when(repository.getReferenceById(anyLong())).thenReturn(commentReference);
 		when(repository.save(any())).thenReturn(commentReference);
 		
@@ -152,12 +152,12 @@ class CommentServiceTest {
 		LocalDateTime DATE_COMMENT = LocalDateTime.now().minusMinutes(10);
 		Boolean EDITED_COMMENT = false;
 		Comment comment = Comment.builder()
-							.id(100L)
-							.text("text-content")
-							.date(DATE_COMMENT)
-							.edited(EDITED_COMMENT)
-							.user(User.builder().id(200L).build())
-							.build();
+			.id(100L)
+			.text("text-content")
+			.date(DATE_COMMENT)
+			.edited(EDITED_COMMENT)
+			.user(User.builder().id(200L).build())
+			.build();
 
 		Long commentId = 1L;
 		CommentRequestDTO update = new CommentRequestDTO("newText");

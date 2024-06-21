@@ -35,11 +35,11 @@ class DescriptionAndImageLinkCannotBeBlankImplTest {
     private void mockConstraintValidatorContext(int times) {
         for (int i = 0; i <= times; i++) {
             when(constraintValidatorContext.buildConstraintViolationWithTemplate(anyString()))
-                    .thenReturn(constraintViolationBuilder);
+                .thenReturn(constraintViolationBuilder);
             when(constraintViolationBuilder.addPropertyNode(anyString()))
-                    .thenReturn(nodeBuilderCustomizableContext);
+                .thenReturn(nodeBuilderCustomizableContext);
             when(nodeBuilderCustomizableContext.addConstraintViolation())
-                    .thenReturn(constraintValidatorContext);
+                .thenReturn(constraintValidatorContext);
         }
     }
 
