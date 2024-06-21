@@ -33,11 +33,11 @@ public class SecurityConfigurations {
         void createDefaultAdminUser() {
         if (!userRepository.existsByLogin("root")) {
             User userAdmin = User.builder()
-                    .name("admin")
-                    .login("root")
-                    .password(new BCryptPasswordEncoder().encode("root"))
-                    .role(UserRole.ADMIN)
-                    .build();
+                .name("admin")
+                .login("root")
+                .password(new BCryptPasswordEncoder().encode("root"))
+                .role(UserRole.ADMIN)
+                .build();
 
             userRepository.save(userAdmin);
         }
@@ -46,28 +46,28 @@ public class SecurityConfigurations {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
         return  httpSecurity
-                .csrf(csrf -> csrf.disable())
-                .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
-                .authorizeHttpRequests(authorize -> authorize
-                		.requestMatchers("/v3/api-docs/**", "/swagger-ui.html/**", "/swagger-ui/**").permitAll()
-                        .requestMatchers(HttpMethod.POST, "/auth/login", "/auth/register").permitAll()
-						.requestMatchers(HttpMethod.POST, "/auth/admin/register").hasRole("ADMIN")
+            .csrf(csrf -> csrf.disable())
+            .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS))
+            .authorizeHttpRequests(authorize -> authorize
+                .requestMatchers("/v3/api-docs/**", "/swagger-ui.html/**", "/swagger-ui/**").permitAll()
+                .requestMatchers(HttpMethod.POST, "/auth/login", "/auth/register").permitAll()
+                .requestMatchers(HttpMethod.POST, "/auth/admin/register").hasRole("ADMIN")
 						
-						.requestMatchers(HttpMethod.POST, "/publications").hasRole("ADMIN")
-						.requestMatchers(HttpMethod.PATCH, "/publications/{publicationId}").hasRole("ADMIN")
-						.requestMatchers(HttpMethod.DELETE, "/publications/{id}").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.POST, "/publications").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.PATCH, "/publications/{publicationId}").hasRole("ADMIN")
+                .requestMatchers(HttpMethod.DELETE, "/publications/{id}").hasRole("ADMIN")
 						
-						.requestMatchers(HttpMethod.GET, "/publications/**").permitAll()
+                .requestMatchers(HttpMethod.GET, "/publications/**").permitAll()
 
-						.requestMatchers(HttpMethod.POST, "/publications/{publicationId}/comments").hasAnyRole("ADMIN", "CLIENT")
-						.requestMatchers(HttpMethod.POST, "/publications/comments/{targetCommentId}").hasAnyRole("ADMIN", "CLIENT")
-						.requestMatchers(HttpMethod.PATCH, "/publications/comments/{commentId}").hasAnyRole("ADMIN", "CLIENT")
-						.requestMatchers(HttpMethod.DELETE, "/publications/comments/{commentId}").hasAnyRole("ADMIN", "CLIENT")
+                .requestMatchers(HttpMethod.POST, "/publications/{publicationId}/comments").hasAnyRole("ADMIN", "CLIENT")
+                .requestMatchers(HttpMethod.POST, "/publications/comments/{targetCommentId}").hasAnyRole("ADMIN", "CLIENT")
+                .requestMatchers(HttpMethod.PATCH, "/publications/comments/{commentId}").hasAnyRole("ADMIN", "CLIENT")
+                .requestMatchers(HttpMethod.DELETE, "/publications/comments/{commentId}").hasAnyRole("ADMIN", "CLIENT")
 						
-                        .anyRequest().authenticated()
-                )
-                .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
-                .build();
+                .anyRequest().authenticated()
+            )
+            .addFilterBefore(securityFilter, UsernamePasswordAuthenticationFilter.class)
+            .build();
     }
 
     @Bean

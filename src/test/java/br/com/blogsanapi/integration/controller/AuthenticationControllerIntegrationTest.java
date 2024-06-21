@@ -193,6 +193,7 @@ public class AuthenticationControllerIntegrationTest {
 				.content(registerDTOJson.write(requestBodyToCreateAdmin).getJson())
 				.header("Authorization", "Bearer " + token)
 			)
+			// assert
 			.andExpect(status().isOk());
 	}
 	@Test
@@ -217,6 +218,7 @@ public class AuthenticationControllerIntegrationTest {
 				.content(registerDTOJson.write(requestBodyToCreateAdmin).getJson())
 				.header("Authorization", "Bearer " + token)
 			)
+			// assert
 			.andExpect(status().isForbidden());
 	}
 	@Test
@@ -232,6 +234,7 @@ public class AuthenticationControllerIntegrationTest {
 				.content(registerDTOJson.write(requestBodyToCreateAdmin).getJson())
 				// .header("Authorization", "")
 			)
+			// assert
 			.andExpect(status().isForbidden());
 	}
 }

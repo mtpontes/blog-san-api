@@ -57,9 +57,9 @@ public class PublicationController {
 
 	@GetMapping
 	protected ResponseEntity<Page<PublicationResponseDTO>> getPublicationsByParams(
-			@PageableDefault(size = 10) Pageable pageable,
-			@RequestParam(name = "date", required = false) LocalDate date,
-			@RequestParam(name = "userId", required = false) Long userId) {
+		@PageableDefault(size = 10) Pageable pageable,
+		@RequestParam(name = "date", required = false) LocalDate date,
+		@RequestParam(name = "userId", required = false) Long userId) {
 
 		return ResponseEntity.ok(publicationService.getAllPublications(pageable, date, userId));
 	}
@@ -67,7 +67,7 @@ public class PublicationController {
 	@PatchMapping("/{publicationId}")
 	@Transactional
 	protected ResponseEntity<PublicationResponseDTO> updatePublication(@PathVariable Long publicationId,
-			@RequestBody @Valid PublicationUpdateDTO dto) {
+		@RequestBody @Valid PublicationUpdateDTO dto) {
 
 		return ResponseEntity.ok(publicationService.updatePublication(publicationId, dto));
 	}
@@ -83,9 +83,9 @@ public class PublicationController {
 	@PostMapping("/{publicationId}/comments")
 	@Transactional
 	public ResponseEntity<CommentResponseDTO> createComment(
-			@PathVariable Long publicationId,
-			@RequestBody @Valid CommentRequestDTO dto, 
-			UriComponentsBuilder uriBuilder) {
+		@PathVariable Long publicationId,
+		@RequestBody @Valid CommentRequestDTO dto, 
+		UriComponentsBuilder uriBuilder) {
 
 		CommentResponseDTO commentResponse = commentService.createComment(publicationId, dto);
 		var uri = uriBuilder.path("/publications/comments/{id}").buildAndExpand(dto).toUri();
@@ -94,10 +94,10 @@ public class PublicationController {
 	@PostMapping("/comments/{targetCommentId}")
 	@Transactional
 	public ResponseEntity<CommentResponseDTO> createReply(
-			@PathVariable Long targetCommentId,
-			@RequestBody @Valid CommentRequestDTO dto, 
-			UriComponentsBuilder uriBuilder
-			) {
+		@PathVariable Long targetCommentId,
+		@RequestBody @Valid CommentRequestDTO dto, 
+		UriComponentsBuilder uriBuilder
+		) {
 		
 		CommentResponseDTO commentResponse = commentService.replyComment(targetCommentId, dto);
 		var uri = uriBuilder.path("/publications/comments/{id}").buildAndExpand(dto).toUri();

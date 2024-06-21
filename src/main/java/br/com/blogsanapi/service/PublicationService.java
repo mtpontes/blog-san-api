@@ -39,27 +39,27 @@ public class PublicationService {
 	
 	public PublicationResponseWithCommentsDTO getPublicationWithComments(Pageable pageable, Long publicationId) {
 		Publication publication = publicationRepository.findById(publicationId)
-				.orElseThrow(EntityNotFoundException::new);
+			.orElseThrow(EntityNotFoundException::new);
 		
 		Page<Comment> commentsPage = commentRepository.findAllByPublicationId(pageable, publicationId);
 		List<CommentResponseDTO> commentResponse = commentsPage.getContent().stream()
-				.map(CommentResponseDTO::new)
-				.collect(Collectors.toList());
+			.map(CommentResponseDTO::new)
+			.collect(Collectors.toList());
 		
 		return new PublicationResponseWithCommentsDTO(
-				publication.getId(),
-				publication.getUser().getId(), 
-				publication.getUser().getName(), 
-				publication.getDescription(), 
-				publication.getImageLink(), 
-				publication.getDate(), 
-				commentResponse
+			publication.getId(),
+			publication.getUser().getId(), 
+			publication.getUser().getName(), 
+			publication.getDescription(), 
+			publication.getImageLink(), 
+			publication.getDate(), 
+			commentResponse
 		);
 	}
 
 	public Page<PublicationResponseDTO> getAllPublications(Pageable pageable, LocalDate date, Long userId) {
 		return publicationRepository.findAllByParams(pageable, date, userId)
-				.map(PublicationResponseDTO::new);
+			.map(PublicationResponseDTO::new);
 	}
 	public Page<PublicationResponseDTO> getAllPublicationsByUser(Pageable pageable, Long id) {
 		return publicationRepository.findAllByUserId(pageable, id).map(PublicationResponseDTO::new);
@@ -67,7 +67,7 @@ public class PublicationService {
 	
 	public PublicationResponseDTO updatePublication(Long publicationId, PublicationUpdateDTO dto) {
 		Publication publi = publicationRepository.findByIdAndUserId(publicationId, this.getUser().getId())
-				.orElseThrow(EntityNotFoundException::new);
+			.orElseThrow(EntityNotFoundException::new);
 		
 		publi.updateDescription(dto.description());
 		publicationRepository.save(publi);
@@ -82,8 +82,8 @@ public class PublicationService {
 	
 	private User getUser() {
 		return (User) SecurityContextHolder
-				.getContext()
-				.getAuthentication()
-				.getPrincipal();
+			.getContext()
+			.getAuthentication()
+			.getPrincipal();
 	}
 }

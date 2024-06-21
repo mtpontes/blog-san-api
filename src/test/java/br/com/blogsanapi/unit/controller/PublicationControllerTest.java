@@ -45,48 +45,48 @@ public class PublicationControllerTest {
 
     // Mocked User
     private final User userMock = User.builder()
-            .id(1L)
-            .login("loginDefault")
-            .password("passwordDefault")
-            .role(UserRole.ADMIN)
-            .name("Name Default")
-            .email("default@email.com")
-            .build();
+        .id(1L)
+        .login("loginDefault")
+        .password("passwordDefault")
+        .role(UserRole.ADMIN)
+        .name("Name Default")
+        .email("default@email.com")
+        .build();
 
     // Mocked Publication and Date
     private final LocalDateTime date = LocalDateTime.now().plusDays(1L);
     private final Publication publicationMock = Publication.builder()
-            .id(1L)
-            .description("default")
-            .imageLink("defaultLink.com")
-            .date(date)
-            .edited(false)
-            .user(userMock)
-            .comments(null)
-            .build();
+        .id(1L)
+        .description("default")
+        .imageLink("defaultLink.com")
+        .date(date)
+        .edited(false)
+        .user(userMock)
+        .comments(null)
+        .build();
 
     // Mocked Comments
     private final Comment commentPublicationMock = Comment.builder()
-            .id(1L)
-            .text("textDefault")
-            .date(LocalDateTime.now().plusDays(2L))
-            .edited(false)
-            .user(userMock)
-            .publication(publicationMock)
-            .parentComment(null)
-            .replies(null)
-            .build();
+        .id(1L)
+        .text("textDefault")
+        .date(LocalDateTime.now().plusDays(2L))
+        .edited(false)
+        .user(userMock)
+        .publication(publicationMock)
+        .parentComment(null)
+        .replies(null)
+        .build();
 
     private final Comment replyCommentMock = Comment.builder()
-            .id(1L)
-            .text("textDefault")
-            .date(LocalDateTime.now().plusDays(2L))
-            .edited(false)
-            .user(userMock)
-            .publication(null)
-            .parentComment(commentPublicationMock)
-            .replies(null)
-            .build();
+        .id(1L)
+        .text("textDefault")
+        .date(LocalDateTime.now().plusDays(2L))
+        .edited(false)
+        .user(userMock)
+        .publication(null)
+        .parentComment(commentPublicationMock)
+        .replies(null)
+        .build();
 
     // Response DTOs
     private final PublicationResponseDTO publicationResponseDTO = new PublicationResponseDTO(publicationMock);
@@ -199,6 +199,7 @@ public class PublicationControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
                 .content(commentRequestJson.write(update).getJson())
             )
+            // assert
             .andExpect(status().isOk());
     }
 

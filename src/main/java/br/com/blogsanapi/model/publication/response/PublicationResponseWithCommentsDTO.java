@@ -17,17 +17,17 @@ public record PublicationResponseWithCommentsDTO(
 		@JsonFormat(pattern = "yyyy-MM-dd HH:mm")
 		LocalDateTime date,
 		List<CommentResponseDTO> comments
-		) {
+	) {
 	
 	public PublicationResponseWithCommentsDTO(Publication p) {
 		this(
-				p.getId(), 
-				p.getUser().getId(), 
-				p.getUser().getName(), 
-				p.getDescription(), 
-				p.getImageLink(), 
-				p.getDate(), 
-				p.getComments().stream().map(CommentResponseDTO::new).toList()
-			);
+			p.getId(), 
+			p.getUser().getId(), 
+			p.getUser().getName(), 
+			p.getDescription(), 
+			p.getImageLink(), 
+			p.getDate(), 
+			p.getComments().stream().map(CommentResponseDTO::new).toList()
+		);
 	}
 }

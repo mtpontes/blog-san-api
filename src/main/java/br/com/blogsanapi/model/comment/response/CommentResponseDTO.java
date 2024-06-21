@@ -18,11 +18,12 @@ public record CommentResponseDTO(
 	
 	public CommentResponseDTO(Comment c) {
 		this(
-				c.getId(), 
-				c.getUser().getId(), 
-				c.getUser().getName() , 
-				c.getText(), c.getDate(), 
-				c.getEdited(), 
-				c.getParentComment() == null ? null : c.getParentComment().getId());
+			c.getId(), 
+			c.getUser().getId(), 
+			c.getUser().getName() , 
+			c.getText(), c.getDate(), 
+			c.getEdited(), 
+			c.getParentComment() == null ? null : c.getParentComment().getId()
+		);
 	}
 }

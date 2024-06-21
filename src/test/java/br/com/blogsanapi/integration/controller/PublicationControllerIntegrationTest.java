@@ -203,7 +203,7 @@ public class PublicationControllerIntegrationTest {
                 .content(publicationUpdateDTOJson.write(requestBody).getJson())
                 .header("Authorization", "Bearer " + this.makeLoginAndGetToken())
             )
-            //
+            // assert
             .andExpect(status().isNotFound());
     }
 

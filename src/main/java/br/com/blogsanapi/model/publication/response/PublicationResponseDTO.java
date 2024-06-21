@@ -14,16 +14,16 @@ public record PublicationResponseDTO(
 		String imageLink,
 		@JsonFormat(pattern = "yyyy-MM-dd HH:mm")
 		LocalDateTime date
-		) {
+	) {
 	
 	public PublicationResponseDTO(Publication p) {
 		this(
-				p.getId(), 
-				p.getUser().getId(), 
-				p.getUser().getName(), 
-				p.getDescription(), 
-				p.getImageLink(), 
-				p.getDate() 
-			);
+			p.getId(), 
+			p.getUser().getId(), 
+			p.getUser().getName(), 
+			p.getDescription(), 
+			p.getImageLink(), 
+			p.getDate() 
+		);
 	}
 }

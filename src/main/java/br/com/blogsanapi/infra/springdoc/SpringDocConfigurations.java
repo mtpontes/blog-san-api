@@ -15,15 +15,15 @@ public class SpringDocConfigurations {
 	@Bean
 	 OpenAPI customOpenAPI() {
 	   return new OpenAPI()
-	          .components(new Components()
-	          .addSecuritySchemes("bearer-key",
-	          new io.swagger.v3.oas.models.security.SecurityScheme()
-	          .type(Type.HTTP).scheme("bearer")
-	          .bearerFormat("JWT")))
-	          .info(new Info()
-	        		  .title("Blog-san API")
-	        		  		.contact(new Contact()
-	        				  .name("Mateus Pontes")
-	        				  .email("mateuspsdd@gmail.com")));
+			.components(new Components()
+			.addSecuritySchemes("bearer-key",
+			new io.swagger.v3.oas.models.security.SecurityScheme()
+			.type(Type.HTTP).scheme("bearer")
+			.bearerFormat("JWT")))
+			.info(new Info()
+				.title("Blog-san API")
+				.contact(new Contact()
+				.name("Mateus Pontes")
+				.email("mateuspsdd@gmail.com")));
 	}
 }

@@ -31,13 +31,13 @@ public class PublicationRepositoryTest {
         User user1 = userRepository.save(User.builder().name("User-san").login("login").build());
         User user2 = userRepository.save(User.builder().name("User-san").login("login").build());
         List<Publication> publications = List.of(
-                new Publication("p1", "link1", user1),
-                new Publication("p2", "link2", user1),
-                new Publication("p3", "link3", user1),
-                new Publication("p4", "link4", user1),
-                new Publication("p5", "link5", user2),
-                new Publication("p6", "link6", user2),
-                new Publication("p7", "link7", user2)
+            new Publication("p1", "link1", user1),
+            new Publication("p2", "link2", user1),
+            new Publication("p3", "link3", user1),
+            new Publication("p4", "link4", user1),
+            new Publication("p5", "link5", user2),
+            new Publication("p6", "link6", user2),
+            new Publication("p7", "link7", user2)
         );
         publicationRepository.saveAll(publications);
 
@@ -47,16 +47,16 @@ public class PublicationRepositoryTest {
         var USER_ID_SEARCHED = user1.getId();
 
         List<Publication> queryByDefault = publicationRepository
-                .findAllByParams(PageRequest.of(0, 4), null, null).getContent();
+            .findAllByParams(PageRequest.of(0, 4), null, null).getContent();
 
         List<Publication> queryByDate = publicationRepository
-                .findAllByParams(PAGEABLE_DEFAULT, DATE_SEARCHED, null).getContent();
+            .findAllByParams(PAGEABLE_DEFAULT, DATE_SEARCHED, null).getContent();
 
         List<Publication> queryByUserId = publicationRepository
-                .findAllByParams(PAGEABLE_DEFAULT, null, USER_ID_SEARCHED).getContent();
+            .findAllByParams(PAGEABLE_DEFAULT, null, USER_ID_SEARCHED).getContent();
 
         List<Publication> queryByAllParams = publicationRepository
-                .findAllByParams(PAGEABLE_DEFAULT, DATE_SEARCHED, USER_ID_SEARCHED).getContent();
+            .findAllByParams(PAGEABLE_DEFAULT, DATE_SEARCHED, USER_ID_SEARCHED).getContent();
 
         // assert
         Assertions.assertEquals(4, queryByDefault.size(), "Should have returned 3 comments");

@@ -26,7 +26,7 @@ public class CommentService {
 	
 	public CommentResponseDTO createComment(Long publicationId, CommentRequestDTO dto) {
 		Publication publication = publicationRepository.findById(publicationId)
-				.orElseThrow(EntityNotFoundException::new);
+			.orElseThrow(EntityNotFoundException::new);
 		
 		Comment comment = new Comment(dto.text(), this.getUser(), publication, null);
 		commentRepository.save(comment);
@@ -53,7 +53,7 @@ public class CommentService {
 	
 	public CommentResponseDTO updateComment(Long commentId, CommentRequestDTO dto) {
 		Comment comment = commentRepository.findByIdAndUserId(commentId, this.getUser().getId())
-				.orElseThrow(EntityNotFoundException::new);
+			.orElseThrow(EntityNotFoundException::new);
 		
 		comment.updateText(dto.text());
 		return new CommentResponseDTO(commentRepository.save(comment));
@@ -66,8 +66,8 @@ public class CommentService {
 	
 	private User getUser() {
 		return (User) SecurityContextHolder
-				.getContext()
-				.getAuthentication()
-				.getPrincipal();
+			.getContext()
+			.getAuthentication()
+			.getPrincipal();
 	}
 }

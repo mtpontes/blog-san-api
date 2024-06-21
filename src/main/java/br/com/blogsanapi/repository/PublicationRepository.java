@@ -13,12 +13,12 @@ import br.com.blogsanapi.model.publication.Publication;
 public interface PublicationRepository extends JpaRepository<Publication, Long>{
 
 	@Query("""
-			SELECT p FROM Publication p 
-			WHERE
-			(:date IS NULL OR DATE(p.date) = :date)
-			AND
-			(:userId IS NULL OR p.user.id = :userId)
-			""")
+		SELECT p FROM Publication p 
+		WHERE
+		(:date IS NULL OR DATE(p.date) = :date)
+		AND
+		(:userId IS NULL OR p.user.id = :userId)
+		""")
 	Page<Publication> findAllByParams(Pageable pageable, LocalDate date, Long userId);
 	
 	void deleteByUserIdAndId(Long userId, Long publiId);
