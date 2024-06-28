@@ -12,8 +12,10 @@ log/
 target/
 .idea/
 build/
-.mvn/
 HELP.md
 /.metadata/
 .vscode/settings.json
 .vscode/launch.json
+
+env
+mysql-data
