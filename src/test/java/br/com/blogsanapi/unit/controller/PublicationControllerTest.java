@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.boot.test.mock.mockito.MockBean;
 import org.springframework.http.MediaType;
@@ -20,6 +21,8 @@ import org.springframework.security.test.context.support.WithMockUser;
 import org.springframework.test.web.servlet.MockMvc;
 
 import br.com.blogsanapi.configs.ControllerUnitTest;
+import br.com.blogsanapi.controller.PublicationController;
+import br.com.blogsanapi.infra.security.TokenService;
 import br.com.blogsanapi.model.comment.Comment;
 import br.com.blogsanapi.model.comment.request.CommentRequestDTO;
 import br.com.blogsanapi.model.comment.response.CommentResponseDTO;
@@ -29,16 +32,24 @@ import br.com.blogsanapi.model.publication.request.PublicationUpdateDTO;
 import br.com.blogsanapi.model.publication.response.PublicationResponseDTO;
 import br.com.blogsanapi.model.user.User;
 import br.com.blogsanapi.model.user.UserRole;
+import br.com.blogsanapi.repository.UserRepository;
 import br.com.blogsanapi.service.CommentService;
 import br.com.blogsanapi.service.PublicationService;
 
 @ControllerUnitTest
+@WebMvcTest(PublicationController.class)
 public class PublicationControllerTest {
 
     @MockBean
     private PublicationService publicationService;
     @MockBean
     private CommentService commentService;
+
+    // security filter dependencies
+    @MockBean
+    private TokenService tokenService;
+    @MockBean
+    private UserRepository userRepository;
 
     @Autowired
     private MockMvc mvc;
@@ -122,7 +133,7 @@ public class PublicationControllerTest {
 
     @Test
     @DisplayName("Unit - Update Publication 01 - Should return status 200")
-    @WithMockUser(roles = {"ADMIN", "CLIENT"})
+    @WithMockUser(roles = {"ADMIN"})
     void updatePublicationTest01() throws Exception {
         // act
         var update = new PublicationUpdateDTO("update");
@@ -139,7 +150,7 @@ public class PublicationControllerTest {
 
     @Test
     @DisplayName("Unit - Delete Publication 01 - Should return status 204")
-    @WithMockUser(roles = {"ADMIN", "CLIENT"})
+    @WithMockUser(roles = {"ADMIN"})
     void deletePublicationTest01() throws Exception {
         // act
         mvc.perform(
