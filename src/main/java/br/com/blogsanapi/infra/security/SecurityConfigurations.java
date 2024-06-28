@@ -14,34 +14,12 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
-import br.com.blogsanapi.model.user.User;
-import br.com.blogsanapi.model.user.UserRole;
-import br.com.blogsanapi.repository.UserRepository;
-import jakarta.annotation.PostConstruct;
-
 @Configuration
 @EnableWebSecurity
 public class SecurityConfigurations {
     
     @Autowired
     SecurityFilter securityFilter;
-
-    @Autowired
-    UserRepository userRepository;
-
-    @PostConstruct
-        void createDefaultAdminUser() {
-        if (!userRepository.existsByLogin("root")) {
-            User userAdmin = User.builder()
-                .name("admin")
-                .login("root")
-                .password(new BCryptPasswordEncoder().encode("root"))
-                .role(UserRole.ADMIN)
-                .build();
-
-            userRepository.save(userAdmin);
-        }
-    }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity httpSecurity) throws Exception {
