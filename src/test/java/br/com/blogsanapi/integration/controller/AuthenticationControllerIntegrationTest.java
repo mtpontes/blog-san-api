@@ -18,16 +18,22 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.test.web.servlet.MockMvc;
 
 import br.com.blogsanapi.configs.E2ETest;
+import br.com.blogsanapi.infra.security.TokenService;
 import br.com.blogsanapi.model.user.User;
 import br.com.blogsanapi.model.user.UserRole;
 import br.com.blogsanapi.model.user.auth.AuthenticationDTO;
-import br.com.blogsanapi.model.user.auth.LoginResponseDTO;
 import br.com.blogsanapi.model.user.auth.RegisterDTO;
 import br.com.blogsanapi.repository.UserRepository;
+import br.com.blogsanapi.utils.ControllerTestUtils;
 import br.com.blogsanapi.utils.TokenUtils;
 
 @E2ETest
 public class AuthenticationControllerIntegrationTest {
+
+	private final String BASE_URL = "/auth";
+	private static final String bearer = "Bearer ";
+	private static String ADMIN_TOKEN = bearer;
+	private static String USER_TOKEN = bearer;
 
 	@Autowired
 	private MockMvc mvc;
@@ -36,13 +42,12 @@ public class AuthenticationControllerIntegrationTest {
 	private JacksonTester<AuthenticationDTO> authenticationDTOJson;
 	@Autowired
 	private JacksonTester<RegisterDTO> registerDTOJson;
-	@Autowired
-	private JacksonTester<LoginResponseDTO> loginResponseDTOJson;
 
 	@BeforeAll
 	static void setup(
 		@Autowired UserRepository repository, 
-		@Autowired BCryptPasswordEncoder encoder) throws Exception {
+		@Autowired BCryptPasswordEncoder encoder,
+		@Autowired TokenService tokenService) throws Exception {
 
 		List<User> users = List.of(
 			User.builder()
@@ -59,20 +64,20 @@ public class AuthenticationControllerIntegrationTest {
 				.role(UserRole.CLIENT)
 				.build());
 		repository.saveAll(users);
+
+		ADMIN_TOKEN = ADMIN_TOKEN + tokenService.generateToken(users.get(0));
+		USER_TOKEN = USER_TOKEN + tokenService.generateToken(users.get(1));
 	}
 
 	@Test
 	@DisplayName("Integration - login test 01 - Should return status 200 and valid token")
 	void loginTest() throws Exception {
 		// arrange
-		var requestBody = new AuthenticationDTO("adminLogin", "adminPassword");
+		var makeLogin = new AuthenticationDTO("adminLogin", "adminPassword");
+        String requestBody = authenticationDTOJson.write(makeLogin).getJson();
 
 		// act
-		var result = mvc.perform(
-			post("/auth/login")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(authenticationDTOJson.write(requestBody).getJson())
-			)
+		var result = ControllerTestUtils.postRequest(mvc, (this.BASE_URL + "/login"), requestBody)
 			// assert
 			.andExpect(status().isOk())
 			.andExpect(jsonPath("$.token").isNotEmpty())
@@ -87,14 +92,11 @@ public class AuthenticationControllerIntegrationTest {
 	@DisplayName("Integration - login test 02 - Should return status 400 when username and password do not meet the expected format")
 	void loginTest02() throws IOException, Exception {
 		// arrange
-		AuthenticationDTO requestBody = new AuthenticationDTO("", "");
+		var makeLogin = new AuthenticationDTO("", "");
+        String requestBody = authenticationDTOJson.write(makeLogin).getJson();
 
 		// act
-		mvc.perform(
-			post("/auth/login")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(authenticationDTOJson.write(requestBody).getJson())
-			)
+		ControllerTestUtils.postRequest(mvc, (this.BASE_URL + "/login"), requestBody)
 			// assert
 			.andExpect(status().isBadRequest())
 			.andExpect(jsonPath("$.token").doesNotExist())
@@ -105,14 +107,11 @@ public class AuthenticationControllerIntegrationTest {
     @DisplayName("Integration - login test 03 - Should return status 401 when user is not found")
 	void loginTest03() throws IOException, Exception {
 		// arrange
-		AuthenticationDTO requestBody = new AuthenticationDTO("non-existent", "adminPassword");
+		var makeLoginWithNonExistentLogin = new AuthenticationDTO("non-existent", "adminPassword");
+        String requestBody = authenticationDTOJson.write(makeLoginWithNonExistentLogin).getJson();
 
 		// act
-		mvc.perform(
-			post("/auth/login")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(authenticationDTOJson.write(requestBody).getJson())
-			)
+		ControllerTestUtils.postRequest(mvc, (this.BASE_URL + "/login"), requestBody)
 			// assert
 			.andExpect(status().isUnauthorized())
 			.andExpect(jsonPath("$.token").doesNotExist());
@@ -121,31 +120,25 @@ public class AuthenticationControllerIntegrationTest {
     @DisplayName("Integration - login test 04 - Should return 401 status when password does not match")
     void loginTest04() throws IOException, Exception {
         // arrange
-		AuthenticationDTO requestBody = new AuthenticationDTO("adminLogin", "non-existent");
+		var makeLoginWithNonMatchingPassword = new AuthenticationDTO("adminLogin", "non-existent");
+		String requestBody = authenticationDTOJson.write(makeLoginWithNonMatchingPassword).getJson();
 
         // act
-        mvc.perform(
-            post("/auth/login")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(authenticationDTOJson.write(requestBody).getJson())
-        )
-        // assert
-        .andExpect(status().isUnauthorized())
-        .andExpect(jsonPath("$.token").doesNotExist());
+		ControllerTestUtils.postRequest(mvc, (this.BASE_URL + "/login"), requestBody)
+			// assert
+			.andExpect(status().isUnauthorized())
+			.andExpect(jsonPath("$.token").doesNotExist());
     }
 
 	@Test
 	@DisplayName("Integration - register test 01 - Should return status 200")
 	void registerTest01() throws Exception {
 		// arrange
-		var requestBody = new RegisterDTO("registerTest", "registerTest", "Register Test-san", "email@registertest.com");
+		var createUser = new RegisterDTO("registerTest", "registerTest", "Register Test-san", "email@registertest.com");
+		String requestBody = registerDTOJson.write(createUser).getJson();
 
 		// act
-		mvc.perform(
-			post("/auth/register")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(registerDTOJson.write(requestBody).getJson())
-			)
+		ControllerTestUtils.postRequest(mvc, (this.BASE_URL + "/register"), requestBody)
 			// assert
 			.andExpect(status().isOk())
 			.andReturn().getResponse();
@@ -154,14 +147,11 @@ public class AuthenticationControllerIntegrationTest {
 	@DisplayName("Integration - register test 02 - Should return status 400 and field errors")
 	void registerTest02() throws Exception {
 		// arrange
-		var requestBody = new RegisterDTO("", "", "", "emailregistertestcom");
+		var createUserWithInvalidFields = new RegisterDTO("", "", "", "emailregistertestcom");
+		String requestBody = registerDTOJson.write(createUserWithInvalidFields).getJson();
 
 		// act
-		mvc.perform(
-			post("/auth/register")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(registerDTOJson.write(requestBody).getJson())
-			)
+		ControllerTestUtils.postRequest(mvc, (this.BASE_URL + "/register"), requestBody)
 			// assert
 			.andExpect(status().isBadRequest())
 			.andExpect(jsonPath("$.fields.login").exists())
@@ -174,16 +164,6 @@ public class AuthenticationControllerIntegrationTest {
 	@DisplayName("Integration - Admin Register Test 01 - Should return status 200")
 	void adminRegisterTest01() throws Exception {
 		// arrange
-		var requestBodyToLogin = new AuthenticationDTO("adminLogin", "adminPassword");
-		var tokenJsonResponse = mvc.perform(
-			post("/auth/login")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(authenticationDTOJson.write(requestBodyToLogin).getJson())
-			)
-			.andReturn().getResponse();
-		
-		var token = loginResponseDTOJson.parseObject(tokenJsonResponse.getContentAsString()).token();
-
 		var requestBodyToCreateAdmin = new RegisterDTO("newUser", "test", "Name Test", "email@test.com");
 
 		// act
@@ -191,7 +171,7 @@ public class AuthenticationControllerIntegrationTest {
 			post("/auth/register")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(registerDTOJson.write(requestBodyToCreateAdmin).getJson())
-				.header("Authorization", "Bearer " + token)
+				.header("Authorization", "Bearer " + ADMIN_TOKEN)
 			)
 			// assert
 			.andExpect(status().isOk());
@@ -200,15 +180,6 @@ public class AuthenticationControllerIntegrationTest {
 	@DisplayName("Integration - Admin Register Test 02 - Should return FORBIDDEN status when a client tries to register an admin")
 	void adminRegisterTest02() throws Exception {
 		// arrange
-		var requestBodyToLogin = new AuthenticationDTO("clientLogin", "clientPassword");
-		var tokenJson = mvc.perform(
-			post("/auth/login")
-				.contentType(MediaType.APPLICATION_JSON)
-				.content(authenticationDTOJson.write(requestBodyToLogin).getJson())
-			)
-			.andReturn().getResponse();
-		var token = loginResponseDTOJson.parseObject(tokenJson.getContentAsString()).token();
-
 		var requestBodyToCreateAdmin = new RegisterDTO("newUser", "test", "Name Test", "email@test.com");
 
 		// act
@@ -216,7 +187,7 @@ public class AuthenticationControllerIntegrationTest {
 			post("/auth/admin/register")
 				.contentType(MediaType.APPLICATION_JSON)
 				.content(registerDTOJson.write(requestBodyToCreateAdmin).getJson())
-				.header("Authorization", "Bearer " + token)
+				.header("Authorization", "Bearer " + USER_TOKEN)
 			)
 			// assert
 			.andExpect(status().isForbidden());

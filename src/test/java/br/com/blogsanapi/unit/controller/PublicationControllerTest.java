@@ -4,8 +4,6 @@ import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.delete;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.time.LocalDateTime;
@@ -35,10 +33,13 @@ import br.com.blogsanapi.model.user.UserRole;
 import br.com.blogsanapi.repository.UserRepository;
 import br.com.blogsanapi.service.CommentService;
 import br.com.blogsanapi.service.PublicationService;
+import br.com.blogsanapi.utils.ControllerTestUtils;
 
 @ControllerUnitTest
 @WebMvcTest(PublicationController.class)
 public class PublicationControllerTest {
+
+    private final String BASE_URL = "/publications";
 
     @MockBean
     private PublicationService publicationService;
@@ -106,11 +107,11 @@ public class PublicationControllerTest {
 
     // JSON Testers
     @Autowired
-    private JacksonTester<PublicationRequestDTO> publicationRequestJson;
+    private JacksonTester<PublicationRequestDTO> publicationRequestDTOJson;
     @Autowired
-    private JacksonTester<CommentRequestDTO> commentRequestJson;
+    private JacksonTester<CommentRequestDTO> commentRequestDTOJson;
     @Autowired
-    private JacksonTester<PublicationUpdateDTO> publicationUpdateJson;
+    private JacksonTester<PublicationUpdateDTO> publicationUpdateDTOJson;
 
 
     @Test
@@ -119,14 +120,11 @@ public class PublicationControllerTest {
     void createPublicationTest01() throws Exception {
         // arrange
         var createPubli = new PublicationRequestDTO("description", "imageLink");
+        String requestBody = publicationRequestDTOJson.write(createPubli).getJson();
         when(publicationService.createPublication(any())).thenReturn(publicationResponseDTO);
 
         // act
-        mvc.perform(
-            post("/publications")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(publicationRequestJson.write(createPubli).getJson())
-            )
+        ControllerTestUtils.postRequest(mvc, this.BASE_URL, requestBody)
             // assert
             .andExpect(status().isCreated());
     }
@@ -135,15 +133,13 @@ public class PublicationControllerTest {
     @DisplayName("Unit - Update Publication 01 - Should return status 200")
     @WithMockUser(roles = {"ADMIN"})
     void updatePublicationTest01() throws Exception {
-        // act
+        // arrange
         var update = new PublicationUpdateDTO("update");
+        String requestBody = publicationUpdateDTOJson.write(update).getJson();
         when(publicationService.updatePublication(any(), any())).thenReturn(publicationResponseDTO);
 
-        mvc.perform(
-            patch("/publications/1")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(publicationUpdateJson.write(update).getJson())
-            )
+        // act
+        ControllerTestUtils.patchRequest(this.mvc, (this.BASE_URL + "/1"), requestBody)
             // assert
             .andExpect(status().isOk());
     }
@@ -167,14 +163,11 @@ public class PublicationControllerTest {
     void createCommentTest01() throws Exception {
         // arrange
         var createComment = new CommentRequestDTO("text comment");
+        String requestBody = commentRequestDTOJson.write(createComment).getJson();
         when(commentService.createComment(anyLong(), any())).thenReturn(commentResponseDTO);
 
         // act
-        mvc.perform(
-            post("/publications/1/comments")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(commentRequestJson.write(createComment).getJson())
-            )
+        ControllerTestUtils.postRequest(mvc, (this.BASE_URL + "/1/comments"), requestBody)
             // assert
             .andExpect(status().isCreated());
     }
@@ -185,14 +178,11 @@ public class PublicationControllerTest {
     void replyCommentTest01() throws Exception {
         // arrange
         var createComment = new CommentRequestDTO("text comment");
+        String requestBody = commentRequestDTOJson.write(createComment).getJson();
         when(commentService.replyComment(anyLong(), any())).thenReturn(replyResponseDTO);
 
         // act
-        mvc.perform(
-            post("/publications/comments/1")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(commentRequestJson.write(createComment).getJson())
-            )
+        ControllerTestUtils.postRequest(mvc, (this.BASE_URL + "/comments/1"), requestBody)
             // assert
             .andExpect(status().isCreated());
     }
@@ -201,15 +191,13 @@ public class PublicationControllerTest {
     @DisplayName("Unit - Update Comment 01 - Should return status 200")
     @WithMockUser(roles = {"CLIENT"})
     void updateCommentTest01() throws Exception {
-        // act
+        // arrange
         var update = new CommentRequestDTO("update");
+        String requestBody = commentRequestDTOJson.write(update).getJson();
         when(commentService.updateComment(any(), any())).thenReturn(commentResponseDTO);
 
-        mvc.perform(
-            patch("/publications/comments/1")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(commentRequestJson.write(update).getJson())
-            )
+        // act
+        ControllerTestUtils.patchRequest(mvc, (BASE_URL + "/comments/1"), requestBody)
             // assert
             .andExpect(status().isOk());
     }
@@ -224,7 +212,6 @@ public class PublicationControllerTest {
                 .contentType(MediaType.APPLICATION_JSON)
         )
         // assert
-        .andExpect(status().isNoContent())
-        ;
+        .andExpect(status().isNoContent());
     }
 }

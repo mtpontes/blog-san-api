@@ -2,7 +2,6 @@ package br.com.blogsanapi.unit.controller;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.when;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -14,7 +13,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.json.JacksonTester;
 import org.springframework.boot.test.mock.mockito.MockBean;
-import org.springframework.http.MediaType;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -31,10 +29,13 @@ import br.com.blogsanapi.model.user.auth.AuthenticationDTO;
 import br.com.blogsanapi.model.user.auth.RegisterDTO;
 import br.com.blogsanapi.repository.UserRepository;
 import br.com.blogsanapi.service.UserDetailsServiceImpl;
+import br.com.blogsanapi.utils.ControllerTestUtils;
 
 @ControllerUnitTest
 @WebMvcTest(AuthenticationController.class)
 public class AuthenticationControllerTest {
+
+    private final String BASE_URL = "/auth";
 
     @Autowired
     private MockMvc mvc;
@@ -68,7 +69,9 @@ public class AuthenticationControllerTest {
     @DisplayName("Unit - Login - Should return status 200 and valid token")
     void loginTest() throws Exception {
         // arrange
-        var requestBody = new AuthenticationDTO("userAdminLogin", "userAdminPassword");
+        var makeLogin = new AuthenticationDTO("userAdminLogin", "userAdminPassword");
+        String requestBody = authenticationDTOJson.write(makeLogin).getJson();
+
         var authorities = List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_ADMIN"));
         var authentication = new UsernamePasswordAuthenticationToken(userMock, "userAdminPassword", authorities);
 
@@ -76,11 +79,7 @@ public class AuthenticationControllerTest {
         when(tokenService.generateToken(any(User.class))).thenReturn("mocked-token");
 
         // act
-        mvc.perform(
-            post("/auth/login")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(authenticationDTOJson.write(requestBody).getJson())
-            )
+        ControllerTestUtils.postRequest(mvc, (this.BASE_URL + "/login"), requestBody)
             // assert
             .andExpect(status().isOk())
             .andExpect(jsonPath("$.token").value("mocked-token"));
@@ -91,15 +90,13 @@ public class AuthenticationControllerTest {
     @DisplayName("Unit - Register Test - Should return status 200")
     void registerTest01() throws Exception {
         // arrange
-        var requestBody = new RegisterDTO("newUser", "test", "Name Test", "email@test.com");
+        var createUser = new RegisterDTO("newUser", "test", "Name Test", "email@test.com");
+        String requestBody = registerDTOJson.write(createUser).getJson();
+
         when(repository.save(any())).thenReturn(userMock);
 
         // act
-        mvc.perform(
-            post("/auth/register")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(registerDTOJson.write(requestBody).getJson())
-            )
+        ControllerTestUtils.postRequest(mvc, (this.BASE_URL + "/register"), requestBody)
             // assert
             .andExpect(status().isOk());
     }
@@ -109,15 +106,13 @@ public class AuthenticationControllerTest {
     @WithMockUser(roles = "ADMIN")
     void adminRegisterTest01() throws Exception {
         // arrange
-        var requestBody = new RegisterDTO("newUser", "test", "Name Test", "email@test.com");
+        var registerAdmin = new RegisterDTO("newUser", "test", "Name Test", "email@test.com");
+        String requestBody = registerDTOJson.write(registerAdmin).getJson();
+
         when(repository.save(any())).thenReturn(userMock);
 
         // act
-        mvc.perform(
-            post("/auth/admin/register")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(registerDTOJson.write(requestBody).getJson())
-            )
+        ControllerTestUtils.postRequest(mvc, (this.BASE_URL + "/admin/register"), requestBody)
             // assert
             .andExpect(status().isOk());
     }
@@ -127,15 +122,13 @@ public class AuthenticationControllerTest {
     @WithMockUser(roles = "CLIENT")
     void adminRegisterTest02() throws Exception {
         // arrange
-        var requestBody = new RegisterDTO("newUser", "test", "Name Test", "email@test.com");
+        var registerAdmin = new RegisterDTO("newUser", "test", "Name Test", "email@test.com");
+        String requestBody = registerDTOJson.write(registerAdmin).getJson();
+
         when(repository.save(any())).thenReturn(userMock);
 
         // act
-        mvc.perform(
-            post("/auth/admin/register")
-                .contentType(MediaType.APPLICATION_JSON)
-                .content(registerDTOJson.write(requestBody).getJson())
-            )
+        ControllerTestUtils.postRequest(mvc, (this.BASE_URL + "/admin/register"), requestBody)
             // assert
             .andExpect(status().isForbidden());
     }

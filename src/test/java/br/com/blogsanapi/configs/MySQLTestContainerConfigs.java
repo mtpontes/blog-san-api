@@ -13,6 +13,7 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 @TestConfiguration
 public class MySQLTestContainerConfigs {
 
+    @SuppressWarnings("resource")
     @Bean
     public MySQLContainer<?> mysqlContainer() {
         MySQLContainer<?> mysqlContainer = new MySQLContainer<>("mysql:8.0.36")
