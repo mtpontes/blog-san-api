@@ -20,10 +20,10 @@ import jakarta.persistence.EntityNotFoundException;
 @RestControllerAdvice
 public class ErrorHandler {
 
-	@ExceptionHandler(EntityNotFoundException.class)
-	public ResponseEntity<?> handleError404() {
-		return ResponseEntity.notFound().build();
-	}
+    @ExceptionHandler(EntityNotFoundException.class)
+    public ResponseEntity<?> handleError404() {
+        return ResponseEntity.notFound().build();
+    }
     @ExceptionHandler(NoResourceFoundException.class)
     public ResponseEntity<?> handleError404(NoResourceFoundException ex) {
     	return ResponseEntity.notFound().build();
@@ -41,10 +41,10 @@ public class ErrorHandler {
         );
     }
 
-	@ExceptionHandler(IllegalArgumentException.class)
-	public ResponseEntity<ErrorMessage> handleError400(IllegalArgumentException ex) {
-		return ResponseEntity.badRequest().body(new ErrorMessage(ex.getMessage()));
-	}
+    @ExceptionHandler(IllegalArgumentException.class)
+    public ResponseEntity<ErrorMessage> handleError400(IllegalArgumentException ex) {
+        return ResponseEntity.badRequest().body(new ErrorMessage(ex.getMessage()));
+    }
     
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ErrorMessage> handleError400(HttpMessageNotReadableException ex) {
