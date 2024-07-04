@@ -32,14 +32,13 @@ public class ErrorHandler {
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorMessageWithFields> handleError400(MethodArgumentNotValidException ex) {
     	Map<String, String> fields = ex.getFieldErrors().stream()
-    			.collect(Collectors.toMap(f -> f.getField().toString(), f -> f.getDefaultMessage()));
+            .collect(Collectors.toMap(f -> f.getField().toString(), f -> f.getDefaultMessage()));
     	return ResponseEntity
-    			.badRequest()
-    			.body(new ErrorMessageWithFields(
-                    "Input validation error",
-                    fields
-                    )
-                );
+            .badRequest()
+            .body(new ErrorMessageWithFields(
+            "Input validation error",
+                fields)
+            );
     }
 	@ExceptionHandler(IllegalArgumentException.class)
 	public ResponseEntity<ErrorMessage> handleError400(IllegalArgumentException ex) {
@@ -55,8 +54,8 @@ public class ErrorHandler {
     public ResponseEntity<ErrorMessage> handleError415(HttpMediaTypeNotSupportedException ex) {
         String unsupported = ex.getContentType() != null ? ex.getContentType().getType() + "/" + ex.getContentType().getSubtype() : "unknown";
         String supported = ex.getSupportedMediaTypes().stream()
-                              .map(mediaType -> mediaType.getType() + "/" + mediaType.getSubtype())
-                              .collect(Collectors.joining(", "));
+            .map(mediaType -> mediaType.getType() + "/" + mediaType.getSubtype())
+            .collect(Collectors.joining(", "));
 
         return ResponseEntity.status(HttpStatus.UNSUPPORTED_MEDIA_TYPE.value())
             .body(new ErrorMessage(String.format("Unsupported media type '%s'. Supported media types are: %s", unsupported, supported)));
