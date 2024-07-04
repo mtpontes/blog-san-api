@@ -37,9 +37,10 @@ public class ErrorHandler {
             .badRequest()
             .body(new ErrorMessageWithFields(
             "Input validation error",
-                fields)
-            );
+            fields)
+        );
     }
+
 	@ExceptionHandler(IllegalArgumentException.class)
 	public ResponseEntity<ErrorMessage> handleError400(IllegalArgumentException ex) {
 		return ResponseEntity.badRequest().body(new ErrorMessage(ex.getMessage()));
