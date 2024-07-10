@@ -42,13 +42,13 @@ public class PublicationControllerIntegrationTest {
     private JacksonTester<PublicationRequestDTO> publicationRequestDTOJson;
     @Autowired
     private JacksonTester<PublicationUpdateDTO> publicationUpdateDTOJson;
-    
+
     @Autowired
     private JacksonTester<CommentRequestDTO> commentRequestDTOJson;
-    
+
     @Autowired
     private JacksonTester<AuthenticationDTO> authenticationDTOJson;
-    
+
     @BeforeAll
     static void setup(
         @Autowired UserRepository userRepository,
@@ -57,26 +57,26 @@ public class PublicationControllerIntegrationTest {
         @Autowired PasswordEncoder encoder,
         @Autowired MockMvc mvc) throws Exception {
             
-    	List<User> users = List.of(
+        List<User> users = List.of(
             User.builder().name("tester").login("test").password(encoder.encode("test")).role(UserRole.ADMIN).build()
             );
-    	userRepository.saveAll(users);
+        userRepository.saveAll(users);
 
-    	List<Publication> publications = List.of(
+        List<Publication> publications = List.of(
             Publication.builder().description("description-1").imageLink("link-1").user(users.get(0)).build(),
             Publication.builder().description("description-2").imageLink("link-2").user(users.get(0)).build(),
             Publication.builder().description("description-3").imageLink("link-3").user(users.get(0)).build()
             );
-    	publicationRepository.saveAll(publications);
+        publicationRepository.saveAll(publications);
 
-    	List<Comment> comments = List.of(
+        List<Comment> comments = List.of(
             Comment.builder().text("c1").user(users.get(0)).publication(publications.get(0)).build(),
             Comment.builder().text("c2").user(users.get(0)).publication(publications.get(0)).build(),
             Comment.builder().text("c3").user(users.get(0)).publication(publications.get(0)).build(),
             Comment.builder().text("c4").user(users.get(0)).publication(publications.get(0)).build(),
             Comment.builder().text("c5").user(users.get(0)).publication(publications.get(0)).build()
             );
-    	commentRepository.saveAll(comments);
+        commentRepository.saveAll(comments);
     }
 
     private String getTokenValue(String token) {
@@ -167,7 +167,7 @@ public class PublicationControllerIntegrationTest {
             .andExpect(jsonPath("$.fields.imageLink").exists())
             .andExpect(jsonPath("$.fields.description").exists());
     }
-    
+
     @Test
     @DisplayName("Integration - Update Publication Test 01 - Should return status 200 and updated publication details")
     void updatePublicationTest01() throws Exception {

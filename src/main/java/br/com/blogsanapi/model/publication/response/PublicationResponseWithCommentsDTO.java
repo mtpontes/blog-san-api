@@ -18,7 +18,7 @@ public record PublicationResponseWithCommentsDTO(
 		LocalDateTime date,
 		List<CommentResponseDTO> comments
 	) {
-	
+
 	public PublicationResponseWithCommentsDTO(Publication p) {
 		this(
 			p.getId(), 

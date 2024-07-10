@@ -15,7 +15,7 @@ public record PublicationResponseDTO(
 		@JsonFormat(pattern = "yyyy-MM-dd HH:mm")
 		LocalDateTime date
 	) {
-	
+
 	public PublicationResponseDTO(Publication p) {
 		this(
 			p.getId(), 

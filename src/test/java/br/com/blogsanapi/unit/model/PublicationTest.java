@@ -7,7 +7,7 @@ import org.junit.jupiter.api.Test;
 import br.com.blogsanapi.model.publication.Publication;
 
 class PublicationTest {
-	
+
 	@Test
 	@DisplayName("Must throw exception when instantiating Publication with `description` and `imageLink` null")
 	void instanciatePublicatonTest01() {
@@ -16,7 +16,7 @@ class PublicationTest {
 			() -> new Publication(null, null, null),
 			"Instantiating with both null attributes");
 	}
-	
+
 	@Test
 	@DisplayName("Must throw exception when instantiating Publication with `description` and `imageLink` blank")
 	void instanciatePublicatonTest02() {
@@ -25,7 +25,7 @@ class PublicationTest {
 			() -> new Publication("", "", null),
 			"Instanciating with both blank attributes");
 	}
-	
+
 	@Test
 	@DisplayName("Must instantiate Publication with at least one valid value for `description` and `imageLink`")
 	void instanciatePublicatonTest03() {
@@ -35,7 +35,7 @@ class PublicationTest {
 		Assertions.assertDoesNotThrow(() -> new Publication("", "imageLink", null), "Instanciating with `description` blank");
 		Assertions.assertDoesNotThrow(() -> new Publication(null, "imageLink", null), "Instanciating with `description` null");
 	}
-	
+
 	@Test
 	@DisplayName("Instance with `imageLink` null must throw exception when updating `description` with invalid value")
 	void updateDescriptionTest01() {
@@ -52,7 +52,7 @@ class PublicationTest {
 			() -> publiImageLinkNull.updateDescription("") ,
 			"Updating with blank value");
 	}
-	
+
 	@Test
 	@DisplayName("Instance with `imageLink` blank must throw exception when updating `description` with invalid value")
 	void updateDescriptionTest02() {
@@ -69,7 +69,7 @@ class PublicationTest {
 			() -> publiImageLinkBlank.updateDescription("") ,
 			"Updating with blank value");
 	}
-	
+
 	@Test
 	@DisplayName("Must update `description` without throwing exception")
 	void updateDescriptionTest03() {
@@ -77,16 +77,16 @@ class PublicationTest {
 		Publication publiDescriptionNull = Publication.builder().description(null).imageLink("imageLink").build();
 		
 		// act and assert
-        Assertions.assertDoesNotThrow(() -> publiDescriptionNull.updateDescription(null), "Updating with null description should not throw exception");
-        Assertions.assertNull(publiDescriptionNull.getDescription(), "Description should be null");
+		Assertions.assertDoesNotThrow(() -> publiDescriptionNull.updateDescription(null), "Updating with null description should not throw exception");
+		Assertions.assertNull(publiDescriptionNull.getDescription(), "Description should be null");
 
-        Assertions.assertDoesNotThrow(() -> publiDescriptionNull.updateDescription(""), "Updating with empty description should not throw exception");
-        Assertions.assertTrue(publiDescriptionNull.getDescription().isBlank(), "Description should be blank");
+		Assertions.assertDoesNotThrow(() -> publiDescriptionNull.updateDescription(""), "Updating with empty description should not throw exception");
+		Assertions.assertTrue(publiDescriptionNull.getDescription().isBlank(), "Description should be blank");
 
-        Assertions.assertDoesNotThrow(() -> publiDescriptionNull.updateDescription("update"), "Updating with 'update' description should not throw exception");
-        Assertions.assertEquals("update", publiDescriptionNull.getDescription(), "Description should be 'update'");
+		Assertions.assertDoesNotThrow(() -> publiDescriptionNull.updateDescription("update"), "Updating with 'update' description should not throw exception");
+		Assertions.assertEquals("update", publiDescriptionNull.getDescription(), "Description should be 'update'");
 	}
-	
+
 	@Test
 	@DisplayName("Must update `description` without throwing exception")
 	void updateDescriptionTest04() {

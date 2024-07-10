@@ -26,14 +26,14 @@ public class ErrorHandler {
     }
     @ExceptionHandler(NoResourceFoundException.class)
     public ResponseEntity<?> handleError404(NoResourceFoundException ex) {
-    	return ResponseEntity.notFound().build();
+        return ResponseEntity.notFound().build();
     }
-	
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorMessageWithFields> handleError400(MethodArgumentNotValidException ex) {
-    	Map<String, String> fields = ex.getFieldErrors().stream()
+        Map<String, String> fields = ex.getFieldErrors().stream()
             .collect(Collectors.toMap(f -> f.getField().toString(), f -> f.getDefaultMessage()));
-    	return ResponseEntity
+        return ResponseEntity
             .badRequest()
             .body(new ErrorMessageWithFields(
             "Input validation error",
@@ -45,12 +45,12 @@ public class ErrorHandler {
     public ResponseEntity<ErrorMessage> handleError400(IllegalArgumentException ex) {
         return ResponseEntity.badRequest().body(new ErrorMessage(ex.getMessage()));
     }
-    
+
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ErrorMessage> handleError400(HttpMessageNotReadableException ex) {
         return ResponseEntity.badRequest().body(new ErrorMessage(ex.getMessage().split(":")[0]));
     }
-    
+
     @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
     public ResponseEntity<ErrorMessage> handleError415(HttpMediaTypeNotSupportedException ex) {
         String unsupported = ex.getContentType() != null ? ex.getContentType().getType() + "/" + ex.getContentType().getSubtype() : "unknown";
@@ -79,13 +79,13 @@ public class ErrorHandler {
     public ResponseEntity<ErrorMessage> handleError403() {
         return ResponseEntity.status(HttpStatus.FORBIDDEN).body(new ErrorMessage("Access denied"));
     }
-    
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorMessage> handleError500(Exception ex) {
-    	ex.printStackTrace();
-    	return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorMessage("Internal server error"));
+        ex.printStackTrace();
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(new ErrorMessage("Internal server error"));
     }
-    
+
     private record ErrorMessage(String error) {};
     private record ErrorMessageWithFields(String error, Object fields) {};
 }

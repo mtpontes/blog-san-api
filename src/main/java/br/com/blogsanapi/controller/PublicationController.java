@@ -34,13 +34,13 @@ import jakarta.validation.Valid;
 @RequestMapping("/publications")
 @SecurityRequirement(name = "bearer-key")
 public class PublicationController {
-	
+
 	@Autowired
 	private PublicationService publicationService;
 	@Autowired
 	private CommentService commentService;
-	
-	
+
+
 	@PostMapping
 	@Transactional
 	protected ResponseEntity<PublicationResponseDTO> createPublication(@RequestBody @Valid PublicationRequestDTO dto, UriComponentsBuilder uriBuilder){
@@ -49,7 +49,7 @@ public class PublicationController {
 		var uri = uriBuilder.path("/publications/{id}").buildAndExpand(dto).toUri();
 		return ResponseEntity.created(uri).body(dtoResponse);
 	}
-	
+
 	@GetMapping("/{id}")
 	protected ResponseEntity<PublicationResponseWithCommentsDTO> getPublication(@PageableDefault(size = 5) Pageable pageable, @PathVariable Long id) {
 		return ResponseEntity.ok(publicationService.getPublicationWithComments(pageable, id));
@@ -63,7 +63,7 @@ public class PublicationController {
 
 		return ResponseEntity.ok(publicationService.getAllPublications(pageable, date, userId));
 	}
-	
+
 	@PatchMapping("/{publicationId}")
 	@Transactional
 	protected ResponseEntity<PublicationResponseDTO> updatePublication(@PathVariable Long publicationId,
@@ -71,21 +71,22 @@ public class PublicationController {
 
 		return ResponseEntity.ok(publicationService.updatePublication(publicationId, dto));
 	}
-	
+
 	@DeleteMapping("/{id}")
 	@Transactional
 	protected ResponseEntity<?> deletePublication(@PathVariable Long id) {
 		publicationService.deletePublication(id);
 		return ResponseEntity.noContent().build();
 	}
-	
-	
+
+
 	@PostMapping("/{publicationId}/comments")
 	@Transactional
 	public ResponseEntity<CommentResponseDTO> createComment(
 		@PathVariable Long publicationId,
 		@RequestBody @Valid CommentRequestDTO dto, 
-		UriComponentsBuilder uriBuilder) {
+		UriComponentsBuilder uriBuilder
+	) {
 
 		CommentResponseDTO commentResponse = commentService.createComment(publicationId, dto);
 		var uri = uriBuilder.path("/publications/comments/{id}").buildAndExpand(dto).toUri();
@@ -97,13 +98,13 @@ public class PublicationController {
 		@PathVariable Long targetCommentId,
 		@RequestBody @Valid CommentRequestDTO dto, 
 		UriComponentsBuilder uriBuilder
-		) {
+	) {
 		
 		CommentResponseDTO commentResponse = commentService.replyComment(targetCommentId, dto);
 		var uri = uriBuilder.path("/publications/comments/{id}").buildAndExpand(dto).toUri();
 		return ResponseEntity.created(uri).body(commentResponse);
 	}
-	
+
 	@GetMapping("/{publicationId}/comments")
 	public ResponseEntity<Page<CommentResponseDTO>> getCommentsByPublication(@PageableDefault(size = 10) Pageable pageable, @PathVariable Long publicationId) {
 		return ResponseEntity.ok(commentService.getCommentsByPublicationId(pageable, publicationId));
@@ -112,14 +113,14 @@ public class PublicationController {
 	public ResponseEntity<Page<CommentResponseDTO>> getAllRepliesByComment(@PageableDefault(size = 5) Pageable pageable, @PathVariable Long targetCommentId) {
 		return ResponseEntity.ok(commentService.getRepliesByComment(pageable, targetCommentId));
 	}
-	
+
 	@PatchMapping("/comments/{commentId}")
 	@Transactional
 	public ResponseEntity<CommentResponseDTO> updateComment(@PathVariable Long commentId, @RequestBody @Valid CommentRequestDTO dto) {
 		CommentResponseDTO commentResponse = commentService.updateComment(commentId, dto);
 		return ResponseEntity.ok(commentResponse);
 	}
-	
+
 	@DeleteMapping("/comments/{commentId}")
 	@Transactional
 	public ResponseEntity<?> deleteComment(@PathVariable Long commentId) {

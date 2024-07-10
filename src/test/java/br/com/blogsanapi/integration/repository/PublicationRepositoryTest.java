@@ -27,7 +27,7 @@ public class PublicationRepositoryTest {
     @Test
     @DisplayName("Test finding all publications by date and user ID")
     void findAllByParamsTest() {
-    	// arrange
+        // arrange
         User user1 = userRepository.save(User.builder().name("User-san").login("login").build());
         User user2 = userRepository.save(User.builder().name("User-san").login("login").build());
         List<Publication> publications = List.of(

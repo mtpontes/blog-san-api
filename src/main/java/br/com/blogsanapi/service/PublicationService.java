@@ -29,14 +29,14 @@ public class PublicationService {
 	private PublicationRepository publicationRepository;
 	@Autowired
 	private CommentRepository commentRepository;
-	
+
 	public PublicationResponseDTO createPublication(PublicationRequestDTO publication) {
 		Publication publi = new Publication(publication.description(), publication.imageLink(), this.getUser());
 		publicationRepository.save(publi);
 		
 		return new PublicationResponseDTO(publi);
 	}
-	
+
 	public PublicationResponseWithCommentsDTO getPublicationWithComments(Pageable pageable, Long publicationId) {
 		Publication publication = publicationRepository.findById(publicationId)
 			.orElseThrow(EntityNotFoundException::new);
@@ -64,7 +64,7 @@ public class PublicationService {
 	public Page<PublicationResponseDTO> getAllPublicationsByUser(Pageable pageable, Long id) {
 		return publicationRepository.findAllByUserId(pageable, id).map(PublicationResponseDTO::new);
 	}
-	
+
 	public PublicationResponseDTO updatePublication(Long publicationId, PublicationUpdateDTO dto) {
 		Publication publi = publicationRepository.findByIdAndUserId(publicationId, this.getUser().getId())
 			.orElseThrow(EntityNotFoundException::new);
@@ -74,12 +74,12 @@ public class PublicationService {
 		
 		return new PublicationResponseDTO(publi);
 	}
-	
+
 	public void deletePublication(Long id) {
 		User user = this.getUser();
 		publicationRepository.deleteByUserIdAndId(user.getId(), id);
 	}
-	
+
 	private User getUser() {
 		return (User) SecurityContextHolder
 			.getContext()

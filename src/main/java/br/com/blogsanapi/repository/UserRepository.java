@@ -8,5 +8,5 @@ import br.com.blogsanapi.model.user.User;
 public interface UserRepository extends JpaRepository<User, Long> {
     UserDetails findByLogin(String login);
 
-	boolean existsByLogin(String string);
+    boolean existsByLogin(String string);
 }

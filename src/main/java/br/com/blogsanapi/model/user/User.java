@@ -40,10 +40,10 @@ public class User implements UserDetails {
     private UserRole role;
     private String name;
     private String email;
-    
+
     @OneToMany(mappedBy = "user")
     private List<Publication> publications;
-    
+
 
     public User(String login, String password, UserRole role){
         this.login = login;
@@ -51,11 +51,11 @@ public class User implements UserDetails {
         this.role = role;
     }
     public User(String login, String password, UserRole role, String name, String email){
-    	this.login = login;
-    	this.password = password;
-    	this.role = role;
-    	this.name = name;
-    	this.email = email;
+        this.login = login;
+        this.password = password;
+        this.role = role;
+        this.name = name;
+        this.email = email;
     }
 
     @Override
@@ -88,7 +88,7 @@ public class User implements UserDetails {
     public boolean isEnabled() {
         return true;
     }
-    
+
     @Override
     public String toString() {
         return "User{" +

@@ -33,7 +33,7 @@ public class CommentRepositoryTest {
     @Test
     @DisplayName("Test finding all comments by publication ID")
     void findAllByParamsTest() {
-    	// arrange
+        // arrange
         User user = userRepository.save(User.builder().name("User-san").login("login").build());
         List<Publication> publications = List.of(
             new Publication("INTROMETIDO 1", "link1", user),
@@ -67,7 +67,7 @@ public class CommentRepositoryTest {
     @Test
     @DisplayName("Test finding all replies")
     void findAllRepliesTest() {
-    	// arrange
+        // arrange
         User user = userRepository.save(User.builder().name("User-san").login("login").build());
         Publication publication = publicationRepository.save(new Publication("p1", "link1", user));
 

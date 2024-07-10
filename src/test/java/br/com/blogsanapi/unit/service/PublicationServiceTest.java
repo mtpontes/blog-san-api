@@ -38,7 +38,7 @@ import br.com.blogsanapi.service.PublicationService;
 
 @ExtendWith(MockitoExtension.class)
 class PublicationServiceTest {
-	
+
 	@Mock
 	private PublicationRepository pRepository;
 	@Mock
@@ -50,17 +50,17 @@ class PublicationServiceTest {
 
 	@InjectMocks
 	private PublicationService service;
-	
+
 	@Captor
 	private ArgumentCaptor<Publication> publicationCaptor;
 
-	
+
 	private void mockSecurity() {
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		User user = new User("root", "root", UserRole.ADMIN, "name", "email");
 		when(authentication.getPrincipal()).thenReturn(user);
 	}
-	
+
 	@Test
 	@DisplayName("Must capture a Publication with the same values as the DTO")
 	void createPublicationTest() {
@@ -78,8 +78,8 @@ class PublicationServiceTest {
 		Assertions.assertEquals(dto.description(), publi.getDescription(), "The description of the publication does not match the DTO");
 		Assertions.assertEquals(dto.imageLink(), publi.getImageLink(), "The image link of the publication does not match the DTO");
 	}
-	
-	
+
+
 	@Test
 	@DisplayName("Must return a publication with comments")
 	void getAPublicationWhithCommentsTest() {
@@ -108,7 +108,7 @@ class PublicationServiceTest {
 		Assertions.assertEquals(comment2.getText(), result.comments().get(2).text(), "The third comment text should match");
 		Assertions.assertEquals("description", result.description(), "The description should match the original");
 	}
-	
+
 	@Test
 	@DisplayName("Must return all publications with the correct data")
 	void getAllPublicationsTest() {
@@ -125,7 +125,7 @@ class PublicationServiceTest {
 		Assertions.assertEquals(result.get(0).description(), publi.getDescription(), "The description should match");
 		Assertions.assertEquals(result.get(0).imageLink(), publi.getImageLink(), "The imageLik should match");
 	}
-	
+
 	@Test
 	@DisplayName("Must return user publications with the correct data")
 	void getAllPublicationsByUserTest() {
@@ -141,7 +141,7 @@ class PublicationServiceTest {
 		Assertions.assertEquals(result.get(0).description(), publi.getDescription(), "The description should match");
 		Assertions.assertEquals(result.get(0).imageLink(), publi.getImageLink(), "The imageLink should match");
 	}
-	
+
 	@Test
 	@DisplayName("Must return updated description")
 	void updatePublicationTest() {

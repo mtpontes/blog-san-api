@@ -33,7 +33,7 @@ import br.com.blogsanapi.service.CommentService;
 
 @ExtendWith(MockitoExtension.class)
 class CommentServiceTest {
-	
+
 	@Mock
 	private PublicationRepository publicationRepository;
 	@Mock
@@ -42,14 +42,14 @@ class CommentServiceTest {
 	private SecurityContext securityContext;
 	@Mock
 	private Authentication authentication;
-	
+
 	@InjectMocks
 	private CommentService service;
-	
+
 	@Captor
 	private ArgumentCaptor<Comment> commentCaptor;
 
-	
+
 	private void mockSecurity() {
 		SecurityContextHolder.getContext().setAuthentication(authentication);
 		User user = User.builder()
@@ -62,7 +62,7 @@ class CommentServiceTest {
 			.build();
 		when(authentication.getPrincipal()).thenReturn(user);
 	}
-	
+
 	@Test
 	@DisplayName("Must create comment")
 	void createCommentTest() {
@@ -85,7 +85,7 @@ class CommentServiceTest {
 		Assertions.assertEquals(captured.getPublication().getId(), publicationId, "Id must be matched");
 		Assertions.assertEquals(captured.getText(), dto.text(), "Text must be matched");
 	}
-	
+
 	@Test
 	@DisplayName("The parentComment must be the target comment")
 	void replyCommentTest01() {
@@ -111,7 +111,7 @@ class CommentServiceTest {
 		Assertions.assertNotNull(replyResult.getParentComment(), "ParentComment must not be null");
 		Assertions.assertEquals(replyResult.getParentComment().getId(), 10L, "ID must be matched");
 	}
-	
+
 	@Test
 	@DisplayName("The parentComment must be the same parentComment of the target comment")
 	void replyCommentTest02() {
@@ -143,7 +143,7 @@ class CommentServiceTest {
 		Assertions.assertEquals(replyResult.getParentComment().getId(), 1L, "ID should be matched");
 		Assertions.assertEquals(replyResult.getParentComment().getText(), commentReference.getParentComment().getText(), "Text should be matched");
 	}
-	
+
 	@Test
 	@DisplayName("Must update comment text")
 	void updateCommentTest() {

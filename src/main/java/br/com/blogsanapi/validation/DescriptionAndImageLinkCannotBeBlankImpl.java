@@ -11,7 +11,7 @@ public class DescriptionAndImageLinkCannotBeBlankImpl implements ConstraintValid
 	@Override
 	public void initialize(DescriptionAndImageLinkCannotBeBlank constraintAnnotation) {
 	}
-	
+
 	@Override
 	public boolean isValid(PublicationRequestDTO data, ConstraintValidatorContext context) {
 		context.disableDefaultConstraintViolation();

@@ -20,16 +20,16 @@ import jakarta.validation.ConstraintValidatorContext.ConstraintViolationBuilder.
 
 @ExtendWith(MockitoExtension.class)
 class DescriptionAndImageLinkCannotBeBlankImplTest {
-	
-	@Mock
-	private ConstraintValidatorContext constraintValidatorContext;
-	@Mock
-	private ConstraintViolationBuilder  constraintViolationBuilder;
-	@Mock
-	private NodeBuilderCustomizableContext nodeBuilderCustomizableContext;
 
-	@InjectMocks
-	private DescriptionAndImageLinkCannotBeBlankImpl implementation;
+    @Mock
+    private ConstraintValidatorContext constraintValidatorContext;
+    @Mock
+    private ConstraintViolationBuilder  constraintViolationBuilder;
+    @Mock
+    private NodeBuilderCustomizableContext nodeBuilderCustomizableContext;
+
+    @InjectMocks
+    private DescriptionAndImageLinkCannotBeBlankImpl implementation;
 
 
     private void mockConstraintValidatorContext(int times) {
@@ -43,47 +43,47 @@ class DescriptionAndImageLinkCannotBeBlankImplTest {
         }
     }
 
-	@Test
+    @Test
     @DisplayName("Valid publication return true")
     void testIsValid_withValidInput() {
-		var withBothFields = new PublicationRequestDTO("Description", "ImageLink");
-		assertTrue(implementation.isValid(withBothFields, constraintValidatorContext), "Both populated fields are valid");
+        var withBothFields = new PublicationRequestDTO("Description", "ImageLink");
+        assertTrue(implementation.isValid(withBothFields, constraintValidatorContext), "Both populated fields are valid");
 
         var withValidDescriptionAndImageLinkBlank = new PublicationRequestDTO("Description", "");
         this.mockConstraintValidatorContext(1);
-		assertTrue(implementation.isValid(withValidDescriptionAndImageLinkBlank, constraintValidatorContext), "It is only valid for ImageLink to be blank");
-		
+        assertTrue(implementation.isValid(withValidDescriptionAndImageLinkBlank, constraintValidatorContext), "It is only valid for ImageLink to be blank");
+        
         var withValidDescriptionAndImageLinkNull = new PublicationRequestDTO("Description", null);
         this.mockConstraintValidatorContext(1);
-		assertTrue(implementation.isValid(withValidDescriptionAndImageLinkNull, constraintValidatorContext), "It is only valid for ImageLink to be null");
+        assertTrue(implementation.isValid(withValidDescriptionAndImageLinkNull, constraintValidatorContext), "It is only valid for ImageLink to be null");
 
 
         var withValidImageLinkAndDescriptionBlank = new PublicationRequestDTO("", "Image link");
         this.mockConstraintValidatorContext(1);
-		assertTrue(implementation.isValid(withValidImageLinkAndDescriptionBlank, constraintValidatorContext), "It is only valid for Description to be blank");
-		
+        assertTrue(implementation.isValid(withValidImageLinkAndDescriptionBlank, constraintValidatorContext), "It is only valid for Description to be blank");
+        
         var withValidImageLinkAndDescriptionNull = new PublicationRequestDTO(null, "Image link");
         this.mockConstraintValidatorContext(1);
-		assertTrue(implementation.isValid(withValidImageLinkAndDescriptionNull, constraintValidatorContext), "It is only valid for Description to be null");
+        assertTrue(implementation.isValid(withValidImageLinkAndDescriptionNull, constraintValidatorContext), "It is only valid for Description to be null");
     }
 
-	@Test
+    @Test
     @DisplayName("Invalid publication return false")
     void testIsValid_withInvalidInput() {
-		var withBothFieldsBlank = new PublicationRequestDTO("", "");
+        var withBothFieldsBlank = new PublicationRequestDTO("", "");
         this.mockConstraintValidatorContext(2);
-		assertFalse(implementation.isValid(withBothFieldsBlank, constraintValidatorContext), "Both cannot be blank");
+        assertFalse(implementation.isValid(withBothFieldsBlank, constraintValidatorContext), "Both cannot be blank");
 
-		var withBothFieldsNull = new PublicationRequestDTO(null, null);
+        var withBothFieldsNull = new PublicationRequestDTO(null, null);
         this.mockConstraintValidatorContext(2);
-		assertFalse(implementation.isValid(withBothFieldsNull, constraintValidatorContext), "Both cannot be null");
+        assertFalse(implementation.isValid(withBothFieldsNull, constraintValidatorContext), "Both cannot be null");
 
         var withDescriptionBlankAndImageLinkNull = new PublicationRequestDTO("", null);
         this.mockConstraintValidatorContext(1);
-		assertFalse(implementation.isValid(withDescriptionBlankAndImageLinkNull, constraintValidatorContext), "Blank with null must be invalid");
+        assertFalse(implementation.isValid(withDescriptionBlankAndImageLinkNull, constraintValidatorContext), "Blank with null must be invalid");
         
         var withDescriptionNullAndImageLinkBlank = new PublicationRequestDTO(null, "");
         this.mockConstraintValidatorContext(1);
-		assertFalse(implementation.isValid(withDescriptionNullAndImageLinkBlank, constraintValidatorContext), "Null with blank must be invalid");
+        assertFalse(implementation.isValid(withDescriptionNullAndImageLinkBlank, constraintValidatorContext), "Null with blank must be invalid");
     }
 }

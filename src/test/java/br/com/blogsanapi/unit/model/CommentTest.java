@@ -23,7 +23,7 @@ class CommentTest {
 			() -> new Comment("", new User(), new Publication(), new Comment()),
 			"Instanciating with `text` blank");
 	}
-	
+
 	@Test
 	@DisplayName("Should not throw exception when passing valid value to `text`")
 	void instanciateCommentTest02() {
@@ -49,7 +49,7 @@ class CommentTest {
 			() -> comment.updateText(""),
 			"Updating blank");
 	}
-	
+
 	@Test
 	@DisplayName("Should not throw exception when passing valid value")
 	void updateTextTest02() {

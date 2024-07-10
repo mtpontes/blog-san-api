@@ -28,8 +28,8 @@ class TokenServiceTest {
     private String secret = "testSecret";
 
     private final User user = User.builder()
-            .login("loginDefault")
-            .build();
+        .login("loginDefault")
+        .build();
 
             
     @BeforeEach
@@ -43,23 +43,23 @@ class TokenServiceTest {
         // act
         String generatedToken = tokenService.generateToken(user);
         var recoveredSubject = tokenService.validateToken(generatedToken);
-    
+
         // assert
         Assertions.assertEquals(this.user.getLogin(), recoveredSubject, "Recovered subject from token does not match user login");
     }
-    
+
     @Test
     @DisplayName("Generated token subject matches user login and has expected expiration")
     void generateToken02() {
         // act
         String generatedToken = this.tokenService.generateToken(this.user);
         DecodedJWT decoded = this.decodeToken(generatedToken);
-    
+
         // assert
         assertEquals(decoded.getSubject(), user.getLogin(), "Decoded token subject does not match user login");
         assertEquals(decoded.getExpiresAtAsInstant(), tokenService.getExpirationDateWhithoutMiliseconds(), "Token expiration does not match expected value");
     }
-    
+
     @Test
     @DisplayName("Generate token throws IllegalArgumentException for null or blank login")
     void generateToken03() {
@@ -77,18 +77,18 @@ class TokenServiceTest {
     @Test
     @DisplayName("Validate token throws InvalidTokenException with tampered tokens")
     void validateTokenTest01() {
-      // arrange
-      String generatedToken = tokenService.generateToken(this.user);
-    
-      // act and assert
-      Assertions.assertAll(
-          () -> Assertions.assertThrows(InvalidTokenException.class, () -> tokenService.validateToken(generatedToken.replace(".", ""))),
-          () -> Assertions.assertThrows(InvalidTokenException.class, () -> tokenService.validateToken(generatedToken.substring(0, generatedToken.length() - 1))),
-          () -> Assertions.assertThrows(InvalidTokenException.class, () -> {
+        // arrange
+        String generatedToken = tokenService.generateToken(this.user);
+
+        // act and assert
+        Assertions.assertAll(
+            () -> Assertions.assertThrows(InvalidTokenException.class, () -> tokenService.validateToken(generatedToken.replace(".", ""))),
+            () -> Assertions.assertThrows(InvalidTokenException.class, () -> tokenService.validateToken(generatedToken.substring(0, generatedToken.length() - 1))),
+            () -> Assertions.assertThrows(InvalidTokenException.class, () -> {
             String repeatedChar = generatedToken.substring(generatedToken.length() - 1);
             tokenService.validateToken(generatedToken.replace(repeatedChar, repeatedChar + repeatedChar));
-          })
-      );
+            })
+        );
     }
 
     private DecodedJWT decodeToken(String token){

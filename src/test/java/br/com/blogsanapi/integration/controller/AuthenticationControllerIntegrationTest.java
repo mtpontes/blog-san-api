@@ -74,7 +74,7 @@ public class AuthenticationControllerIntegrationTest {
 	void loginTest() throws Exception {
 		// arrange
 		var makeLogin = new AuthenticationDTO("adminLogin", "adminPassword");
-        String requestBody = authenticationDTOJson.write(makeLogin).getJson();
+		String requestBody = authenticationDTOJson.write(makeLogin).getJson();
 
 		// act
 		var result = ControllerTestUtils.postRequest(mvc, (this.BASE_URL + "/login"), requestBody)
@@ -83,17 +83,17 @@ public class AuthenticationControllerIntegrationTest {
 			.andExpect(jsonPath("$.token").isNotEmpty())
 			.andReturn().getResponse();
 
-        String responseBody = result.getContentAsString().replaceAll(".*\"token\":\\s*\"(.*?)\".*", "$1");
+		String responseBody = result.getContentAsString().replaceAll(".*\"token\":\\s*\"(.*?)\".*", "$1");
 
-        // assert
-        assertTrue(TokenUtils.isValidTokenFormat(responseBody));
+		// assert
+		assertTrue(TokenUtils.isValidTokenFormat(responseBody));
 	}
 	@Test
 	@DisplayName("Integration - login test 02 - Should return status 400 when username and password do not meet the expected format")
 	void loginTest02() throws IOException, Exception {
 		// arrange
 		var makeLogin = new AuthenticationDTO("", "");
-        String requestBody = authenticationDTOJson.write(makeLogin).getJson();
+		String requestBody = authenticationDTOJson.write(makeLogin).getJson();
 
 		// act
 		ControllerTestUtils.postRequest(mvc, (this.BASE_URL + "/login"), requestBody)
@@ -104,11 +104,11 @@ public class AuthenticationControllerIntegrationTest {
 			.andExpect(jsonPath("$.fields.password").exists());
 	}
 	@Test
-    @DisplayName("Integration - login test 03 - Should return status 401 when user is not found")
+	@DisplayName("Integration - login test 03 - Should return status 401 when user is not found")
 	void loginTest03() throws IOException, Exception {
 		// arrange
 		var makeLoginWithNonExistentLogin = new AuthenticationDTO("non-existent", "adminPassword");
-        String requestBody = authenticationDTOJson.write(makeLoginWithNonExistentLogin).getJson();
+		String requestBody = authenticationDTOJson.write(makeLoginWithNonExistentLogin).getJson();
 
 		// act
 		ControllerTestUtils.postRequest(mvc, (this.BASE_URL + "/login"), requestBody)
@@ -117,18 +117,18 @@ public class AuthenticationControllerIntegrationTest {
 			.andExpect(jsonPath("$.token").doesNotExist());
 	}
 	@Test
-    @DisplayName("Integration - login test 04 - Should return 401 status when password does not match")
-    void loginTest04() throws IOException, Exception {
-        // arrange
+	@DisplayName("Integration - login test 04 - Should return 401 status when password does not match")
+	void loginTest04() throws IOException, Exception {
+		// arrange
 		var makeLoginWithNonMatchingPassword = new AuthenticationDTO("adminLogin", "non-existent");
 		String requestBody = authenticationDTOJson.write(makeLoginWithNonMatchingPassword).getJson();
 
-        // act
+		// act
 		ControllerTestUtils.postRequest(mvc, (this.BASE_URL + "/login"), requestBody)
 			// assert
 			.andExpect(status().isUnauthorized())
 			.andExpect(jsonPath("$.token").doesNotExist());
-    }
+	}
 
 	@Test
 	@DisplayName("Integration - register test 01 - Should return status 200")

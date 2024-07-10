@@ -15,7 +15,7 @@ public record CommentResponseDTO(
 		LocalDateTime date,
 		Boolean edited,
 		Long parentCommentId) {
-	
+
 	public CommentResponseDTO(Comment c) {
 		this(
 			c.getId(), 

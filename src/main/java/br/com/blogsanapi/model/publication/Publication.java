@@ -34,45 +34,45 @@ public class Publication {
 	
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY) @Setter
     private Long id;
-    
+
     private String description;
     private String imageLink;
     private LocalDateTime date;
     private Boolean edited;
-    
+
     @ManyToOne @JoinColumn(name = "user_id")
     private User user;
-    
+
     @OneToMany(mappedBy = "publication", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     private List<Comment> comments = new ArrayList<>();
-    
-    
+
+
     public Publication(String description, String imageLink, User user) {
-    	if ( (description == null || description.isBlank()) && (imageLink == null || imageLink.isBlank()) )
-    		throw new IllegalArgumentException("Description and imageLink cannot be null simultaneously");
-    	
-    	this.description = description;
-    	this.imageLink = imageLink;
-    	this.user = user;
-    	this.date = LocalDateTime.now();
-    	this.edited = false;
+        if ( (description == null || description.isBlank()) && (imageLink == null || imageLink.isBlank()) )
+            throw new IllegalArgumentException("Description and imageLink cannot be null simultaneously");
+        
+        this.description = description;
+        this.imageLink = imageLink;
+        this.user = user;
+        this.date = LocalDateTime.now();
+        this.edited = false;
     }
 
-	public void updateDescription(String description) {
-		if (this.imageLink == null || this.imageLink.isBlank()) {
-			if (description == null || description.isBlank()) 
-				throw new IllegalArgumentException("Can't add an empty comment to a post without an image");
-		}
-		
-		this.description = description;
-		this.date = LocalDateTime.now();
-		this.edited = true;
-	}
-	
-	public void addComment(Comment comment) {
-		this.comments.add(comment);
-	}
-	
+    public void updateDescription(String description) {
+        if (this.imageLink == null || this.imageLink.isBlank()) {
+            if (description == null || description.isBlank()) 
+                throw new IllegalArgumentException("Can't add an empty comment to a post without an image");
+        }
+        
+        this.description = description;
+        this.date = LocalDateTime.now();
+        this.edited = true;
+    }
+
+    public void addComment(Comment comment) {
+        this.comments.add(comment);
+    }
+
     @Override
     public String toString() {
         return "Publication[" +
