@@ -43,12 +43,16 @@ public class Publication {
     @ManyToOne @JoinColumn(name = "user_id")
     private User user;
 
-    @OneToMany(mappedBy = "publication", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(
+        mappedBy = "publication", 
+        cascade = CascadeType.ALL, 
+        fetch = FetchType.LAZY)
     private List<Comment> comments = new ArrayList<>();
 
 
     public Publication(String description, String imageLink, User user) {
-        if ( (description == null || description.isBlank()) && (imageLink == null || imageLink.isBlank()) )
+        if ( (description == null || description.isBlank()) && 
+            (imageLink == null || imageLink.isBlank()) )
             throw new IllegalArgumentException("Description and imageLink cannot be null simultaneously");
         
         this.description = description;

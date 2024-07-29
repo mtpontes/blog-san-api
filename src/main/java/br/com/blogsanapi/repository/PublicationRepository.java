@@ -10,7 +10,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import br.com.blogsanapi.model.publication.Publication;
 
-public interface PublicationRepository extends JpaRepository<Publication, Long>{
+public interface PublicationRepository extends JpaRepository<Publication, Long> {
 
 	@Query("""
 		SELECT p FROM Publication p 

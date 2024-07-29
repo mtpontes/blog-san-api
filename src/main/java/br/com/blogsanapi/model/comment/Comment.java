@@ -51,11 +51,19 @@ public class Comment {
     @JoinColumn(name = "parent_comment_id")
     private Comment parentComment;
 
-    @OneToMany(mappedBy = "parentComment", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(
+        mappedBy = "parentComment", 
+        cascade = CascadeType.ALL, 
+        fetch = FetchType.LAZY)
     private List<Comment> replies;
 
 
-    public Comment(String text, User user, Publication publication, Comment parentComment) {
+    public Comment(
+        String text, 
+        User user, 
+        Publication publication, 
+        Comment parentComment
+    ) {
         this.validateText(text);
         
         this.text = text;

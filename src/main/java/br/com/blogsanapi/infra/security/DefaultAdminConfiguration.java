@@ -2,7 +2,7 @@ package br.com.blogsanapi.infra.security;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Configuration;
-import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import br.com.blogsanapi.model.user.User;
 import br.com.blogsanapi.model.user.UserRole;
@@ -13,7 +13,9 @@ import jakarta.annotation.PostConstruct;
 public class DefaultAdminConfiguration {
 
     @Autowired
-    UserRepository userRepository;
+    private UserRepository userRepository;
+    @Autowired
+    private PasswordEncoder encoder;
 
     @PostConstruct
     void createDefaultAdminUser() {
@@ -21,7 +23,7 @@ public class DefaultAdminConfiguration {
             User userAdmin = User.builder()
                 .name("admin")
                 .login("root")
-                .password(new BCryptPasswordEncoder().encode("root"))
+                .password(encoder.encode("root"))
                 .role(UserRole.ADMIN)
                 .build();
 
