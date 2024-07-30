@@ -2,17 +2,6 @@
 
 Blog-san is a simple REST API project, with the intention of practicing, CRUD, mapping and entity relationships. There, users can create an account, publish, comment and respond.
 
---- 
-
-## ⚙️ Functionalities
-- [x] User registration;
-- [x] Authentication and authorization;
-- [x] CRUD for publications and comments;
-- [x] Public acces for readers, but without interactions with publications and other users;
-- [x] Relationships between publications to comments and comments to comments;
-
----
-
 ## 🛠️ Tecnologies 
 
 - [Spring Boot](https://spring.io/projects/spring-boot)
@@ -22,6 +11,12 @@ Blog-san is a simple REST API project, with the intention of practicing, CRUD, m
 - [MySQL](https://dev.mysql.com/downloads/connector/j/)
 - [Springdoc OpenAPI](https://springdoc.org/)
 
+## ⚙️ Functionalities
+- [x] User registration;
+- [x] Authentication and authorization;
+- [x] CRUD for publications and comments;
+- [x] Public acces for readers, but without interactions with publications and other users;
+- [x] Relationships between publications to comments and comments to comments;
 
 ## 📖 How to use
 <details><summary>Clique para expandir</summary>
@@ -31,7 +26,7 @@ Blog-san is a simple REST API project, with the intention of practicing, CRUD, m
 
 The application is configured to connect to MySQL via port 3306.
 
-### 🌍 Environment variables:
+### Environment variables:
 
 #### Database
 
