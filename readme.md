@@ -1,4 +1,4 @@
-## Blog-san API
+# Blog-san API
 
 Blog-san is a simple REST API project, with the intention of practicing, CRUD, mapping and entity relationships. There, users can create an account, publish, comment and respond.
 
@@ -43,21 +43,27 @@ The application is configured to connect to MySQL via port 3306.
 
 
 ### Prerequisites
-- Java 17
-- MySQL 8.0
+- Docker
+- Docker Compose
 
 
 ### Run
 - Clone this repository
 
-- Run the in the root directory or:
+      git clone https://github.com/mtpontes/blog-san-api.git
+
+#### Build the app
   - Linux:
 
-        ./mvnw spring-boot:run
+        ./mvnw clean install -DskipTests
   
   - Windows:
 
-        mvnw.cmd spring-boot:run
+        mvnw.cmd clean install -DskipTests
+
+#### Run with docker-compose.yml
+
+    docker compose up
 
 ### Documentation
 
