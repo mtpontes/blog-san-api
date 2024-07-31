@@ -1,0 +1,42 @@
+version: '3.9'
+
+services:
+  db:
+    image: mysql:8
+    restart: unless-stopped
+    shm_size: 128mb
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: blog_san
+    ports:
+      - "3306:3306"
+    volumes:
+      - ./mysql-data:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "127.0.0.1", "-u", "root", "-p${MYSQL_ROOT_PASSWORD}"]
+      interval: 10s
+      timeout: 20s
+      retries: 3
+      start_period: 5s
+    networks:
+      - personalized
+  
+  app:
+    image: blog-san-api
+    restart: unless-stopped
+    environment:
+      DB_HOST: db
+      DB_USERNAME: root
+      DB_PASSWORD: root
+      JWT_SECRET: secret
+    ports:
+      - "8080:8080"
+    depends_on:
+      db:
+        condition: service_healthy
+    networks:
+      - personalized
+
+networks:
+  personalized:
+    driver: bridge
