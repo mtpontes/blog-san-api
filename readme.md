@@ -21,7 +21,7 @@ Blog-san is a simple REST API project, with the intention of practicing, CRUD, m
 
 
 ## 📖 How to use
-<details><summary>Clique para expandir</summary>
+<details><summary>Click to expand</summary>
 
 ### Documentation
 
