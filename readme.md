@@ -11,6 +11,7 @@ Blog-san is a simple REST API project, with the intention of practicing, CRUD, m
 - [MySQL](https://dev.mysql.com/downloads/connector/j/)
 - [Springdoc OpenAPI](https://springdoc.org/)
 
+
 ## ⚙️ Functionalities
 - [x] User registration;
 - [x] Authentication and authorization;
@@ -18,52 +19,9 @@ Blog-san is a simple REST API project, with the intention of practicing, CRUD, m
 - [x] Public acces for readers, but without interactions with publications and other users;
 - [x] Relationships between publications to comments and comments to comments;
 
+
 ## 📖 How to use
 <details><summary>Clique para expandir</summary>
-
-
-### Details
-
-The application is configured to connect to MySQL via port 3306.
-
-### Environment variables:
-
-#### Database
-
-| ENV | DEFAULT VALUE | DESCRIPTION |
-| ---------- | --- | ------------- |
-| `DB_USERNAME` | root | Database username |
-| `DB_PASSWORD` | root | Database password |
-
-#### Security
-| ENV | DEFAULT VALUE | DESCRIPTION |
-| ---------- | --- | ------------- |
-| `JWT_SECRET` | secret | JWT token secret |
-
-
-
-### Prerequisites
-- Docker
-- Docker Compose
-
-
-### Run
-- Clone this repository
-
-      git clone https://github.com/mtpontes/blog-san-api.git
-
-#### Build the app
-  - Linux:
-
-        ./mvnw clean install -DskipTests
-  
-  - Windows:
-
-        mvnw.cmd clean install -DskipTests
-
-#### Run with docker-compose.yml
-
-    docker compose up
 
 ### Documentation
 
@@ -73,16 +31,14 @@ You can also import my set of requests into Postman. There you have all the endp
 
 [<img src="https://run.pstmn.io/button.svg" alt="Run In Postman" style="width: 128px; height: 32px;">](https://app.getpostman.com/run-collection/31232249-755011b3-0b0f-4120-9699-7677b4c10832?action=collection%2Ffork&source=rip_markdown&collection-url=entityId%3D31232249-755011b3-0b0f-4120-9699-7677b4c10832%26entityType%3Dcollection%26workspaceId%3Daae15406-ac2a-4087-8c9e-47072e8aa119)
 
+
 ## Examples
-
-### Note
-- All `GET` request endpoints are accessible without authentication.
-
----
+##### Note: All `GET` request endpoints are accessible without authentication.
 
 By default, all users are created with the USER role, these users can only create comments on posts. To become an ADMIN and be able to create posts, you can use the system's default ADMIN user:
 
 #### Default user ADMIN
+
 - **login**: root
 - **password**: root
 
@@ -194,3 +150,85 @@ Authorization: Bearer your_access_token
 ---
 
 #### These are basic examples, and you can explore other endpoints as needed. Be sure to replace the dummy values with actual data from your development environment.
+</details>
+
+## 🚀 How to run
+<details><summary>Clique para expandir</summary>
+
+The application is configured to connect to MySQL via port 3306.
+
+
+### Environment variables:
+#### Database
+
+| ENV | DEFAULT VALUE | DESCRIPTION |
+| ---------- | --- | ------------- |
+| `DB_USERNAME` | root | Database username |
+| `DB_PASSWORD` | root | Database password |
+
+#### Security
+
+| ENV | DEFAULT VALUE | DESCRIPTION |
+| ---------- | --- | ------------- |
+| `JWT_SECRET` | secret | JWT token secret |
+
+
+## Run
+
+Clone this repository:
+
+      git clone https://github.com/mtpontes/blog-san-api.git
+
+
+### Deploy with Docker
+#### Prerequisites
+
+- Docker
+- Docker Compose
+
+
+#### Build
+
+Build by running a container with mvn and the necessary JDK:
+
+      docker run --rm --workdir /app --volume ${PWD}:/app maven:3.6.3-openjdk-17-slim mvn clean install -DskipTests
+
+
+#### Deploy
+
+Create a docker image of the app:
+
+    docker build -t blog-san-api .
+
+Raise the containers:
+
+    docker-compose up
+
+
+### Deploy native
+#### Prerequisites
+
+- Java 17+
+- MySQL 8
+
+
+#### Build
+
+  - Linux:
+
+        ./mvnw clean install -DskipTests
+  
+  - Windows:
+
+        mvnw.cmd clean install -DskipTests
+
+
+#### Deploy
+
+The packaged app can be found in the /target directory after following the installation procedure.
+
+To run the application use the command:
+
+    java -jar package_name.jar
+
+</details>
