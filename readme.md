@@ -153,7 +153,7 @@ Authorization: Bearer your_access_token
 </details>
 
 ## 🚀 How to run
-<details><summary>Clique para expandir</summary>
+<details><summary>Click to expand</summary>
 
 The application is configured to connect to MySQL via port 3306.
 
