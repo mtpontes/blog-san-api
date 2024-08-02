@@ -187,48 +187,10 @@ Clone this repository:
 - Docker Compose
 
 
-#### Build
-
-Build by running a container with mvn and the necessary JDK:
-
-      docker run --rm --workdir /app --volume ${PWD}:/app maven:3.6.3-openjdk-17-slim mvn clean install -DskipTests
-
-
 #### Deploy
-
-Create a docker image of the app:
-
-    docker build -t blog-san-api .
 
 Raise the containers:
 
-    docker-compose up
-
-
-### Deploy native
-#### Prerequisites
-
-- Java 17+
-- MySQL 8
-
-
-#### Build
-
-  - Linux:
-
-        ./mvnw clean install -DskipTests
-  
-  - Windows:
-
-        mvnw.cmd clean install -DskipTests
-
-
-#### Deploy
-
-The packaged app can be found in the /target directory after following the installation procedure.
-
-To run the application use the command:
-
-    java -jar package_name.jar
+    docker-compose up --build
 
 </details>
