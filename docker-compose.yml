@@ -8,8 +8,6 @@ services:
     environment:
       MYSQL_ROOT_PASSWORD: root
       MYSQL_DATABASE: blog_san
-    ports:
-      - "3306:3306"
     volumes:
       - ./mysql-data:/var/lib/mysql
     healthcheck:
@@ -22,6 +20,9 @@ services:
       - personalized
   
   app:
+    build:
+      context: .
+      dockerfile: Dockerfile
     image: blog-san-api
     restart: unless-stopped
     environment:
