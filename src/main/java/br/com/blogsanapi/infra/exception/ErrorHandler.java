@@ -1,6 +1,7 @@
 package br.com.blogsanapi.infra.exception;
 
 import java.util.Map;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import org.springframework.http.HttpStatus;
@@ -33,6 +34,7 @@ public class ErrorHandler {
     public ResponseEntity<ErrorMessageWithFields> handleError400(MethodArgumentNotValidException ex) {
         Map<String, String> fields = ex.getFieldErrors().stream()
             .collect(Collectors.toMap(f -> f.getField().toString(), f -> f.getDefaultMessage()));
+
         return ResponseEntity
             .badRequest()
             .body(new ErrorMessageWithFields(
@@ -40,12 +42,10 @@ public class ErrorHandler {
             fields)
         );
     }
-
     @ExceptionHandler(IllegalArgumentException.class)
     public ResponseEntity<ErrorMessage> handleError400(IllegalArgumentException ex) {
         return ResponseEntity.badRequest().body(new ErrorMessage(ex.getMessage()));
     }
-
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ErrorMessage> handleError400(HttpMessageNotReadableException ex) {
         return ResponseEntity.badRequest().body(new ErrorMessage(ex.getMessage().split(":")[0]));
@@ -53,7 +53,10 @@ public class ErrorHandler {
 
     @ExceptionHandler(HttpMediaTypeNotSupportedException.class)
     public ResponseEntity<ErrorMessage> handleError415(HttpMediaTypeNotSupportedException ex) {
-        String unsupported = ex.getContentType() != null ? ex.getContentType().getType() + "/" + ex.getContentType().getSubtype() : "unknown";
+        String unsupported = Optional.ofNullable(ex.getContentType())
+            .map(media -> media.getType() + "/" + media.getSubtype())
+            .orElse("unknown");
+
         String supported = ex.getSupportedMediaTypes().stream()
             .map(mediaType -> mediaType.getType() + "/" + mediaType.getSubtype())
             .collect(Collectors.joining(", "));
