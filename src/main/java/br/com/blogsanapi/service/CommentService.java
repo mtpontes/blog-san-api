@@ -24,10 +24,7 @@ public class CommentService {
 	private CommentRepository commentRepository;
 
 
-	public CommentResponseDTO createComment(
-		Long publicationId, 
-		CommentRequestDTO dto
-	) {
+	public CommentResponseDTO createComment(Long publicationId, CommentRequestDTO dto) {
 		Publication publication = publicationRepository.findById(publicationId)
 			.orElseThrow(EntityNotFoundException::new);
 		
@@ -37,10 +34,7 @@ public class CommentService {
 		return new CommentResponseDTO(comment);
 	}
 
-	public CommentResponseDTO replyComment(
-		Long targetCommentId, 
-		CommentRequestDTO dto
-	) {
+	public CommentResponseDTO replyComment(Long targetCommentId, CommentRequestDTO dto) {
 		Comment commentPrincipal = commentRepository.getReferenceById(targetCommentId);
 		Comment comment = new Comment(
 			dto.text(), 
@@ -52,37 +46,24 @@ public class CommentService {
 		return new CommentResponseDTO(commentRepository.save(comment));
 	}
 
-	public Page<CommentResponseDTO> getRepliesByComment(
-		Pageable pageable, 
-		Long id
-	) {
+	public Page<CommentResponseDTO> getRepliesByComment(Pageable pageable, Long id) {
 		return commentRepository.findAllReplies(pageable, id)
 			.map(CommentResponseDTO::new);
 	}
-	public Page<CommentResponseDTO> getCommentsByUser(
-		Pageable pageable, 
-		Long id
-	) {
+	
+	public Page<CommentResponseDTO> getCommentsByUser(Pageable pageable, Long id) {
 		return commentRepository.findAllByUserId(pageable, id)
 			.map(CommentResponseDTO::new);
 	}
-	public Page<CommentResponseDTO> getCommentsByPublicationId(
-		Pageable pageable, 
-		Long id
-	) {
+
+	public Page<CommentResponseDTO> getCommentsByPublicationId(Pageable pageable, Long id) {
 		return commentRepository.findAllByPublicationId(pageable, id)
 			.map(CommentResponseDTO::new);
 	}
 
-	public CommentResponseDTO updateComment(
-		Long commentId, 
-		CommentRequestDTO dto
-	) {
-		Comment comment = commentRepository.findByIdAndUserId(
-			commentId, 
-			this.getUser().getId()
-		)
-		.orElseThrow(EntityNotFoundException::new);
+	public CommentResponseDTO updateComment(Long commentId, CommentRequestDTO dto) {
+		Comment comment = commentRepository.findByIdAndUserId(commentId, this.getUser().getId())
+			.orElseThrow(EntityNotFoundException::new);
 		
 		comment.updateText(dto.text());
 		return new CommentResponseDTO(commentRepository.save(comment));

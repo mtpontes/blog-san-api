@@ -110,6 +110,7 @@ public class PublicationController {
 			.toUri();
 		return ResponseEntity.created(uri).body(commentResponse);
 	}
+
 	@PostMapping("/comments/{targetCommentId}")
 	@Transactional
 	public ResponseEntity<CommentResponseDTO> createReply(
@@ -135,6 +136,7 @@ public class PublicationController {
 		return ResponseEntity.ok(
 			commentService.getCommentsByPublicationId(pageable, publicationId));
 	}
+	
 	@GetMapping("/comments/{targetCommentId}/replies")
 	public ResponseEntity<Page<CommentResponseDTO>> getAllRepliesByComment(
 		@PageableDefault(size = 5) Pageable pageable, 

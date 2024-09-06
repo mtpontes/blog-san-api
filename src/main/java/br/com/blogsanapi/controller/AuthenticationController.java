@@ -35,9 +35,7 @@ public class AuthenticationController {
     private PasswordEncoder encoder;
 
     @PostMapping("/login")
-    public ResponseEntity<LoginResponseDTO> login(
-        @RequestBody @Valid AuthenticationDTO data
-    ){
+    public ResponseEntity<LoginResponseDTO> login(@RequestBody @Valid AuthenticationDTO data) {
         var usernamePassword = new UsernamePasswordAuthenticationToken(
             data.login(), 
             data.password()
@@ -52,7 +50,7 @@ public class AuthenticationController {
 
     @PostMapping("/register")
     @Transactional
-    public ResponseEntity<?> register(@RequestBody @Valid RegisterDTO data){
+    public ResponseEntity<Void> register(@RequestBody @Valid RegisterDTO data){
         if(this.repository.findByLogin(data.login()) != null) 
             return ResponseEntity.badRequest().build();
 
@@ -72,7 +70,7 @@ public class AuthenticationController {
     
     @PostMapping("/admin/register")
     @Transactional
-    public ResponseEntity<?> adminRegister(@RequestBody @Valid RegisterDTO data){
+    public ResponseEntity<Void> adminRegister(@RequestBody @Valid RegisterDTO data){
         if(this.repository.findByLogin(data.login()) != null) 
             return ResponseEntity.badRequest().build();
 

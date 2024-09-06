@@ -30,9 +30,7 @@ public class PublicationService {
 	@Autowired
 	private CommentRepository commentRepository;
 
-	public PublicationResponseDTO createPublication(
-		PublicationRequestDTO publication
-	) {
+	public PublicationResponseDTO createPublication(PublicationRequestDTO publication) {
 		Publication publi = new Publication(
 			publication.description(), 
 			publication.imageLink(), 
@@ -43,10 +41,7 @@ public class PublicationService {
 		return new PublicationResponseDTO(publi);
 	}
 
-	public PublicationResponseWithCommentsDTO getPublicationWithComments(
-		Pageable pageable, 
-		Long publicationId
-	) {
+	public PublicationResponseWithCommentsDTO getPublicationWithComments(Pageable pageable, Long publicationId) {
 		Publication publication = publicationRepository.findById(publicationId)
 			.orElseThrow(EntityNotFoundException::new);
 		
@@ -68,31 +63,18 @@ public class PublicationService {
 		);
 	}
 
-	public Page<PublicationResponseDTO> getAllPublications(
-		Pageable pageable, 
-		LocalDate date, 
-		Long userId
-	) {
+	public Page<PublicationResponseDTO> getAllPublications(Pageable pageable, LocalDate date, Long userId) {
 		return publicationRepository.findAllByParams(pageable, date, userId)
 			.map(PublicationResponseDTO::new);
 	}
-	public Page<PublicationResponseDTO> getAllPublicationsByUser(
-		Pageable pageable, 
-		Long id
-	) {
+	public Page<PublicationResponseDTO> getAllPublicationsByUser(Pageable pageable, Long id) {
 		return publicationRepository.findAllByUserId(pageable, id)
 			.map(PublicationResponseDTO::new);
 	}
 
-	public PublicationResponseDTO updatePublication(
-		Long publicationId, 
-		PublicationUpdateDTO dto
-	) {
-		Publication publi = publicationRepository.findByIdAndUserId(
-			publicationId, 
-			this.getUser().getId()
-		)
-		.orElseThrow(EntityNotFoundException::new);
+	public PublicationResponseDTO updatePublication(Long publicationId, PublicationUpdateDTO dto) {
+		Publication publi = publicationRepository.findByIdAndUserId(publicationId, this.getUser().getId())
+			.orElseThrow(EntityNotFoundException::new);
 		
 		publi.updateDescription(dto.description());
 		publicationRepository.save(publi);
