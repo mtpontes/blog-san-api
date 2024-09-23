@@ -20,8 +20,8 @@ Blog-san is a simple REST API project, with the intention of practicing, CRUD, m
 - [x] Relationships between publications to comments and comments to comments;
 
 
-## 📖 How to use
-<details><summary>Click to expand</summary>
+<details>
+  <summary><h2>📖 How to use</h2></summary>
 
 ### Documentation
 
@@ -150,10 +150,12 @@ Authorization: Bearer your_access_token
 ---
 
 #### These are basic examples, and you can explore other endpoints as needed. Be sure to replace the dummy values with actual data from your development environment.
+
 </details>
 
-## 🚀 How to run
-<details><summary>Click to expand</summary>
+
+<details>
+  <summary><h2>🚀 How to run</h2></summary>
 
 The application is configured to connect to MySQL via port 3306.
 
